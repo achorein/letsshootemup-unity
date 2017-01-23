@@ -4,11 +4,13 @@ using UnityEngine.UI;
 public class GameOverScript : MonoBehaviour {
 
     private Button[] buttons;
+    private Text[] texts;
 
     void Awake()
     {
         // Get the buttons
         buttons = GetComponentsInChildren<Button>();
+        texts = GetComponentsInChildren<Text>();
 
         // Disable them
         HideButtons();
@@ -20,6 +22,10 @@ public class GameOverScript : MonoBehaviour {
         {
             b.gameObject.SetActive(false);
         }
+        foreach (var t in texts)
+        {
+            t.gameObject.SetActive(false);
+        }
     }
 
     public void ShowButtons()
@@ -27,6 +33,10 @@ public class GameOverScript : MonoBehaviour {
         foreach (var b in buttons)
         {
             b.gameObject.SetActive(true);
+        }
+        foreach (var t in texts)
+        {
+            t.gameObject.SetActive(true);
         }
     }
 

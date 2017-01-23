@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212754203127937520}
   - component: {fileID: 61625679648552698}
   - component: {fileID: 50552591664222032}
-  - component: {fileID: 114518087732831042}
   - component: {fileID: 114571199062153142}
   - component: {fileID: 114061747458226254}
+  - component: {fileID: 114628931293906200}
   m_Layer: 0
   m_Name: poulpi
   m_TagString: Untagged
@@ -54,13 +54,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1386700909491312}
-  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4685068962582362}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!4 &4685068962582362
 Transform:
   m_ObjectHideFlags: 1
@@ -68,8 +68,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1248513801515950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.67, y: -0.25, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalPosition: {x: 25.46, y: -3.96, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4547169153146956}
   m_Father: {fileID: 0}
@@ -108,7 +108,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 1, y: 1}
 --- !u!114 &114061747458226254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,20 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 7bb36c02a0f400346ab302538da904b8, type: 2}
-  shootingRate: 0.75
---- !u!114 &114518087732831042
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248513801515950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f7e998842c02fe4593187c52c282462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: {x: 10, y: 10}
-  direction: {x: -1, y: 0}
+  shootingRate: 2
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,6 +146,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 1
   isEnemy: 1
+--- !u!114 &114628931293906200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248513801515950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7e998842c02fe4593187c52c282462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: {x: 5, y: 5}
+  direction: {x: -1, y: 0}
 --- !u!212 &212754203127937520
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -190,7 +190,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1349857981
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1868e7b4bf95b3147bc8d312ddd0eb18, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 101a7309e5b105140b6b2d393516896f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

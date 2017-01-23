@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour {
 
         if (shoot)
         {
-            WeaponScript weapon = GetComponent<WeaponScript>();
+            WeaponScript weapon = GetComponentsInChildren<WeaponScript>()[0];
             if (weapon != null)
             {
                 // false because the player is not an enemy
