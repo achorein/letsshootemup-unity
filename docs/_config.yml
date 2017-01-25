@@ -25,7 +25,7 @@ repository: achorein/unitydemo
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-architect
+theme: jekyll-theme-midnight
 gems:
   - jekyll-feed
 exclude:
