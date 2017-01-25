@@ -6,6 +6,9 @@ public class GameOverScript : MonoBehaviour {
     private Button[] buttons;
     private Text[] texts;
 
+    public Text winText;
+    public Text loseText;
+
     void Awake()
     {
         // Get the buttons
@@ -28,8 +31,12 @@ public class GameOverScript : MonoBehaviour {
         }
     }
 
-    public void ShowButtons()
+    public void ShowButtons(bool win)
     {
+        if (winText == null)
+        {
+            return;
+        }
         foreach (var b in buttons)
         {
             b.gameObject.SetActive(true);
@@ -37,6 +44,11 @@ public class GameOverScript : MonoBehaviour {
         foreach (var t in texts)
         {
             t.gameObject.SetActive(true);
+        }
+        if (win) {
+            loseText.gameObject.SetActive(false);
+        } else {
+            winText.gameObject.SetActive(false);
         }
     }
 

@@ -14,7 +14,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Enemies
   - 
   - 
   - 
@@ -45,11 +45,11 @@ TagManager:
   - name: Background
     uniqueID: 389218567
     locked: 0
-  - name: Enemies
-    uniqueID: 1349857981
-    locked: 0
   - name: Pickups
     uniqueID: 3402919297
+    locked: 0
+  - name: Enemies
+    uniqueID: 1349857981
     locked: 0
   - name: Player
     uniqueID: 1338097493
