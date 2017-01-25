@@ -13,15 +13,18 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Let's Shoot Them Up
+title: Let's Shoot’Em Up
 email: contact@v1kings.io
 description: > # this means to ignore newlines until "baseurl:"
-  Un jeu réalisé avec Unity afin de tester ses possibilités.
+  "Let's Shoot’Em Up" is a roguelike-shmup video game for Android and WebBrowser made by Vikings Entertainement.
+  "Let's Shoot’Em Up" is a frenetic space shooter. Embark in your ship and engage the fight against dreadful space pirates in a never-ending combat for your survival.
+  The game is fast, addictive, hard and action-packed.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: v1kings
 github_username: achorein
 repository: achorein/unitydemo
+show_downloads: false
 
 # Build settings
 markdown: kramdown

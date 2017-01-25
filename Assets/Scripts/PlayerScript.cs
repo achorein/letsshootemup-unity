@@ -24,6 +24,22 @@ public class PlayerScript : MonoBehaviour {
         float inputX = Input.GetAxis("Horizontal");
         float inputY = Input.GetAxis("Vertical");
 
+        // Mouse
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            transform.position = Vector2.Lerp(transform.position, mousePosition, 0.1f);
+        }
+        // Touch : Look for all fingers
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+            // Touch are screens location. Convert to world
+            Vector3 position = Camera.main.ScreenToWorldPoint(touch.position);
+            transform.position = Vector2.Lerp(transform.position, position, 0.1f);
+        }
+
         // 4 - Movement per direction
         movement = new Vector2(
           speed.x * inputX,

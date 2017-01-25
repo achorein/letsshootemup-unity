@@ -196,6 +196,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll-avatar (~> 0.4)
   jekyll-seo-tag (~> 2.1)
 
 RUBY VERSION

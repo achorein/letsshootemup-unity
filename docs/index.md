@@ -1,10 +1,17 @@
 ---
-# You don't need to edit this file, it's empty on purpose.
-# Edit theme's home layout instead if you wanna make some changes
-# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 layout: default
 ---
 
-![spaceship!](https://github.com/achorein/unitydemo/raw/master/Assets/Sprites/Ships/spaceShips_006.png)
+<p>
+    <img src="{{ site.url }}/assets/images/preview.png" />
+</p>
 
-<a class="play" href="http://unity.v1kings.io/">Play !</a>
+<ul>
+    <li><img src="{{ site.url }}/assets/images/screen-01.png" height="200"/></li>
+    <li><img src="{{ site.url }}/assets/images/screen-02.png" height="200"/></li>
+</ul>
+
+<ul>
+    <li><img src="{{ site.url }}/assets/images/badge-playstore.png" height="100"/></li>
+    <li style="font-size: 3em; vertical-align: top"><a href="http://unity.v1kings.io/"><img src="{{ site.url }}/assets/images/badge-html5.png" height="100"/></a></li>
+</ul>

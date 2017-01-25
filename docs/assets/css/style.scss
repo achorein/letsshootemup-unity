@@ -5,6 +5,11 @@
 body{
     text-align: center;
 }
-.play {
-    font-size: 4em;
+li {
+    display: inline;
+    list-style: none; /* pour enlever les puces sur IE7 */
+    margin: 10px;
+}
+.fork {
+    margin-top: 0
 }
