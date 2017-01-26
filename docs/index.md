@@ -6,7 +6,7 @@ images:
 ---
 
 <p>
-    <img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/preview.png" height="200"/>
+    <img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/logo-1024x500.png" height="200"/>
 </p>
 
 Embark in your ship and engage the fight against dreadful space pirates in a never-ending combat for your survival.<br/>
