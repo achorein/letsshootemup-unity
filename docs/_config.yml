@@ -17,14 +17,15 @@ title: Let's Shoot’Em Up
 email: contact@v1kings.io
 description: > # this means to ignore newlines until "baseurl:"
   "Let's Shoot’Em Up" is a roguelike-shmup video game for Android and WebBrowser made by Vikings Entertainement.
-  "Let's Shoot’Em Up" is a frenetic space shooter. Embark in your ship and engage the fight against dreadful space pirates in a never-ending combat for your survival.
-  The game is fast, addictive, hard and action-packed.
+  "Let's Shoot’Em Up" is a frenetic space shooter. 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: v1kings
 github_username: achorein
 repository: achorein/unitydemo
 show_downloads: false
+google_play_url: https://play.google.com/store/apps/developer?id=Vikings%20Intertainment&hl=fr
+web_platform_url: http://unity.v1kings.io/
 
 # Build settings
 markdown: kramdown

@@ -1,16 +1,21 @@
 ---
 layout: default
+images:
+  - image_path: https://github.com/achorein/unitydemo/raw/master/docs/assets/images/screen-01.png
+  - image_path: https://github.com/achorein/unitydemo/raw/master/docs/assets/images/screen-02.png
 ---
 
 <p>
-    <img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/preview.png" />
+    <img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/preview.png" height="200"/>
 </p>
-<ul>
-    <li><img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/screen-01.png" height="200"/></li>
-    <li><img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/screen-02.png" height="200"/></li>
-</ul>
+
+Embark in your ship and engage the fight against dreadful space pirates in a never-ending combat for your survival.<br/>
+The game is fast, addictive, hard and action-packed.
 
 <ul>
-    <li><img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/badge-playstore.png" height="100"/></li>
-    <li style="font-size: 3em; vertical-align: top"><a href="http://unity.v1kings.io/"><img src="https://github.com/achorein/unitydemo/raw/master/docs/assets/images/badge-html5.png" height="100"/></a></li>
+    {% for image in page.images %}
+    <li><a href="{{ image.image_path }}"><img src="{{ image.image_path }}" height="200"/></a></li>
+    {% endfor %}
 </ul>
+
+
