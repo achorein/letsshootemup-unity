@@ -22,9 +22,9 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: v1kings
 github_username: achorein
-repository: achorein/unitydemo
+repository: achorein/letsshootemup-unity
 show_downloads: false
-google_play_url: https://play.google.com/store/apps/developer?id=Vikings%20Intertainment&hl=fr
+google_play_url: https://play.google.com/store/apps/developer?id=Vikings%20Entertainment&hl=fr
 web_platform_url: http://game.letsshootemup.v1kings.io/
 
 # Build settings
