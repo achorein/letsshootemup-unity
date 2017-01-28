@@ -20,12 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4685068962582362}
   - component: {fileID: 212754203127937520}
-  - component: {fileID: 61625679648552698}
   - component: {fileID: 50552591664222032}
+  - component: {fileID: 61625679648552698}
+  - component: {fileID: 114718347633558326}
+  - component: {fileID: 114628931293906200}
   - component: {fileID: 114571199062153142}
   - component: {fileID: 114061747458226254}
-  - component: {fileID: 114628931293906200}
-  - component: {fileID: 95738021798486972}
   m_Layer: 8
   m_Name: satelite
   m_TagString: Untagged
@@ -41,7 +41,7 @@ Transform:
   m_GameObject: {fileID: 1248513801515950}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.01, y: 11.12, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,23 +80,6 @@ BoxCollider2D:
   m_Offset: {x: -0.0051510576, y: 0.0000017653219}
   serializedVersion: 2
   m_Size: {x: 3.461852, y: 1}
---- !u!95 &95738021798486972
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248513801515950}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 18073a28e65b153408ba1256e5aa6759, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114061747458226254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limitY: -1
   points: 20
+  rotateSpeed: 2
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70934a7a1c4f0984bb960697140a3a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
+  hp: 2
   isEnemy: 1
 --- !u!114 &114628931293906200
 MonoBehaviour:
@@ -134,8 +118,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f7e998842c02fe4593187c52c282462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 1, y: 1}
+  speed: {x: 3, y: 3}
   direction: {x: 0, y: -1}
+--- !u!114 &114718347633558326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248513801515950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212754203127937520
 SpriteRenderer:
   m_ObjectHideFlags: 1

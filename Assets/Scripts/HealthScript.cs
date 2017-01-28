@@ -42,7 +42,11 @@ public class HealthScript : MonoBehaviour {
             // Avoid friendly fire
             if (shot.isEnemyShot != isEnemy)
             {
-                Damage(shot.damage);
+                PlayerScript playerScript = GetComponent<PlayerScript>();
+                if ((playerScript == null || playerScript.invincibleTime <= 0))
+                {
+                    Damage(shot.damage);
+                }
 
                 // Destroy the shot
                 Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script

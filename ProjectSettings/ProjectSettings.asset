@@ -6,7 +6,7 @@ PlayerSettings:
   serializedVersion: 10
   productGUID: 238c02fce0289eb4ba4c814c2f312eea
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 0
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -44,17 +44,17 @@ PlayerSettings:
   m_SplashScreenBackgroundPortrait: {fileID: 0}
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
-  defaultScreenWidth: 600
-  defaultScreenHeight: 900
-  defaultScreenWidthWeb: 600
-  defaultScreenHeightWeb: 900
+  defaultScreenWidth: 720
+  defaultScreenHeight: 1280
+  defaultScreenWidthWeb: 720
+  defaultScreenHeightWeb: 1280
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_MobileMTRendering: 0
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
-  androidShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: 0
   tizenShowActivityIndicatorOnLoading: -1
   iosAppInBackgroundBehavior: 0
   displayResolutionDialog: 1
@@ -127,8 +127,8 @@ PlayerSettings:
   m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 0
   protectGraphicsMemory: 0
-  AndroidBundleVersionCode: 2
-  AndroidMinSdkVersion: 19
+  AndroidBundleVersionCode: 3
+  AndroidMinSdkVersion: 16
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   apiCompatibilityLevel: 2
@@ -196,8 +196,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: D:/projects/github/letsshootemup-unity/user.keystore
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: E:/90-Projet/letsshootemup-unity/vikings-entertainment.keystore
+  AndroidKeyaliasName: v1kings
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 0

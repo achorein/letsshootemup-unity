@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class BossScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-    
+    private Animator animator;
+
+    void Awake()
+    {
+        // Get the animator
+        animator = GetComponent<Animator>();
+    }
+
+    void OnTriggerEnter2D(Collider2D otherCollider2D)
+    {
+        // Taking damage? Change animation
+        ShotScript shot = otherCollider2D.gameObject.GetComponent<ShotScript>();
+        if (shot != null)
+        {
+            if (shot.isEnemyShot == false)
+            {
+                // Change animation
+                animator.SetTrigger("Hit");
+            }
+        }
+    }
+
     void OnDestroy()
     {
         // Game Over.

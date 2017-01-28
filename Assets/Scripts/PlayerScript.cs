@@ -9,14 +9,19 @@ public class PlayerScript : MonoBehaviour {
     /// </summary>
     public Vector2 speed = new Vector2(50, 50);
 
+    private Animator animator;
+
     // 2 - Store the movement and the component
     private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
+    public float invincibleTime = 0f;
+    private bool isInvincible = false;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
+    void Awake()
+    {
+        // Get the animator
+        animator = GetComponent<Animator>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -52,11 +57,11 @@ public class PlayerScript : MonoBehaviour {
 
         if (shoot)
         {
-            WeaponScript weapon = GetComponentsInChildren<WeaponScript>()[0];
-            if (weapon != null)
+            WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
+            foreach (WeaponScript weapon in weapons)
             {
                 // false because the player is not an enemy
-                if (weapon.Attack(false))
+                if (weapon.enabled && weapon.Attack(false))
                 {
                     SoundEffectsHelper.Instance.MakePlayerShotSound();
                 }
@@ -88,6 +93,16 @@ public class PlayerScript : MonoBehaviour {
           transform.position.z
         );
 
+        if (isInvincible)
+        {
+            invincibleTime -= Time.deltaTime;
+            if (invincibleTime <= 0)
+            {
+                animator.SetBool("shieldUp", false);
+                SoundEffectsHelper.Instance.MakeShieldSound(false);
+                isInvincible = false;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -114,8 +129,38 @@ public class PlayerScript : MonoBehaviour {
             damagePlayer = true;
         }
 
-        // Damage the player
-        if (damagePlayer)
+        // Is this a shield bonus?
+        ShieldScript shield = collision.gameObject.GetComponent<ShieldScript>();
+        if (shield != null)
+        {
+            invincibleTime = shield.invincibleCoolDown;
+            animator.SetBool("shieldUp", true);
+            isInvincible = true;
+            SoundEffectsHelper.Instance.MakeShieldSound(true);
+            Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
+        }
+
+        // Is this a weapon bonus?
+        WeaponScript[] bonusWeapons = collision.gameObject.GetComponentsInChildren<WeaponScript>();
+        if (bonusWeapons != null && bonusWeapons.Length > 0)
+        {
+            WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
+            foreach (WeaponScript weapon in weapons)
+            {
+                weapon.enabled = false;
+            }
+            for (int i = 0; i < bonusWeapons.Length; i++)
+            {
+                //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
+                weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
+                weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+                weapons[i].enabled = true;
+            }
+            Destroy(collision.gameObject); // Remember to always target the game object, otherwise you will just remove the script
+        }
+
+        // Damage the player if necessery
+        if (damagePlayer && invincibleTime <= 0)
         {
             HealthScript playerHealth = this.GetComponent<HealthScript>();
             if (playerHealth != null) playerHealth.Damage(1);
