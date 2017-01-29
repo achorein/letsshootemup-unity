@@ -12,8 +12,9 @@ public class SoundEffectsHelper : MonoBehaviour {
     public AudioClip explosionSound;
     public AudioClip playerShotSound;
     public AudioClip enemyShotSound;
-    public AudioClip shiedlUpSound;
-    public AudioClip shiedlDownSound;
+    public AudioClip shieldUpSound;
+    public AudioClip shieldDownSound;
+    public AudioClip loseSound;
 
     void Awake()
     {
@@ -40,15 +41,20 @@ public class SoundEffectsHelper : MonoBehaviour {
         MakeSound(enemyShotSound);
     }
 
+    public void MakeLoseSound()
+    {
+        MakeSound(loseSound);
+    }
+
     public void MakeShieldSound(bool up)
     {
         if (up)
         {
-            MakeSound(shiedlUpSound);
+            MakeSound(shieldUpSound);
         }
         else
         {
-            MakeSound(shiedlDownSound);
+            MakeSound(shieldDownSound);
         }
     }
 

@@ -32,7 +32,7 @@ public class GameHelper : MonoBehaviour {
         if (scoreText != null)
         {
             score += points;
-            scoreText.text = "SCORE " + score.ToString();
+            scoreText.text = " SCORE " + score.ToString();
         }
     }
 
@@ -46,12 +46,12 @@ public class GameHelper : MonoBehaviour {
     {
         if (score > LoadBestScore())
         {
-            PlayerPrefs.SetInt("SCORE", score);
+            PlayerPrefs.SetInt(" SCORE", score);
         }
     }
 
     public int LoadBestScore()
     {
-        return PlayerPrefs.GetInt("SCORE", 0);
+        return PlayerPrefs.GetInt(" SCORE", 0);
     }
 }

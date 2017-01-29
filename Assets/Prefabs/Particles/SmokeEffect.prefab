@@ -49,7 +49,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1600889377933114}
   serializedVersion: 5
   lengthInSec: 1
-  speed: 1
+  simulationSpeed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -272,7 +272,7 @@ ParticleSystem:
       maxColor: {r: 0.53333336, g: 0.53333336, b: 0.53333336, a: 1}
       minMaxState: 0
     startSize:
-      scalar: 2
+      scalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:

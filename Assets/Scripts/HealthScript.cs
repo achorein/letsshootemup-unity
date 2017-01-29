@@ -43,7 +43,7 @@ public class HealthScript : MonoBehaviour {
             if (shot.isEnemyShot != isEnemy)
             {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
-                if ((playerScript == null || playerScript.invincibleTime <= 0))
+                if (playerScript == null || playerScript.takeDamage(shot.damage))
                 {
                     Damage(shot.damage);
                 }

@@ -97,4 +97,13 @@ public class GameOverScript : MonoBehaviour {
         SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            ExitToMenu();
+        }
+    }
+
 }

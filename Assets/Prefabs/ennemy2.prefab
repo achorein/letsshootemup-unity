@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114571199062153142}
   - component: {fileID: 114061747458226254}
   m_Layer: 8
-  m_Name: ufo
+  m_Name: ennemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1248513801515950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.0800915, y: -2.01408, z: 0}
+  m_LocalPosition: {x: -2.65, y: 12.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4547169153146956}
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limitY: 0.5
   points: 10
+  rotateSpeed: 1
 --- !u!114 &114390877416206058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,8 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotPrefab: {fileID: 4628570437604502, guid: 7bb36c02a0f400346ab302538da904b8, type: 2}
-  shootingRate: 3
+  shotPrefab: {fileID: 4628570437604502, guid: 1201d60dac422594f81517d1caf43b78, type: 2}
+  shootingRate: 0.25
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70934a7a1c4f0984bb960697140a3a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 6
   isEnemy: 1
 --- !u!114 &114628931293906200
 MonoBehaviour:
@@ -160,8 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f7e998842c02fe4593187c52c282462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 1, y: 1}
-  direction: {x: 1, y: 0}
+  speed: {x: 2, y: 2}
+  direction: {x: 1, y: 1}
 --- !u!114 &114894407518947480
 MonoBehaviour:
   m_ObjectHideFlags: 1
