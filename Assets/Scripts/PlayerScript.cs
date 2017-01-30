@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour {
     public Vector2 speed = new Vector2(50, 50);
     public int nbLife = 2;
     public GameObject lifePanel;
+    public Image shieldUi;
 
     // Store the movement and the component
     private Vector2 movement;
@@ -101,6 +102,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 animator.SetBool("shieldUp", false);
                 animator.SetBool("loseLife", false);
+                shieldUi.enabled = false;
                 SoundEffectsHelper.Instance.MakeShieldSound(false);
                 isInvincible = false;
             }
@@ -157,6 +159,7 @@ public class PlayerScript : MonoBehaviour {
                 invincibleTime = shield.invincibleCoolDown;
                 animator.SetBool("shieldUp", true);
                 isInvincible = true;
+                shieldUi.enabled = true;
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
                 Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
             }

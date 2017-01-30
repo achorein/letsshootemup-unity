@@ -4,6 +4,8 @@ images:
   - image_path: https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/screen-01.png
   - image_path: https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/screen-02.png
   - image_path: https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/screen-03.png
+  - image_path: https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/screen-04.png
+  - image_path: https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/screen-05.png
 ---
 
 <p>
