@@ -43,8 +43,10 @@ public class HealthScript : MonoBehaviour {
             if (shot.isEnemyShot != isEnemy)
             {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
-                if (playerScript == null || playerScript.takeDamage(shot.damage))
-                {
+                if (playerScript == null) {
+                    GameHelper.Instance.enemeyKill();
+                    Damage(shot.damage);
+                } else if (playerScript.takeDamage(shot.damage)) {
                     Damage(shot.damage);
                 }
 

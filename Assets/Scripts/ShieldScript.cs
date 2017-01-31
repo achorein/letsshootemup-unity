@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ShieldScript : MonoBehaviour {
 
-    public float invincibleCoolDown = 10f;
+    public int shieldLevel = 3;
 
-  
 }

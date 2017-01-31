@@ -10,11 +10,8 @@ public class GameOverScript : MonoBehaviour {
 
     public GameObject gamePanel;
     
-    public Text winText;
-    public Text loseText;
-
-    public Text scoreText;
-    public Text trophyText;
+    public Text winText, loseText;
+    public Text scoreText, trophyText, goldText;
 
     void Awake()
     {
@@ -52,18 +49,29 @@ public class GameOverScript : MonoBehaviour {
 
     public void ShowButtons(bool win)
     {
+        // game pause
         Time.timeScale = 0;
 
+        // enable panel
         gamePanel.SetActive(false);
         GetComponent<Image>().enabled = true;
-        scoreText.text = GameHelper.Instance.getScore().ToString();
+        
         if (winText == null)
         {
             return;
         }
 
+        // update UI
+        int score = GameHelper.Instance.getScore();
+        scoreText.text = score.ToString();
         GameHelper.Instance.SaveScore();
+
+        int bonusGold = (score / 100);
+        goldText.text = "+" + bonusGold;
+        GameHelper.Instance.UpdateGold(bonusGold);
+
         trophyText.text = GameHelper.Instance.LoadBestScore().ToString();
+
         foreach (var b in buttons)
         {
             b.gameObject.SetActive(true);

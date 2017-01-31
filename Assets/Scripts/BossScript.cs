@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BossScript : MonoBehaviour {
 
+    public int rageModeHp = 20;
+    public Vector2 rageSpeed = new Vector2(2, 1);
+
     private Animator animator;
 
     void Awake()
@@ -22,6 +25,10 @@ public class BossScript : MonoBehaviour {
             {
                 // Change animation
                 animator.SetTrigger("Hit");
+                if (GetComponent<HealthScript>().hp < rageModeHp)
+                {
+                    GetComponent<MoveScript>().speed = rageSpeed;
+                }
             }
         }
     }

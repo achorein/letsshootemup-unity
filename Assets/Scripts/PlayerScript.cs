@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,9 +11,10 @@ public class PlayerScript : MonoBehaviour {
     /// The speed of the ship
     /// </summary>
     public Vector2 speed = new Vector2(50, 50);
+    public float mouseSpeed = 0.1f;
     public int nbLife = 2;
     public GameObject lifePanel;
-    public Image shieldUi;
+    public GameObject shieldUi;
 
     // Store the movement and the component
     private Vector2 movement;
@@ -20,7 +22,7 @@ public class PlayerScript : MonoBehaviour {
     private Animator animator;
 
     // internal
-    private float invincibleTime = 0f;
+    private int shieldLevel = 0;
     private bool isInvincible = false;
 
     void Awake()
@@ -45,17 +47,17 @@ public class PlayerScript : MonoBehaviour {
         // Handle Mouse
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            transform.position = Vector2.Lerp(transform.position, mousePosition, 0.1f);
+            Vector3 cursorPosition = Input.mousePosition;
+            cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
+            transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
         }
         // Handle touch screen : Look for all fingers
         for (int i = 0; i < Input.touchCount; i++)
         {
-            Touch touch = Input.GetTouch(i);
+            Vector3 cursorPosition = Input.GetTouch(i).position;
             // Touch are screens location. Convert to world
-            Vector3 position = Camera.main.ScreenToWorldPoint(touch.position);
-            transform.position = Vector2.Lerp(transform.position, position, 0.1f);
+            Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
+            transform.position = Vector2.Lerp(transform.position, position, mouseSpeed);
         }
 
         // Movement per direction
@@ -94,26 +96,13 @@ public class PlayerScript : MonoBehaviour {
           transform.position.z
         );
 
-        // is ShieldUp or we just lose one life
-        if (isInvincible)
-        {
-            invincibleTime -= Time.deltaTime;
-            if (invincibleTime <= 0)
-            {
-                animator.SetBool("shieldUp", false);
-                animator.SetBool("loseLife", false);
-                shieldUi.enabled = false;
-                SoundEffectsHelper.Instance.MakeShieldSound(false);
-                isInvincible = false;
-            }
-        }
-
         // Handle escape and return button
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
     }
+
 
     void FixedUpdate()
     {
@@ -124,15 +113,10 @@ public class PlayerScript : MonoBehaviour {
         rigidbodyComponent.velocity = movement;
     }
 
-    void OnTriggerEnter(Collision2D collision)
-    {
-
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
-        bool damagePlayer = false;
-        // Ignore collision when player isinvincible
+        int damagePlayer = 0;
+        // Ignore collision when player is invincible
         Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), isInvincible);
         if (!isInvincible)
         {
@@ -142,9 +126,18 @@ public class PlayerScript : MonoBehaviour {
             {
                 // Kill the enemy
                 HealthScript enemyHealth = enemy.GetComponent<HealthScript>();
-                if (enemyHealth != null) enemyHealth.Damage(enemyHealth.hp);
-
-                damagePlayer = true;
+                if (enemyHealth != null)
+                {
+                    damagePlayer = enemyHealth.hp / 3;
+                    if (shieldLevel + 1 >= damagePlayer)
+                    {
+                        enemyHealth.Damage(enemyHealth.hp); // kill enemy
+                    }
+                }
+                else
+                {
+                    damagePlayer = 1;
+                }
             }
         }
 
@@ -156,10 +149,9 @@ public class PlayerScript : MonoBehaviour {
             ShieldScript shield = collision.gameObject.GetComponent<ShieldScript>();
             if (shield != null)
             {
-                invincibleTime = shield.invincibleCoolDown;
-                animator.SetBool("shieldUp", true);
-                isInvincible = true;
-                shieldUi.enabled = true;
+                shieldLevel = shield.shieldLevel;
+                updateShieldUi();
+                updateLifeUi(false);
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
                 Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
             }
@@ -185,43 +177,95 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Damage the player if necessery
-        if (damagePlayer && this.takeDamage(100))
+        if (this.takeDamage(damagePlayer))
         {
-            HealthScript playerHealth = this.GetComponent<HealthScript>();
-            playerHealth.Damage(1);
+            GetComponent<HealthScript>().Damage(1);
         }
         
     }
 
     public bool takeDamage(int damage)
     {
-        if (invincibleTime <= 0)
+        if (!isInvincible && damage > 0)
         {
-            print(nbLife);
-            nbLife--;
-            if (nbLife > 0)
+            int realDamage = damage - shieldLevel;
+            if (shieldLevel > 0)
             {
-                // Update life UI
-                Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
-                for (int i = 1; i <= lifesUI.Length - nbLife; i++)
-                {
-                    lifesUI[lifesUI.Length - i].enabled = false;
-                }
-                // Change animation
-                animator.SetBool("loseLife", true);
-                // Play sound
-                SoundEffectsHelper.Instance.MakeLoseSound();
-                // Makeplayerinvincible for 2 secondes
-                invincibleTime = 2f;
-                isInvincible = true;
+                shieldLevel -= damage;
+                updateShieldUi();
             }
-            else
-            {
-                // kill player
-                return true; 
+            if (realDamage > 0) {
+                nbLife--;
+                if (nbLife > 0)
+                {
+                    // Update Ui
+                    animator.SetBool("loseLife", true);
+                    updateLifeUi(true);
+                    // Invincible
+                    isInvincible = true;
+                    Invoke("disableInvincible", 2f); // 2 sec
+                    // Play sound
+                    SoundEffectsHelper.Instance.MakeLoseSound();
+                }
+                else
+                {
+                    // kill player
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    private void updateShieldUi()
+    {
+        if (shieldLevel < 0) shieldLevel = 0;
+        animator.SetInteger("shieldLevel", shieldLevel<=3 ? shieldLevel : 3);
+        shieldUi.SetActive(shieldLevel > 0);
+        if (shieldUi.activeSelf)
+        {
+            Image[] shields = shieldUi.GetComponentsInChildren<Image>();
+            for (int i = 1; i < shields.Length; i++)
+            {
+                if (shieldLevel == i)
+                {
+                    shields[i].enabled = true;
+                } else {
+                    shields[i].enabled = false;
+                }
+            }
+        }
+    }
+
+    private void updateLifeUi(bool loseLife)
+    {
+        // Update life UI
+        Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
+        for (int i = 1; i <= lifesUI.Length - nbLife; i++)
+        {
+            Image lifeUI = lifesUI[lifesUI.Length - i];
+            Animator lifeAnimator = lifeUI.GetComponent<Animator>();
+            if (loseLife)
+            {
+                lifeAnimator.SetBool("loseLife", true);
+            }
+            else if (lifeAnimator.GetBool("loseLife"))
+            {
+                lifeAnimator.SetBool("loseLife", false);
+                lifeUI.enabled = false;
+            }
+
+        }
+        
+    }
+
+    void disableInvincible()
+    {
+        animator.SetBool("loseLife", false);
+        updateShieldUi();
+        updateLifeUi(false);
+        isInvincible = false;
+        SoundEffectsHelper.Instance.MakeShieldSound(false);
     }
 
     void OnDestroy()

@@ -6,14 +6,24 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+    private const string VOLUME_KEY = "VOLUME";
+    private const string GOLD_KEY = "GOLD";
 
     public Sprite muteSound, normalSound;
-
-    public Text scoreText;
+    public Button soundButton;
+    public Text scoreText, goldText;
 
     public void Awake()
     {
         Time.timeScale = 1;
+        float volume = PlayerPrefs.GetFloat(VOLUME_KEY, 1f);
+        AudioListener.volume = volume;
+        if (volume == 0)
+        {
+            soundButton.GetComponent<Image>().sprite = muteSound;
+        }
+        int gold = PlayerPrefs.GetInt(GOLD_KEY, 0);
+        goldText.text = " " + gold;
     }
 
     public void StartGame()
@@ -22,20 +32,19 @@ public class MenuScript : MonoBehaviour
         SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
     }
 
-    public void ToggleAudio(Button button)
+    public void ToggleAudio()
     {
-        print(AudioListener.volume);
         if (AudioListener.volume == 0)
         {
             AudioListener.volume = 1;
-            button.GetComponent<Image>().sprite = normalSound;
+            soundButton.GetComponent<Image>().sprite = normalSound;
         }
         else
         {
             AudioListener.volume = 0;
-            button.GetComponent<Image>().sprite = muteSound;
+            soundButton.GetComponent<Image>().sprite = muteSound;
         }
-
+        PlayerPrefs.SetFloat(VOLUME_KEY, AudioListener.volume);
     }
 
     public void updateScore()

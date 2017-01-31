@@ -14,12 +14,12 @@ PlayerSettings:
   productName: "Let's Shoot\u2019Em Up"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.26666668, g: 0.53333336, b: 0.6666667, a: 1}
+  m_SplashScreenBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
-  m_SplashScreenAnimation: 1
-  m_SplashScreenLogoStyle: 1
+  m_SplashScreenAnimation: 0
+  m_SplashScreenLogoStyle: 0
   m_SplashScreenDrawMode: 0
   m_SplashScreenBackgroundAnimationZoom: 1
   m_SplashScreenLogoAnimationZoom: 1
@@ -127,7 +127,7 @@ PlayerSettings:
   m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 0
   protectGraphicsMemory: 0
-  AndroidBundleVersionCode: 4
+  AndroidBundleVersionCode: 6
   AndroidMinSdkVersion: 16
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -548,6 +548,6 @@ PlayerSettings:
     UNet: 1
     Unity_Ads: 0
   cloudProjectId: 3b7f5114-8e7c-4a63-a6f4-75337d4571d0
-  projectName: UFO Game
+  projectName: "Let's Shoot\u2019Em Up"
   organizationId: achorein
   cloudEnabled: 0
