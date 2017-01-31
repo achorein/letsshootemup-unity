@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitY: 0.25
-  points: 10
+  points: 100
   rotateSpeed: 0
 --- !u!114 &114427140053522150
 MonoBehaviour:
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bbd53d904663a4c87189585368fa18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rageModeHp: 20
+  rageSpeed: {x: 2, y: 1}
 --- !u!114 &114565924322008822
 MonoBehaviour:
   m_ObjectHideFlags: 1

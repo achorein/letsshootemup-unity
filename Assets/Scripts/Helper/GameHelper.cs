@@ -6,11 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameHelper : MonoBehaviour {
-
-    private const string GOLD_KEY = "GOLD";
-    private const string SCORE_KEY = "SCORE";
-
+public class GameHelper : CommunScript
+{
     /// <summary>
     /// Singleton
     /// </summary>
@@ -20,7 +17,6 @@ public class GameHelper : MonoBehaviour {
     public GameObject achievementPanel;
 
     private int score = 0;
-    private int enemyKills = 0;
 
     void Awake()
     {
@@ -30,6 +26,7 @@ public class GameHelper : MonoBehaviour {
             Debug.LogError("Multiple instances of GameHelper!");
         }
         Instance = this;
+        load();
         Instance.UpdateScore(0);
     }
 
@@ -44,8 +41,8 @@ public class GameHelper : MonoBehaviour {
 
     public void UpdateGold(int bonusGold)
     {
-        int currentGold = PlayerPrefs.GetInt(GOLD_KEY, 0);
-        PlayerPrefs.SetInt(GOLD_KEY, currentGold + bonusGold);
+        playerPref.gold += bonusGold;
+        save();
     }
 
     public int getScore()
@@ -56,30 +53,70 @@ public class GameHelper : MonoBehaviour {
 
     public void SaveScore()
     {
-        if (score > LoadBestScore())
+        if (score > playerPref.bestScore)
         {
-            PlayerPrefs.SetInt(SCORE_KEY, score);
+            playerPref.bestScore = score;
+            save();
         }
     }
 
-    internal void enemeyKill()
+    internal void enemeyKill(int points)
     {
-        enemyKills++;
-        if (enemyKills == 5)
+        // ignore asteroid
+        if (points > 1)
         {
-            achievementPanel.SetActive(true);
-            UpdateGold(5);
-            Invoke("dismissAchivement", 2);
+            playerPref.kills++;
+
+            string hfText = "";
+            int hfBonus = 0;
+            if (playerPref.kills == 5)
+            {
+                hfBonus = 1;
+                hfText = "5 kills !";
+            }
+            else if (playerPref.kills == 20)
+            {
+                hfBonus = 5;
+                hfText = "20 kills !";
+            }
+            else if (playerPref.kills == 100)
+            {
+                hfBonus = 20;
+                hfText = "100 kills !";
+            }
+
+            if (hfBonus > 0)
+            {
+                achievementPanel.GetComponentsInChildren<Text>()[0].text = hfText;
+                achievementPanel.GetComponentsInChildren<Text>()[1].text = "+" + hfBonus;
+                UpdateGold(hfBonus);
+                // show panel 
+                achievementPanel.SetActive(true);
+                foreach (Image img in achievementPanel.GetComponentsInChildren<Image>())
+                {
+                    img.CrossFadeAlpha(1, 0.5f, false);
+                }
+                foreach (Text text in achievementPanel.GetComponentsInChildren<Text>())
+                {
+                    text.CrossFadeAlpha(1, 0.5f, false);
+                }
+                // dismiss in 2 secondes
+                Invoke("dismissAchivement", 2);
+            }
+            save();
         }
     }
 
     public void dismissAchivement()
     {
-        achievementPanel.SetActive(false);
+        foreach(Image img in achievementPanel.GetComponentsInChildren<Image>()) {
+            img.CrossFadeAlpha(0, 1f, false);
+        }
+        foreach (Text text in achievementPanel.GetComponentsInChildren<Text>())
+        {
+            text.CrossFadeAlpha(0, 1f, false);
+        }
     }
 
-    public int LoadBestScore()
-    {
-        return PlayerPrefs.GetInt(SCORE_KEY, 0);
-    }
+ 
 }

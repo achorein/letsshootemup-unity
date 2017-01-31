@@ -25,9 +25,10 @@ public class BossScript : MonoBehaviour {
             {
                 // Change animation
                 animator.SetTrigger("Hit");
-                if (GetComponent<HealthScript>().hp < rageModeHp)
+                if (GetComponent<HealthScript>().hp < rageModeHp && GetComponentInChildren<MoveScript>().speed != rageSpeed)
                 {
                     GetComponent<MoveScript>().speed = rageSpeed;
+                    GetComponentInChildren<WeaponScript>().shootingRate *= 2;
                 }
             }
         }

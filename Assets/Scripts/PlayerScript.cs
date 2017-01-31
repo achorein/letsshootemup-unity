@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour {
     // internal
     private int shieldLevel = 0;
     private bool isInvincible = false;
+    public int nbHitTaken = 0;
 
     void Awake()
     {
@@ -36,6 +37,8 @@ public class PlayerScript : MonoBehaviour {
         {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
+
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
     }
 	
 	// Update is called once per frame
@@ -188,6 +191,7 @@ public class PlayerScript : MonoBehaviour {
     {
         if (!isInvincible && damage > 0)
         {
+            nbHitTaken++;
             int realDamage = damage - shieldLevel;
             if (shieldLevel > 0)
             {

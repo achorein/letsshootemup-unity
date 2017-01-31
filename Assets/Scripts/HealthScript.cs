@@ -44,7 +44,7 @@ public class HealthScript : MonoBehaviour {
             {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
                 if (playerScript == null) {
-                    GameHelper.Instance.enemeyKill();
+                    GameHelper.Instance.enemeyKill(GetComponent<EnemyScript>().points);
                     Damage(shot.damage);
                 } else if (playerScript.takeDamage(shot.damage)) {
                     Damage(shot.damage);

@@ -1,33 +1,87 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuScript : MonoBehaviour
+public class MenuScript : CommunScript
 {
-    private const string VOLUME_KEY = "VOLUME";
-    private const string GOLD_KEY = "GOLD";
-
     public Sprite muteSound, normalSound;
-    public Button soundButton;
+    public Button soundButton, rightButton, leftButton, buyButton, startButton;
+    public Image playerShip;
     public Text scoreText, goldText;
+
+    private int menuPos = 0;
 
     public void Awake()
     {
         Time.timeScale = 1;
-        float volume = PlayerPrefs.GetFloat(VOLUME_KEY, 1f);
-        AudioListener.volume = volume;
-        if (volume == 0)
+        load();
+        
+        AudioListener.volume = playerPref.volume;
+        if (playerPref.volume == 0)
         {
             soundButton.GetComponent<Image>().sprite = muteSound;
         }
-        int gold = PlayerPrefs.GetInt(GOLD_KEY, 0);
-        goldText.text = " " + gold;
+        
+        goldText.text = " " + playerPref.gold;
+
+        menuPos = playerPref.currentShip;
+        loadMenuPos();
+    }
+
+
+    public void right()
+    {
+        menuPos++;
+        startButton.GetComponent<Animator>().enabled = false;
+        loadMenuPos();
+    }
+
+    public void left()
+    {
+        menuPos--;
+        startButton.GetComponent<Animator>().enabled = false;
+        loadMenuPos();
+    }
+
+    private void loadMenuPos()
+    {
+        playerShip.sprite = Resources.Load<Sprite>(ships[menuPos].sprite);
+        if (menuPos != 0 && !playerPref.ships.Contains(menuPos))
+        {
+            buyButton.gameObject.SetActive(true);
+            buyButton.GetComponentInChildren<Text>().text = ships[menuPos].price.ToString();
+            buyButton.interactable = playerPref.gold >= ships[menuPos].price;
+        }
+        else
+        {
+            buyButton.gameObject.SetActive(false);
+        }
+        startButton.gameObject.SetActive(!buyButton.gameObject.activeSelf);
+
+        rightButton.gameObject.SetActive(menuPos < ships.Count - 1);
+        leftButton.gameObject.SetActive(menuPos != 0);
+    }
+
+    public void buyShip()
+    {
+        if (playerPref.gold >= ships[menuPos].price)
+        {
+            playerPref.ships.Add(menuPos);
+            playerPref.gold -= ships[menuPos].price;
+            goldText.text = playerPref.gold.ToString();
+            save();
+            buyButton.gameObject.SetActive(false);
+            startButton.gameObject.SetActive(true);
+        }
     }
 
     public void StartGame()
     {
+        playerPref.currentShip = menuPos;
+        save();
         // "Stage1" is the name of the first scene we created.
         SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
     }
@@ -44,12 +98,13 @@ public class MenuScript : MonoBehaviour
             AudioListener.volume = 0;
             soundButton.GetComponent<Image>().sprite = muteSound;
         }
-        PlayerPrefs.SetFloat(VOLUME_KEY, AudioListener.volume);
+        playerPref.volume = AudioListener.volume;
+        save();
     }
 
     public void updateScore()
     {
-        scoreText.text = GameHelper.Instance.LoadBestScore().ToString();
+        scoreText.text = playerPref.bestScore.ToString();
     }
 
     // Update is called once per frame
@@ -60,5 +115,4 @@ public class MenuScript : MonoBehaviour
             Application.Quit();
         }
     }
-
 }

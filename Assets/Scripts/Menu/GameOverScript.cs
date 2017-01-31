@@ -8,7 +8,7 @@ public class GameOverScript : MonoBehaviour {
     private Text[] texts;
     private Image[] images;
 
-    public GameObject gamePanel;
+    public GameObject gamePanel, player;
     
     public Text winText, loseText;
     public Text scoreText, trophyText, goldText;
@@ -67,10 +67,14 @@ public class GameOverScript : MonoBehaviour {
         GameHelper.Instance.SaveScore();
 
         int bonusGold = (score / 100);
-        goldText.text = "+" + bonusGold;
+        if (player.GetComponent<PlayerScript>().nbHitTaken == 0)
+        {
+            bonusGold += 10;
+        }
+        goldText.text = " +" + bonusGold;
         GameHelper.Instance.UpdateGold(bonusGold);
 
-        trophyText.text = GameHelper.Instance.LoadBestScore().ToString();
+        trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
 
         foreach (var b in buttons)
         {
