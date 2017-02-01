@@ -18,6 +18,8 @@ public class WeaponScript : MonoBehaviour {
     /// </summary>
     public float shootingRate = 0.25f;
 
+    public float rotateSpeed = 0;
+
     //--------------------------------
     // 2 - Cooldown
     //--------------------------------
@@ -34,6 +36,11 @@ public class WeaponScript : MonoBehaviour {
         if (shootCooldown > 0)
         {
             shootCooldown -= Time.deltaTime;
+        }
+        if (rotateSpeed > 0)
+        {
+            //Rotate thet transform of the game object this is attached to by 45 degrees, taking into account the time elapsed since last frame.
+            transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime * Mathf.Abs(rotateSpeed));
         }
     }
 

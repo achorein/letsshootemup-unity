@@ -9,7 +9,7 @@ public class EnemyScript : MonoBehaviour {
 
     public float limitY = -1;
     public int points = 10;
-        public float rotateSpeed = 0;
+    public float rotateSpeed = 0;
 
     void Awake()
     {
@@ -34,13 +34,8 @@ public class EnemyScript : MonoBehaviour {
 
             if (limitY > 0)
             {
-                var topBorder = Camera.main.ViewportToWorldPoint(
-                  new Vector3(0, 1, dist)
-                ).y;
-
-                var bottomBorder = Camera.main.ViewportToWorldPoint(
-                  new Vector3(0, limitY, dist)
-                ).y;
+                var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
+                var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, limitY, dist)).y;
 
                 newPosition.y = Mathf.Clamp(transform.position.y, bottomBorder, topBorder);
 

@@ -28,9 +28,11 @@ public class CommunScript : MonoBehaviour {
     public CommunScript()
     {
         ships = new List<Ship>();
-        ships.Add(new Ship("playerShip2_orange", 0));
-        ships.Add(new Ship("playerShip3_red", 100));
-        ships.Add(new Ship("playerShip1_blue", 1000));
+        ships.Add(new Ship("playerShip1", 0));
+        ships.Add(new Ship("playerShip2", 100));
+        ships.Add(new Ship("playerShip3", 500));
+        ships.Add(new Ship("playerShip4", 1500));
+        ships.Add(new Ship("playerShip5", 5000));
     }
 
     public void load()

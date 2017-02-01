@@ -13,8 +13,7 @@ public class PlayerScript : MonoBehaviour {
     public Vector2 speed = new Vector2(50, 50);
     public float mouseSpeed = 0.1f;
     public int nbLife = 2;
-    public GameObject lifePanel;
-    public GameObject shieldUi;
+    public GameObject lifePanel, shieldUi, primaryBonus;
 
     // Store the movement and the component
     private Vector2 movement;
@@ -37,8 +36,14 @@ public class PlayerScript : MonoBehaviour {
         {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
-
+        
+        foreach (Image life in lifesUI)
+        {
+            life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        }
+        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        
     }
 	
 	// Update is called once per frame
@@ -158,24 +163,9 @@ public class PlayerScript : MonoBehaviour {
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
                 Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
             }
-
-            WeaponScript[] bonusWeapons = collision.gameObject.GetComponentsInChildren<WeaponScript>();
             // Is this a weapon bonus?
-            if (bonusWeapons != null && bonusWeapons.Length > 0)
-            {
-                WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
-                foreach (WeaponScript weapon in weapons)
-                {
-                    weapon.enabled = false;
-                }
-                for (int i = 0; i < bonusWeapons.Length; i++)
-                {
-                    //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
-                    weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
-                    weapons[i].shootingRate = bonusWeapons[i].shootingRate;
-                    weapons[i].enabled = true;
-                }
-            }
+            changeWeapon(collision.gameObject);
+
             Destroy(collision.gameObject); // Remember to always target the game object, otherwise you will just remove the script
         }
 
@@ -185,6 +175,26 @@ public class PlayerScript : MonoBehaviour {
             GetComponent<HealthScript>().Damage(1);
         }
         
+    }
+
+    private void changeWeapon(GameObject gameObject)
+    {
+        WeaponScript[] bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
+        if (bonusWeapons != null && bonusWeapons.Length > 0)
+        {
+            WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
+            foreach (WeaponScript weapon in weapons)
+            {
+                weapon.enabled = false;
+            }
+            for (int i = 0; i < bonusWeapons.Length; i++)
+            {
+                //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
+                weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
+                weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+                weapons[i].enabled = true;
+            }
+        }
     }
 
     public bool takeDamage(int damage)
@@ -199,6 +209,8 @@ public class PlayerScript : MonoBehaviour {
                 updateShieldUi();
             }
             if (realDamage > 0) {
+                Handheld.Vibrate();
+                changeWeapon(primaryBonus);
                 nbLife--;
                 if (nbLife > 0)
                 {

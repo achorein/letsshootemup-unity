@@ -29,8 +29,6 @@ GameObject:
   - component: {fileID: 114484925421837450}
   - component: {fileID: 114692805565372472}
   - component: {fileID: 114366379687473198}
-  - component: {fileID: 114194821370677926}
-  - component: {fileID: 114214049521327520}
   m_Layer: 8
   m_Name: pill_yellow
   m_TagString: Untagged
@@ -109,32 +107,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114194821370677926
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1576966372130768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotPrefab: {fileID: 4628570437604502, guid: 016ed36460c94a240b16c376019912ea, type: 2}
-  shootingRate: 0.4
---- !u!114 &114214049521327520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1576966372130768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotPrefab: {fileID: 4628570437604502, guid: 016ed36460c94a240b16c376019912ea, type: 2}
-  shootingRate: 0.4
 --- !u!114 &114366379687473198
 MonoBehaviour:
   m_ObjectHideFlags: 1

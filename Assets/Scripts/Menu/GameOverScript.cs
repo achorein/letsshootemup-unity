@@ -8,10 +8,15 @@ public class GameOverScript : MonoBehaviour {
     private Text[] texts;
     private Image[] images;
 
-    public GameObject gamePanel, player;
+    public GameObject gamePanel, player, achivementImage;
     
     public Text winText, loseText;
     public Text scoreText, trophyText, goldText;
+    public Button restartButton, nextButton;
+
+    public int currentLevel = 1;
+
+    private int maxLevel = 2;
 
     void Awake()
     {
@@ -51,15 +56,14 @@ public class GameOverScript : MonoBehaviour {
     {
         // game pause
         Time.timeScale = 0;
+        if (player == null || winText == null)
+        {
+            return;
+        }
 
         // enable panel
         gamePanel.SetActive(false);
         GetComponent<Image>().enabled = true;
-        
-        if (winText == null)
-        {
-            return;
-        }
 
         // update UI
         int score = GameHelper.Instance.getScore();
@@ -67,11 +71,12 @@ public class GameOverScript : MonoBehaviour {
         GameHelper.Instance.SaveScore();
 
         int bonusGold = (score / 100);
+        goldText.text = " +" + bonusGold;
         if (player.GetComponent<PlayerScript>().nbHitTaken == 0)
         {
+            achivementImage.SetActive(true);
             bonusGold += 10;
         }
-        goldText.text = " +" + bonusGold;
         GameHelper.Instance.UpdateGold(bonusGold);
 
         trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
@@ -93,20 +98,26 @@ public class GameOverScript : MonoBehaviour {
         } else {
             winText.gameObject.SetActive(false);
         }
+        nextButton.gameObject.SetActive(win && currentLevel < maxLevel);
+        restartButton.gameObject.SetActive(!win);
     }
 
     public void ExitToMenu()
     {
         // Reload the level
-        Time.timeScale = 1;
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+    }
+
+    public void NextGame()
+    {
+        // Reload the level
+        SceneManager.LoadScene("Stage" + (currentLevel + 1), LoadSceneMode.Single);
     }
 
     public void RestartGame()
     {
-        Time.timeScale = 1;
         // Reload the level
-        SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
+        SceneManager.LoadScene("Stage" + currentLevel, LoadSceneMode.Single);
     }
 
     // Update is called once per frame

@@ -84,6 +84,16 @@ public class GameHelper : CommunScript
                 hfBonus = 20;
                 hfText = "100 kills !";
             }
+            else if (playerPref.kills == 500)
+            {
+                hfBonus = 50;
+                hfText = "500 kills !";
+            }
+            else if (playerPref.kills == 1000)
+            {
+                hfBonus = 100;
+                hfText = "1000 kills !";
+            }
 
             if (hfBonus > 0)
             {

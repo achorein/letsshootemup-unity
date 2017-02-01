@@ -10,7 +10,7 @@ public class MenuScript : CommunScript
     public Sprite muteSound, normalSound;
     public Button soundButton, rightButton, leftButton, buyButton, startButton;
     public Image playerShip;
-    public Text scoreText, goldText;
+    public Text scoreText, goldText, hfText;
 
     private int menuPos = 0;
 
@@ -82,7 +82,6 @@ public class MenuScript : CommunScript
     {
         playerPref.currentShip = menuPos;
         save();
-        // "Stage1" is the name of the first scene we created.
         SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
     }
 
@@ -102,12 +101,16 @@ public class MenuScript : CommunScript
         save();
     }
 
-    public void updateScore()
+    public void loadLeaderBoardPanel()
     {
         scoreText.text = playerPref.bestScore.ToString();
     }
 
-    // Update is called once per frame
+    public void loadHFPanel()
+    {
+        hfText.text = playerPref.kills.ToString();
+    }
+    
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
