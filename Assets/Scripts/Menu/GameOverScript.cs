@@ -79,6 +79,14 @@ public class GameOverScript : MonoBehaviour {
         }
         GameHelper.Instance.UpdateGold(bonusGold);
 
+        if (win && currentLevel < maxLevel)
+        {
+            GameHelper.Instance.playerPref.currentMaxLevel = currentLevel + 1;
+            GameHelper.Instance.save();
+            nextButton.gameObject.SetActive(true);
+        }
+        restartButton.gameObject.SetActive(!win);
+
         trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
 
         foreach (var b in buttons)
@@ -98,8 +106,6 @@ public class GameOverScript : MonoBehaviour {
         } else {
             winText.gameObject.SetActive(false);
         }
-        nextButton.gameObject.SetActive(win && currentLevel < maxLevel);
-        restartButton.gameObject.SetActive(!win);
     }
 
     public void ExitToMenu()

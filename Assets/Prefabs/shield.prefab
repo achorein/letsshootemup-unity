@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58638eddac778a7428d1a6024e39832e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invincibleCoolDown: 10
+  shieldLevel: 3
 --- !u!114 &114623737702740354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,7 +178,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -892047999
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02638c623ae81634c97dc2515f5b9ff0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e673315e2a0695d4ba16b29179427edd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

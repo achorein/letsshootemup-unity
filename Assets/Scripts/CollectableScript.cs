@@ -24,6 +24,11 @@ public class CollectableScript : MonoBehaviour {
         }
     }
 
+    public string getId()
+    {
+        return rendererComponent.sprite.name;
+    }
+
     void OnDestroy()
     {
         if (rendererComponent.IsVisibleFrom(Camera.main))

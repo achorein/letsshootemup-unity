@@ -60,61 +60,53 @@ public class GameHelper : CommunScript
         }
     }
 
-    internal void enemeyKill(int points)
+    internal void enemeyKill(int enemyPoints)
     {
         // ignore asteroid
-        if (points > 1)
+        if (enemyPoints > 1)
         {
             playerPref.kills++;
-
-            string hfText = "";
-            int hfBonus = 0;
-            if (playerPref.kills == 5)
+            foreach (HF hf in hfs[HF.TYPE_HF.Kill])
             {
-                hfBonus = 1;
-                hfText = "5 kills !";
-            }
-            else if (playerPref.kills == 20)
-            {
-                hfBonus = 5;
-                hfText = "20 kills !";
-            }
-            else if (playerPref.kills == 100)
-            {
-                hfBonus = 20;
-                hfText = "100 kills !";
-            }
-            else if (playerPref.kills == 500)
-            {
-                hfBonus = 50;
-                hfText = "500 kills !";
-            }
-            else if (playerPref.kills == 1000)
-            {
-                hfBonus = 100;
-                hfText = "1000 kills !";
-            }
-
-            if (hfBonus > 0)
-            {
-                achievementPanel.GetComponentsInChildren<Text>()[0].text = hfText;
-                achievementPanel.GetComponentsInChildren<Text>()[1].text = "+" + hfBonus;
-                UpdateGold(hfBonus);
-                // show panel 
-                achievementPanel.SetActive(true);
-                foreach (Image img in achievementPanel.GetComponentsInChildren<Image>())
+                if (hf.nb == playerPref.kills)
                 {
-                    img.CrossFadeAlpha(1, 0.5f, false);
+                    showHF(hf);
                 }
-                foreach (Text text in achievementPanel.GetComponentsInChildren<Text>())
-                {
-                    text.CrossFadeAlpha(1, 0.5f, false);
-                }
-                // dismiss in 2 secondes
-                Invoke("dismissAchivement", 2);
             }
             save();
         }
+    }
+
+    internal void collectBonus(string bonusName)
+    {
+        playerPref.bonus++;
+        foreach (HF hf in hfs[HF.TYPE_HF.Bonus])
+        {
+            if (hf.nb == playerPref.bonus)
+            {
+                showHF(hf);
+            }
+        }
+        save();
+    }
+
+    private void showHF(HF hf)
+    {
+        achievementPanel.GetComponentsInChildren<Text>()[0].text = hf.description;
+        achievementPanel.GetComponentsInChildren<Text>()[1].text = "+" + hf.gold;
+        UpdateGold(hf.gold);
+        // show panel 
+        achievementPanel.SetActive(true);
+        foreach (Image img in achievementPanel.GetComponentsInChildren<Image>())
+        {
+            img.CrossFadeAlpha(1, 0.5f, false);
+        }
+        foreach (Text text in achievementPanel.GetComponentsInChildren<Text>())
+        {
+            text.CrossFadeAlpha(1, 0.5f, false);
+        }
+        // dismiss in 2 secondes
+        Invoke("dismissAchivement", 2);
     }
 
     public void dismissAchivement()

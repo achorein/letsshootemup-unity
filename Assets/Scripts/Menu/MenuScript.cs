@@ -10,7 +10,9 @@ public class MenuScript : CommunScript
     public Sprite muteSound, normalSound;
     public Button soundButton, rightButton, leftButton, buyButton, startButton;
     public Image playerShip;
-    public Text scoreText, goldText, hfText;
+    public Text scoreText, goldText;
+
+    public Transform hfPrefab, hfContentView;
 
     private int menuPos = 0;
 
@@ -78,11 +80,23 @@ public class MenuScript : CommunScript
         }
     }
 
-    public void StartGame()
+    public void StartGame(GameObject panel)
     {
         playerPref.currentShip = menuPos;
         save();
-        SceneManager.LoadScene("Stage1", LoadSceneMode.Single);
+        if (playerPref.currentMaxLevel > 1)
+        {
+            panel.SetActive(true);
+        }
+        else
+        {
+            StartLevel(1);
+        }
+    }
+
+    public void StartLevel(int level)
+    {
+        SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);
     }
 
     public void ToggleAudio()
@@ -108,7 +122,29 @@ public class MenuScript : CommunScript
 
     public void loadHFPanel()
     {
-        hfText.text = playerPref.kills.ToString();
+        foreach (Transform child in hfContentView.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        hfContentView.DetachChildren();
+
+        foreach (HF hf in hfs[HF.TYPE_HF.Kill]) {
+            var newHf = Instantiate(hfPrefab) as Transform;
+            var hfTexts = newHf.GetComponentsInChildren<Text>();
+            hfTexts[0].text = hf.description;
+            hfTexts[1].text = " " + ((playerPref.kills > hf.nb)? hf.nb : playerPref.kills) + "/" + hf.nb;
+            hfTexts[2].text = "+" + hf.gold;
+            newHf.SetParent(hfContentView.transform, false);
+        }
+        foreach (HF hf in hfs[HF.TYPE_HF.Bonus])
+        {
+            var newHf = Instantiate(hfPrefab) as Transform;
+            var hfTexts = newHf.GetComponentsInChildren<Text>();
+            hfTexts[0].text = hf.description;
+            hfTexts[1].text = " " + ((playerPref.bonus > hf.nb) ? hf.nb : playerPref.bonus) + "/" + hf.nb;
+            hfTexts[2].text = "+" + hf.gold;
+            newHf.SetParent(hfContentView.transform, false);
+        }
     }
     
     void Update()

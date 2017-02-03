@@ -167,6 +167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: c624f36f042c1fd40831f7836a8a99f2, type: 2}
   shootingRate: 0.8
+  rotateSpeed: 0
+  tryRotateShoot: 1
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -206,6 +208,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: c624f36f042c1fd40831f7836a8a99f2, type: 2}
   shootingRate: 0.8
+  rotateSpeed: 0
+  tryRotateShoot: 1
 --- !u!114 &114894407518947480
 MonoBehaviour:
   m_ObjectHideFlags: 1

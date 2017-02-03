@@ -17,8 +17,8 @@ public class WeaponScript : MonoBehaviour {
     /// Cooldown in seconds between two shots
     /// </summary>
     public float shootingRate = 0.25f;
-
     public float rotateSpeed = 0;
+    public bool tryRotateShoot = false;
 
     //--------------------------------
     // 2 - Cooldown
@@ -62,6 +62,10 @@ public class WeaponScript : MonoBehaviour {
 
             // Assign position
             shotTransform.position = transform.position;
+            if (tryRotateShoot)
+            {
+                shotTransform.transform.Rotate(-transform.rotation.eulerAngles);
+            }
 
             // The is enemy property
             ShotScript shot = shotTransform.gameObject.GetComponent<ShotScript>();

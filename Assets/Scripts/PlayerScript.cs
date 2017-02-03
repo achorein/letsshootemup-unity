@@ -36,43 +36,47 @@ public class PlayerScript : MonoBehaviour {
         {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
-        
-        foreach (Image life in lifesUI)
-        {
-            life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-        }
-        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-        
+
+        //if (!GameHelper.Instance) 
+        //{
+            foreach (Image life in lifesUI)
+            {
+                life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+            }
+            shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+            GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        //}
     }
 	
 	// Update is called once per frame
 	void Update () {
-        // Retrieve axis information
-        float inputX = Input.GetAxis("Horizontal");
-        float inputY = Input.GetAxis("Vertical");
-
-        // Handle Mouse
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        if (Time.timeScale != 0)
         {
-            Vector3 cursorPosition = Input.mousePosition;
-            cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
-            transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
-        }
-        // Handle touch screen : Look for all fingers
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            Vector3 cursorPosition = Input.GetTouch(i).position;
-            // Touch are screens location. Convert to world
-            Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
-            transform.position = Vector2.Lerp(transform.position, position, mouseSpeed);
-        }
+            // Retrieve axis information
+            float inputX = Input.GetAxis("Horizontal");
+            float inputY = Input.GetAxis("Vertical");
 
-        // Movement per direction
-        movement = new Vector2(
-          speed.x * inputX,
-          speed.y * inputY);
+            // Handle Mouse
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                Vector3 cursorPosition = Input.mousePosition;
+                cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
+                transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
+            }
+            // Handle touch screen : Look for all fingers
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                Vector3 cursorPosition = Input.GetTouch(i).position;
+                // Touch are screens location. Convert to world
+                Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
+                transform.position = Vector2.Lerp(transform.position, position, mouseSpeed);
+            }
 
+            // Movement per direction
+            movement = new Vector2(
+              speed.x * inputX,
+              speed.y * inputY);
+        }
         // Shooting
         bool shoot = Input.GetButton("Fire1");
         shoot |= Input.GetButton("Fire2");
@@ -166,6 +170,7 @@ public class PlayerScript : MonoBehaviour {
             // Is this a weapon bonus?
             changeWeapon(collision.gameObject);
 
+            GameHelper.Instance.collectBonus(collectable.getId());
             Destroy(collision.gameObject); // Remember to always target the game object, otherwise you will just remove the script
         }
 

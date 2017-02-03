@@ -22,6 +22,7 @@ public class CommunScript : MonoBehaviour {
     }
 
     public List<Ship> ships;
+    public Dictionary<HF.TYPE_HF, List<HF>> hfs;
 
     public PlayerPref playerPref;
 
@@ -33,6 +34,23 @@ public class CommunScript : MonoBehaviour {
         ships.Add(new Ship("playerShip3", 500));
         ships.Add(new Ship("playerShip4", 1500));
         ships.Add(new Ship("playerShip5", 5000));
+        hfs = new Dictionary<HF.TYPE_HF, List<HF>>();
+        List<HF> killHfs = new List<HF>();
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5 kills", 5, 1));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "20 kills", 20, 2));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "100 kills", 100, 5));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "500 kills", 500, 50));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "1000 kills", 1000, 100));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "2500 kills", 2500, 250));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 5000, 500));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 10000, 1000));
+        hfs.Add(HF.TYPE_HF.Kill, killHfs);
+        List<HF> bonusHfs = new List<HF>();
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "5 bonus", 5, 1));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "20 bonus", 20, 2));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 5));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 50));
+        hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
     }
 
     public void load()
