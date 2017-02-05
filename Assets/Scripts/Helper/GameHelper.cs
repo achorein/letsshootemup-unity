@@ -38,26 +38,10 @@ public class GameHelper : CommunScript
             scoreText.text = " " + score.ToString();
         }
     }
-
-    public void UpdateGold(int bonusGold)
-    {
-        playerPref.gold += bonusGold;
-        save();
-    }
-
+    
     public int getScore()
     {
         return score;
-    }
-
-
-    public void SaveScore()
-    {
-        if (score > playerPref.bestScore)
-        {
-            playerPref.bestScore = score;
-            save();
-        }
     }
 
     internal void enemeyKill(int enemyPoints)
@@ -92,9 +76,11 @@ public class GameHelper : CommunScript
 
     private void showHF(HF hf)
     {
+        playerPref.gold += hf.gold;
+        save();
+
         achievementPanel.GetComponentsInChildren<Text>()[0].text = hf.description;
         achievementPanel.GetComponentsInChildren<Text>()[1].text = "+" + hf.gold;
-        UpdateGold(hf.gold);
         // show panel 
         achievementPanel.SetActive(true);
         foreach (Image img in achievementPanel.GetComponentsInChildren<Image>())

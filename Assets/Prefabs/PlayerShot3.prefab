@@ -89,8 +89,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6bf6d50792a2243926a55665800e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 1
   isEnemyShot: 0
+  rotateSpeed: 0
+  laserStart: {fileID: 1897678656427718, guid: 39dfb090480c87a48b6ae17617e8ced8, type: 2}
+  laserMiddle: {fileID: 1439006435942332, guid: d0f7ed37120616b42b37cb79644b6daf,
+    type: 2}
+  laserEnd: {fileID: 1520441418422030, guid: 75966e0d9f0d4ab4081d4fa5772342dc, type: 2}
 --- !u!114 &114923947125176316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,13 +109,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 15, y: 15}
   direction: {x: 0, y: 1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212129143625257056
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1329910675806572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
@@ -135,7 +141,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1349857981
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f43c7d6a55a503943b54d9b423366c0f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9231c2eb9be9fb64aba1069dc6fe2676, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

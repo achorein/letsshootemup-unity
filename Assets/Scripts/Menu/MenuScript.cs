@@ -33,7 +33,6 @@ public class MenuScript : CommunScript
         loadMenuPos();
     }
 
-
     public void right()
     {
         menuPos++;
@@ -84,9 +83,16 @@ public class MenuScript : CommunScript
     {
         playerPref.currentShip = menuPos;
         save();
+        print("playerPref.currentMaxLevel: " + playerPref.currentMaxLevel);
         if (playerPref.currentMaxLevel > 1)
         {
             panel.SetActive(true);
+            Button[] levelButtons = panel.GetComponentsInChildren<Button>();
+            for (int i = 0; i < levelButtons.Length - 1; i++) {
+                levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
+                //var lockImage = levelButtons[i].GetComponentInChildren<Image>();
+                //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
+            }
         }
         else
         {
@@ -134,6 +140,8 @@ public class MenuScript : CommunScript
             hfTexts[0].text = hf.description;
             hfTexts[1].text = " " + ((playerPref.kills > hf.nb)? hf.nb : playerPref.kills) + "/" + hf.nb;
             hfTexts[2].text = "+" + hf.gold;
+            if (playerPref.kills < hf.nb)
+                newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
             newHf.SetParent(hfContentView.transform, false);
         }
         foreach (HF hf in hfs[HF.TYPE_HF.Bonus])
@@ -143,10 +151,19 @@ public class MenuScript : CommunScript
             hfTexts[0].text = hf.description;
             hfTexts[1].text = " " + ((playerPref.bonus > hf.nb) ? hf.nb : playerPref.bonus) + "/" + hf.nb;
             hfTexts[2].text = "+" + hf.gold;
+            if (playerPref.bonus < hf.nb)
+                newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
             newHf.SetParent(hfContentView.transform, false);
         }
     }
     
+    public void ResetGame()
+    {
+        playerPref = new PlayerPref();
+        save();
+        Awake();
+    }
+
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))

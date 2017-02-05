@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114565924322008822}
   - component: {fileID: 114363063879532744}
   - component: {fileID: 114513428589141380}
-  - component: {fileID: 95061923206749306}
+  - component: {fileID: 95607967331848666}
   m_Layer: 8
   m_Name: Boss1
   m_TagString: Untagged
@@ -116,7 +116,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1400946990468926}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.18, y: 62.19, z: 0}
+  m_LocalPosition: {x: 0.2, y: 4.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4990779950136142}
@@ -210,7 +210,7 @@ PolygonCollider2D:
       - {x: -0.38, y: -1.0799999}
       - {x: -0.39, y: -0.45}
       - {x: -0.22999999, y: -0.53999996}
---- !u!95 &95061923206749306
+--- !u!95 &95607967331848666
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -241,6 +241,7 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 02aec6e6efac8eb4ea0a4be1dcb2e4eb, type: 2}
   shootingRate: 1.5
   rotateSpeed: 0
+  tryRotateShoot: 0
 --- !u!114 &114363063879532744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,6 +253,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveThenShoot: 0
+  minAttackCooldown: 0.5
+  maxAttackCooldown: 2
+  attackDuration: 0
   limitY: 0.8
   points: 200
   rotateSpeed: 0
@@ -266,6 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!114 &114513428589141380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,8 +284,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bbd53d904663a4c87189585368fa18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rageModeHp: 20
-  rageSpeed: {x: 2, y: 1}
+  rageModeHp: 25
+  rageSpeed: {x: 2, y: 1.5}
+  rageShootingRate: 0.75
 --- !u!114 &114517283806396444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -293,6 +301,7 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 02aec6e6efac8eb4ea0a4be1dcb2e4eb, type: 2}
   shootingRate: 1.5
   rotateSpeed: 0
+  tryRotateShoot: 0
 --- !u!114 &114565924322008822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,6 +329,7 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 02aec6e6efac8eb4ea0a4be1dcb2e4eb, type: 2}
   shootingRate: 1.5
   rotateSpeed: 0
+  tryRotateShoot: 0
 --- !u!114 &114643289563662736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -333,6 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 1, y: 1}
   direction: {x: -1, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212943330761785330
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -364,7 +375,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1349857981
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 11b801abf5a64f341994c2cccc67106d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e326f353321552c489f41ca784673cef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

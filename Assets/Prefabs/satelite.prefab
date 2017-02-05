@@ -91,9 +91,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  points: 5
   limitY: -1
-  points: 20
   rotateSpeed: 2
+  moveThenShoot: 0
+  minAttackCooldown: 0.5
+  maxAttackCooldown: 2
+  attackDuration: 0
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 3, y: 3}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!114 &114718347633558326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!212 &212754203127937520
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -43,13 +43,13 @@ public class CommunScript : MonoBehaviour {
         killHfs.Add(new HF(HF.TYPE_HF.Kill, "1000 kills", 1000, 100));
         killHfs.Add(new HF(HF.TYPE_HF.Kill, "2500 kills", 2500, 250));
         killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 5000, 500));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 10000, 1000));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "10000 kills", 10000, 1000));
         hfs.Add(HF.TYPE_HF.Kill, killHfs);
         List<HF> bonusHfs = new List<HF>();
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "5 bonus", 5, 1));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "20 bonus", 20, 2));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 5));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 50));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "5 bonus", 5, 2));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "20 bonus", 20, 10));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 50));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 250));
         hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
     }
 

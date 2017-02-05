@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,6 +36,11 @@ public class HealthScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
+        hitBy(otherCollider);
+    }
+
+    internal void hitBy(Collider2D otherCollider)
+    {
         // Is this a shot?
         ShotScript shot = otherCollider.gameObject.GetComponent<ShotScript>();
         if (shot != null)
@@ -43,10 +49,14 @@ public class HealthScript : MonoBehaviour {
             if (shot.isEnemyShot != isEnemy)
             {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
-                if (playerScript == null) {
-                    GameHelper.Instance.enemeyKill(GetComponent<EnemyScript>().points);
+                if (playerScript == null)
+                {
+                    if (shot.damage >= hp)
+                        GameHelper.Instance.enemeyKill(GetComponent<EnemyScript>().points);
                     Damage(shot.damage);
-                } else if (playerScript.takeDamage(shot.damage)) {
+                }
+                else if (playerScript.takeDamage(shot.damage))
+                {
                     Damage(shot.damage);
                 }
 

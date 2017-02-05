@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114923947125176316}
   - component: {fileID: 114471019520448620}
   - component: {fileID: 61466153234886582}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyShot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61466153234886582
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -77,7 +77,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.44}
+  m_Size: {x: 0.24, y: 0.96}
 --- !u!114 &114471019520448620
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,6 +91,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   isEnemyShot: 1
+  rotateSpeed: 0
+  laserStart: {fileID: 1744579385218086, guid: 11577c6b2c926a94799e1fe36f698a3f, type: 2}
+  laserMiddle: {fileID: 1434970467104354, guid: ffd428c1c66fabc4b9c8b05cffdf3a3a,
+    type: 2}
+  laserEnd: {fileID: 1747200803732328, guid: 7c3b9c2cfd7b29642b661d51d9357521, type: 2}
 --- !u!114 &114923947125176316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 5, y: 5}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212129143625257056
 SpriteRenderer:
   m_ObjectHideFlags: 1

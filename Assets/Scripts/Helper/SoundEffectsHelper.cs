@@ -12,9 +12,19 @@ public class SoundEffectsHelper : MonoBehaviour {
     public AudioClip explosionSound;
     public AudioClip playerShotSound;
     public AudioClip enemyShotSound;
+
     public AudioClip shieldUpSound;
     public AudioClip shieldDownSound;
+    public AudioClip pickupSound;
+
+    public AudioClip bossComing;
+    public AudioClip bossTheme;
+
     public AudioClip loseSound;
+    public AudioClip victorySound;
+    public AudioClip gameOverSound;
+
+    public AudioSource mainMusic;
 
     void Awake()
     {
@@ -41,11 +51,6 @@ public class SoundEffectsHelper : MonoBehaviour {
         MakeSound(enemyShotSound);
     }
 
-    public void MakeLoseSound()
-    {
-        MakeSound(loseSound);
-    }
-
     public void MakeShieldSound(bool up)
     {
         if (up)
@@ -58,14 +63,70 @@ public class SoundEffectsHelper : MonoBehaviour {
         }
     }
 
+    public void MakePickupSound()
+    {
+        MakeSound(pickupSound);
+    }
+
+    public void MakeLoseLifeSound()
+    {
+        MakeSound(loseSound);
+    }
+
+    public void MakeBossComingSound()
+    {
+        stopAllAudio();
+        changeMainAudio(bossTheme, 0.1f);
+        MakeSound(bossComing);
+    }
+
+    public void MakeVictorySound()
+    {
+        stopAllAudio();
+        changeMainAudio(victorySound, 1);
+    }
+
+    public void MakeGameOverSound()
+    {
+        stopAllAudio();
+        changeMainAudio(gameOverSound, 1);
+    }
+
+    private void stopAllAudio()
+    {
+        foreach(AudioSource audio in FindObjectsOfType<AudioSource>())
+        {
+            audio.Stop();
+        }
+    }
+
+    private void changeMainAudio(AudioClip newMusic, float volume)
+    {
+        if (mainMusic)
+        {
+            mainMusic.volume = volume;
+            mainMusic.clip = newMusic;
+            mainMusic.Play();
+        }
+    }
+
     /// <summary>
     /// Play a given sound
     /// </summary>
     /// <param name="originalClip"></param>
     private void MakeSound(AudioClip originalClip)
     {
+        MakeSound(originalClip, 1f);
+    }
+
+    /// <summary>
+    /// Play a given sound
+    /// </summary>
+    /// <param name="originalClip"></param>
+    private void MakeSound(AudioClip originalClip, float volume)
+    {
         // As it is not 3D audio clip, position doesn't matter.
-        AudioSource.PlayClipAtPoint(originalClip, transform.position);
+        AudioSource.PlayClipAtPoint(originalClip, transform.position, volume);
     }
 
 }

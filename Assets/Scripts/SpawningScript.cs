@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawningScript : MonoBehaviour {
 
+    public bool autofire = true;
+    public bool borderBounce = true;
+
     private bool hasSpawn;
     private MoveScript moveScript;
     private WeaponScript[] weapons;
@@ -52,15 +55,13 @@ public class SpawningScript : MonoBehaviour {
         }
         else
         {
-            // Auto-fire
+            // Auto-fire ?
             foreach (WeaponScript weapon in weapons)
             {
-                if (weapon != null && weapon.enabled && weapon.CanAttack)
+                if (weapon.enabled  && (autofire || weapon.forceAutoFire) && weapon.CanAttack)
                 {
                     if (weapon.Attack(true))
-                    {
                         SoundEffectsHelper.Instance.MakeEnemyShotSound();
-                    }
                 }
             }
 
@@ -87,14 +88,15 @@ public class SpawningScript : MonoBehaviour {
               transform.position.y,
               transform.position.z
             );
-
-            if (transform.position.x == leftBorder)
-            {
-                moveScript.direction.x = Mathf.Abs(moveScript.direction.x);
-            }
-            else if (transform.position.x == rightBorder)
-            {
-                moveScript.direction.x = -Mathf.Abs(moveScript.direction.x);
+            if (borderBounce) { 
+                if (transform.position.x == leftBorder)
+                {
+                    moveScript.direction.x = Mathf.Abs(moveScript.direction.x);
+                }
+                else if (transform.position.x == rightBorder)
+                {
+                    moveScript.direction.x = -Mathf.Abs(moveScript.direction.x);
+                }
             }
 
             transform.position = newPosition;
@@ -122,6 +124,11 @@ public class SpawningScript : MonoBehaviour {
                 weapon.enabled = true;
             }
         }
+    }
+
+    public bool HasSpawn()
+    {
+        return hasSpawn;
     }
 
 }

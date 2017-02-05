@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class GameOverScript : MonoBehaviour {
 
@@ -16,7 +17,7 @@ public class GameOverScript : MonoBehaviour {
 
     public int currentLevel = 1;
 
-    private int maxLevel = 2;
+    private int maxLevel = 5;
 
     void Awake()
     {
@@ -32,24 +33,7 @@ public class GameOverScript : MonoBehaviour {
     public void HideButtons()
     {
         Time.timeScale = 1;
-        foreach (var b in buttons)
-        {
-            b.gameObject.SetActive(false);
-        }
-        foreach (var t in texts)
-        {
-            t.gameObject.SetActive(false);
-        }
-        foreach (var i in images)
-        {
-            if (i.gameObject.GetInstanceID() != GetInstanceID())
-            {
-                //i.gameObject.SetActive(false);
-                i.enabled = false;
-            }
-        }
-        gamePanel.SetActive(true);
-        GetComponent<Image>().enabled = false;
+        resetPanel(false);
     }
 
     public void ShowButtons(bool win)
@@ -57,19 +41,18 @@ public class GameOverScript : MonoBehaviour {
         // game pause
         Time.timeScale = 0;
         if (player == null || winText == null)
-        {
             return;
-        }
-
-        // enable panel
-        gamePanel.SetActive(false);
-        GetComponent<Image>().enabled = true;
-
+        resetPanel(true);
+        
+        // main text
+        loseText.gameObject.SetActive(!win);
+        winText.gameObject.SetActive(win);
+        
         // update UI
         int score = GameHelper.Instance.getScore();
         scoreText.text = score.ToString();
-        GameHelper.Instance.SaveScore();
-
+        trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
+ 
         int bonusGold = (score / 100);
         goldText.text = " +" + bonusGold;
         if (player.GetComponent<PlayerScript>().nbHitTaken == 0)
@@ -77,35 +60,25 @@ public class GameOverScript : MonoBehaviour {
             achivementImage.SetActive(true);
             bonusGold += 10;
         }
-        GameHelper.Instance.UpdateGold(bonusGold);
 
-        if (win && currentLevel < maxLevel)
+        if (win)
         {
-            GameHelper.Instance.playerPref.currentMaxLevel = currentLevel + 1;
-            GameHelper.Instance.save();
-            nextButton.gameObject.SetActive(true);
+            if (currentLevel + 1 > GameHelper.Instance.playerPref.currentMaxLevel)
+            {
+                GameHelper.Instance.playerPref.currentMaxLevel = currentLevel + 1;
+            }
+            nextButton.gameObject.SetActive(currentLevel < maxLevel);
         }
         restartButton.gameObject.SetActive(!win);
 
-        trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
-
-        foreach (var b in buttons)
+        // update playerpref
+        if (score > GameHelper.Instance.playerPref.bestScore)
         {
-            b.gameObject.SetActive(true);
+            GameHelper.Instance.playerPref.bestScore = score;
         }
-        foreach (var t in texts)
-        {
-            t.gameObject.SetActive(true);
-        }
-        foreach (var i in images)
-        {
-            i.enabled = true;
-        }
-        if (win) {
-            loseText.gameObject.SetActive(false);
-        } else {
-            winText.gameObject.SetActive(false);
-        }
+        GameHelper.Instance.playerPref.gold += bonusGold;
+        GameHelper.Instance.save();
+        Invoke("ShowAd", 2);
     }
 
     public void ExitToMenu()
@@ -126,12 +99,41 @@ public class GameOverScript : MonoBehaviour {
         SceneManager.LoadScene("Stage" + currentLevel, LoadSceneMode.Single);
     }
 
+    private void resetPanel(bool active)
+    {
+        foreach (var b in buttons)
+        {
+            b.gameObject.SetActive(active);
+        }
+        foreach (var t in texts)
+        {
+            t.gameObject.SetActive(active);
+        }
+        foreach (var i in images)
+        {
+            if (i.gameObject.GetInstanceID() != GetInstanceID())
+            {
+                i.enabled = active;
+            }
+        }
+        gamePanel.SetActive(!active);
+        GetComponent<Image>().enabled = active;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             ExitToMenu();
+        }
+    }
+
+    public void ShowAd()
+    {
+        if (Advertisement.IsReady())
+        {
+            Advertisement.Show();
         }
     }
 

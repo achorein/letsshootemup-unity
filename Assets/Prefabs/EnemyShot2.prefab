@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114923947125176316}
   - component: {fileID: 114471019520448620}
   - component: {fileID: 58007556207829940}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyShot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &58007556207829940
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -89,8 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6bf6d50792a2243926a55665800e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 1
   isEnemyShot: 1
+  rotateSpeed: 0
+  laserStart: {fileID: 0}
+  laserMiddle: {fileID: 0}
+  laserEnd: {fileID: 0}
 --- !u!114 &114923947125176316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 5, y: 5}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212129143625257056
 SpriteRenderer:
   m_ObjectHideFlags: 1

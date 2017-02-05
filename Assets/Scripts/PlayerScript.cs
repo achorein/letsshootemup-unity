@@ -61,6 +61,7 @@ public class PlayerScript : MonoBehaviour {
             {
                 Vector3 cursorPosition = Input.mousePosition;
                 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
+                cursorPosition.y += 0.5f;
                 transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
             }
             // Handle touch screen : Look for all fingers
@@ -69,6 +70,7 @@ public class PlayerScript : MonoBehaviour {
                 Vector3 cursorPosition = Input.GetTouch(i).position;
                 // Touch are screens location. Convert to world
                 Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
+                position.y += 0.5f;
                 transform.position = Vector2.Lerp(transform.position, position, mouseSpeed);
             }
 
@@ -146,7 +148,7 @@ public class PlayerScript : MonoBehaviour {
                         enemyHealth.Damage(enemyHealth.hp); // kill enemy
                     }
                 }
-                else
+                if (damagePlayer < 1)
                 {
                     damagePlayer = 1;
                 }
@@ -166,6 +168,9 @@ public class PlayerScript : MonoBehaviour {
                 updateLifeUi(false);
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
                 Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
+            } else
+            {
+                SoundEffectsHelper.Instance.MakePickupSound();
             }
             // Is this a weapon bonus?
             changeWeapon(collision.gameObject);
@@ -197,6 +202,7 @@ public class PlayerScript : MonoBehaviour {
                 //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
                 weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
                 weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+                weapons[i].setExpandable(false);
                 weapons[i].enabled = true;
             }
         }
@@ -226,7 +232,7 @@ public class PlayerScript : MonoBehaviour {
                     isInvincible = true;
                     Invoke("disableInvincible", 2f); // 2 sec
                     // Play sound
-                    SoundEffectsHelper.Instance.MakeLoseSound();
+                    SoundEffectsHelper.Instance.MakeLoseLifeSound();
                 }
                 else
                 {
@@ -295,6 +301,7 @@ public class PlayerScript : MonoBehaviour {
         var gameOver = FindObjectOfType<GameOverScript>();
         if (gameOver != null)
         {
+            SoundEffectsHelper.Instance.MakeGameOverSound();
             gameOver.ShowButtons(false);
         }
     }

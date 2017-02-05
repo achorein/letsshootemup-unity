@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!114 &114164830982787270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,7 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
-  shootingRate: 0.4
+  shootingRate: 0.2
+  rotateSpeed: 0
+  tryRotateShoot: 0
 --- !u!114 &114628243502996786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 2, y: 2}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212681867420084718
 SpriteRenderer:
   m_ObjectHideFlags: 1

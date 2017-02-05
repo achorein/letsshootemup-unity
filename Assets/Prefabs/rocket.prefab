@@ -57,7 +57,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -65,7 +65,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &60289736123322238
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -162,6 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!114 &114502533746164954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 1, y: 1.5}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!114 &114883289563043050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,6 +189,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveThenShoot: 0
+  minAttackCooldown: 0.5
+  maxAttackCooldown: 2
+  attackDuration: 0
   limitY: -1
   points: 100
   rotateSpeed: 0
