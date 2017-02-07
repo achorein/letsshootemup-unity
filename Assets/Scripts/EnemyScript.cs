@@ -54,7 +54,6 @@ public class EnemyScript : MonoBehaviour {
             {
                 foreach (WeaponScript weapon in weapons)
                 {
-                    print("enable weapon ");
                     weapon.enabled = true;
                 }
                 spawn = true;

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GoogleMobileAds.Api;
 
 public class MenuScript : CommunScript
 {
@@ -93,6 +91,7 @@ public class MenuScript : CommunScript
                 //var lockImage = levelButtons[i].GetComponentInChildren<Image>();
                 //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
             }
+            //ShowAd();
         }
         else
         {
@@ -102,7 +101,9 @@ public class MenuScript : CommunScript
 
     public void StartLevel(int level)
     {
-        SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);
+        LoadingScript.loadLevel = level;
+        SceneManager.LoadScene("Loading", LoadSceneMode.Single);
+        //SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);
     }
 
     public void ToggleAudio()
@@ -164,6 +165,26 @@ public class MenuScript : CommunScript
         Awake();
     }
 
+    public void goldHack()
+    {
+        playerPref.gold += 1000;
+        save();
+        goldText.text = " " + playerPref.gold;
+    }
+
+    public void unlockLevels()
+    {
+        playerPref.currentMaxLevel = 5;
+        save();
+        Camera.main.backgroundColor = new Color(255, 0, 0, 128);
+        Invoke("cleanCamera", 0.5f);
+    }
+
+    public void cleanCamera()
+    {
+        Camera.main.backgroundColor = new Color(255, 0, 0, 0);
+    }
+
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
@@ -171,4 +192,5 @@ public class MenuScript : CommunScript
             Application.Quit();
         }
     }
+
 }

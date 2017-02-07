@@ -71,26 +71,26 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1177670532780000}
-  m_LocalRotation: {x: 0, y: -0, z: 0.9238796, w: -0.38268325}
+  m_LocalRotation: {x: 0, y: -0, z: 0.8660254, w: -0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4685068962582362}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 225}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 240}
 --- !u!4 &4547169153146956
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1386700909491312}
-  m_LocalRotation: {x: 0, y: -0, z: 0.3826836, w: -0.92387944}
+  m_LocalRotation: {x: 0, y: -0, z: 0.5, w: -0.8660254}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000005, y: 1.0000005, z: 1}
   m_Children: []
   m_Father: {fileID: 4685068962582362}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 315}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 300}
 --- !u!4 &4685068962582362
 Transform:
   m_ObjectHideFlags: 1
@@ -151,9 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitY: 0.5
   points: 10
+  limitY: 0.5
   rotateSpeed: 0
+  moveThenShoot: 0
+  minAttackCooldown: 0.5
+  maxAttackCooldown: 2
+  attackDuration: 0
 --- !u!114 &114390877416206058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,6 +173,10 @@ MonoBehaviour:
   shootingRate: 0.8
   rotateSpeed: 0
   tryRotateShoot: 1
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 1, y: 1}
   direction: {x: 1, y: 0}
+  fixedPosition: {x: 0, y: 0}
 --- !u!114 &114834217473101298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -210,6 +219,10 @@ MonoBehaviour:
   shootingRate: 0.8
   rotateSpeed: 0
   tryRotateShoot: 1
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114894407518947480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,6 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!212 &212754203127937520
 SpriteRenderer:
   m_ObjectHideFlags: 1

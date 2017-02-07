@@ -25,10 +25,28 @@ public class PlayerScript : MonoBehaviour {
     private bool isInvincible = false;
     public int nbHitTaken = 0;
 
+    public static int lastLife = 0;
+    public static int lastShieldLevel = 0;
+    public static WeaponScript[] lastWeaponBonus = null;
+
     void Awake()
     {
         // Get the animator
         animator = GetComponent<Animator>();
+
+        if (lastShieldLevel > 0)
+        {
+            shieldLevel = lastShieldLevel;
+            updateShieldUi();
+        }
+        if (lastLife > 0)
+        {
+            nbLife = lastLife;
+        }
+        if (lastWeaponBonus != null)
+        {
+            changeWeapon(null, lastWeaponBonus);
+        }
 
         // Update lifes UI
         Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
@@ -37,15 +55,12 @@ public class PlayerScript : MonoBehaviour {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
 
-        //if (!GameHelper.Instance) 
-        //{
-            foreach (Image life in lifesUI)
-            {
-                life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-            }
-            shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-            GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-        //}
+        foreach (Image life in lifesUI)
+        {
+            life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        }
+        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
     }
 	
 	// Update is called once per frame
@@ -164,6 +179,7 @@ public class PlayerScript : MonoBehaviour {
             if (shield != null)
             {
                 shieldLevel = shield.shieldLevel;
+                lastShieldLevel = shieldLevel;
                 updateShieldUi();
                 updateLifeUi(false);
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
@@ -189,9 +205,20 @@ public class PlayerScript : MonoBehaviour {
 
     private void changeWeapon(GameObject gameObject)
     {
-        WeaponScript[] bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
+        changeWeapon(gameObject, null);
+    }
+
+    private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons)
+    {
+        WeaponScript[] bonusWeapons = otherWeapons;
+        if (bonusWeapons == null)
+        {
+            bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
+        }
+        // handle bonus
         if (bonusWeapons != null && bonusWeapons.Length > 0)
         {
+            lastWeaponBonus = bonusWeapons;
             WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
             foreach (WeaponScript weapon in weapons)
             {
@@ -217,12 +244,14 @@ public class PlayerScript : MonoBehaviour {
             if (shieldLevel > 0)
             {
                 shieldLevel -= damage;
+                lastShieldLevel = shieldLevel;
                 updateShieldUi();
             }
             if (realDamage > 0) {
                 Handheld.Vibrate();
                 changeWeapon(primaryBonus);
                 nbLife--;
+                lastLife = nbLife;
                 if (nbLife > 0)
                 {
                     // Update Ui

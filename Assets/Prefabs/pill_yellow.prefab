@@ -120,6 +120,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 016ed36460c94a240b16c376019912ea, type: 2}
   shootingRate: 0.4
+  rotateSpeed: 0
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114484925421837450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +139,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 016ed36460c94a240b16c376019912ea, type: 2}
   shootingRate: 0.33
+  rotateSpeed: 0
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114504051293715310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!114 &114628243502996786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 2, y: 2}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!114 &114692805565372472
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,6 +198,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 016ed36460c94a240b16c376019912ea, type: 2}
   shootingRate: 0.4
+  rotateSpeed: 0
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!212 &212681867420084718
 SpriteRenderer:
   m_ObjectHideFlags: 1

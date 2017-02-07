@@ -28,6 +28,7 @@ public class GameHelper : CommunScript
         Instance = this;
         load();
         Instance.UpdateScore(0);
+        resetAd();
     }
 
     public void UpdateScore(int points)
@@ -106,5 +107,9 @@ public class GameHelper : CommunScript
         }
     }
 
+    public void cameraHitAnimation()
+    {
+        //Camera.main.guiTexture.
+    } 
  
 }

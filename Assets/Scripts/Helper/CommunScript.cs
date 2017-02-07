@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using GoogleMobileAds.Api;
 
 public class CommunScript : MonoBehaviour {
 
     private const string PLAYER_KEY = "PLAYER";
+    
+    //ads 
+    protected InterstitialAd interstitial;
+    protected BannerView bannerView;
 
     public class Ship
     {
@@ -99,4 +103,102 @@ public class CommunScript : MonoBehaviour {
     {
         return ships[playerPref.currentShip].sprite;
     }
+
+
+    public void LoadBannerAd(bool customListener)
+    {
+        // Create a 320x50 banner at the top of the screen.
+        bannerView = new BannerView(getAdUnitBannerId(), AdSize.Banner, AdPosition.Bottom);
+
+        if (!customListener)
+        {
+            bannerView.OnAdLoaded += HandleOnAdLoaded;
+            bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
+        }
+
+        bannerView.OnAdClosed += HandleOnAdClosed;
+        bannerView.OnAdLeavingApplication += HandleOnAdClosed;
+
+        // Load the banner with the request.
+        bannerView.LoadAd(getAdsRequest());
+    }
+
+    public AdRequest getAdsRequest()
+    {
+        // Create an empty ad request.
+         return new AdRequest.Builder()
+            .AddTestDevice(AdRequest.TestDeviceSimulator)       // Simulator.
+            .AddTestDevice("B089878A2C63370113F780BFAB28BD9E")  // My test device.
+            .AddKeyword("game")
+            .Build();
+    }
+
+    protected string getAdUnitBannerId()
+    {
+#if UNITY_EDITOR
+        string adUnitId = "unused";
+#elif UNITY_ANDROID
+                string adUnitId = "ca-app-pub-5490026576622469/3135352200";
+#elif UNITY_IPHONE
+                string adUnitId = "ca-app-pub-5490026576622469/3135352200";
+#else
+                string adUnitId = "unexpected_platform";
+#endif
+        return adUnitId;
+    }
+
+    protected string getAdUnitInterstitielId()
+    {
+#if UNITY_EDITOR
+        string adUnitId = "unused";
+#elif UNITY_ANDROID
+                string adUnitId = "ca-app-pub-5490026576622469/4612085401";
+#elif UNITY_IPHONE
+                string adUnitId = "ca-app-pub-5490026576622469/4612085401";
+#else
+                string adUnitId = "unexpected_platform";
+#endif
+        return adUnitId;
+    }
+
+    public void HandleOnAdLoaded(object sender, EventArgs args)
+    {
+        if (interstitial != null)
+            interstitial.Show();
+        if (bannerView != null)
+            bannerView.Show();
+    }
+    public void HandleOnAdClosed(object sender, EventArgs args)
+    {
+        resetAd();
+    }
+
+    public void HandleOnAdFailedToLoad(object sender, EventArgs args)
+    {
+        resetAd();
+    }
+
+    public void LoadInterstitialAd()
+    {
+        // Initialize an InterstitialAd.
+        interstitial = new InterstitialAd(getAdUnitInterstitielId());
+        // Load the interstitial with the request.
+        interstitial.OnAdLoaded += HandleOnAdLoaded;
+        interstitial.OnAdFailedToLoad += HandleOnAdClosed;
+        interstitial.OnAdClosed += HandleOnAdClosed;
+        interstitial.OnAdLeavingApplication += HandleOnAdClosed;
+        interstitial.LoadAd(getAdsRequest());
+    }
+
+    protected void resetAd()
+    {
+        if (interstitial != null)
+            interstitial.Destroy();
+        if (bannerView != null)
+        {
+            bannerView.Hide();
+            bannerView.Destroy();
+        }
+    }
+
 }

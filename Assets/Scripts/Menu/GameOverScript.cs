@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+using GoogleMobileAds.Api;
 
-public class GameOverScript : MonoBehaviour {
+public class GameOverScript : CommunScript
+{
 
     private Button[] buttons;
     private Text[] texts;
@@ -16,7 +17,6 @@ public class GameOverScript : MonoBehaviour {
     public Button restartButton, nextButton;
 
     public int currentLevel = 1;
-
     private int maxLevel = 5;
 
     void Awake()
@@ -42,6 +42,7 @@ public class GameOverScript : MonoBehaviour {
         Time.timeScale = 0;
         if (player == null || winText == null)
             return;
+        LoadInterstitialAd();
         resetPanel(true);
         
         // main text
@@ -78,23 +79,28 @@ public class GameOverScript : MonoBehaviour {
         }
         GameHelper.Instance.playerPref.gold += bonusGold;
         GameHelper.Instance.save();
-        Invoke("ShowAd", 2);
     }
 
     public void ExitToMenu()
     {
+        resetAd();
+        resetPlayer();
         // Reload the level
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 
     public void NextGame()
     {
+        resetAd();
+        LoadingScript.loadLevel = currentLevel + 1;
         // Reload the level
-        SceneManager.LoadScene("Stage" + (currentLevel + 1), LoadSceneMode.Single);
+        SceneManager.LoadScene("Loading", LoadSceneMode.Single);
     }
 
     public void RestartGame()
     {
+        resetAd();
+        resetPlayer();
         // Reload the level
         SceneManager.LoadScene("Stage" + currentLevel, LoadSceneMode.Single);
     }
@@ -129,12 +135,11 @@ public class GameOverScript : MonoBehaviour {
         }
     }
 
-    public void ShowAd()
+    public void resetPlayer()
     {
-        if (Advertisement.IsReady())
-        {
-            Advertisement.Show();
-        }
+        PlayerScript.lastShieldLevel = 0;
+        PlayerScript.lastLife = 0;
+        PlayerScript.lastWeaponBonus = null;
     }
 
 }
