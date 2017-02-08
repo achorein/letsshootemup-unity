@@ -19,12 +19,10 @@ public class HealthScript : MonoBehaviour {
     /// Inflicts damage and check if the object should be destroyed
     /// </summary>
     /// <param name="damageCount"></param>
-    public void Damage(int damageCount)
-    {
+    public void Damage(int damageCount) {
         hp -= damageCount;
 
-        if (hp <= 0)
-        {
+        if (hp <= 0) {
             // 'Splosion!
             SpecialEffectsHelper.Instance.Explosion(transform.position);
             SoundEffectsHelper.Instance.MakeExplosionSound();
@@ -34,29 +32,27 @@ public class HealthScript : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D otherCollider)
-    {
+    void OnTriggerEnter2D(Collider2D otherCollider) {
         hitBy(otherCollider);
     }
 
-    internal void hitBy(Collider2D otherCollider)
-    {
+    internal void hitBy(Collider2D otherCollider) {
         // Is this a shot?
         ShotScript shot = otherCollider.gameObject.GetComponent<ShotScript>();
-        if (shot != null)
-        {
+        if (shot != null) {
             // Avoid friendly fire
-            if (shot.isEnemyShot != isEnemy)
-            {
+            if (shot.isEnemyShot != isEnemy) {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
-                if (playerScript == null)
-                {
-                    if (shot.damage >= hp)
+                if (playerScript == null) {
+                    // enemy take a shot
+                    if (shot.damage >= hp) {
                         GameHelper.Instance.enemeyKill(GetComponent<EnemyScript>().points);
+                    } else {
+                        GetComponent<EnemyScript>().runHitAnimation();
+                    }
                     Damage(shot.damage);
-                }
-                else if (playerScript.takeDamage(shot.damage))
-                {
+                } else if (playerScript.takeDamage(shot.damage)) {
+                    // player take a shot (with no shield)
                     Damage(shot.damage);
                 }
 

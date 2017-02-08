@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 114628931293906200}
   - component: {fileID: 114571199062153142}
   - component: {fileID: 114061747458226254}
+  - component: {fileID: 95020163321565850}
   m_Layer: 8
   m_Name: ennemy5
   m_TagString: Untagged
@@ -200,6 +201,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.455
+--- !u!95 &95020163321565850
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248513801515950}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 30fa170e7610be844b3f2db45c9208f1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114061747458226254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -211,13 +229,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  points: 10
+  limitY: 0.1
+  rotateSpeed: 0
   moveThenShoot: 1
   minAttackCooldown: 1
   maxAttackCooldown: 3
   attackDuration: 1.5
-  limitY: 0.1
-  points: 10
-  rotateSpeed: 0
 --- !u!114 &114520009671334452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,6 +251,10 @@ MonoBehaviour:
   shootingRate: 0.25
   rotateSpeed: 0
   tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114571199062153142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -261,6 +283,10 @@ MonoBehaviour:
   shootingRate: 0.25
   rotateSpeed: 0
   tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114628931293906200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,6 +316,10 @@ MonoBehaviour:
   shootingRate: 0.25
   rotateSpeed: 0
   tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114894407518947480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -318,6 +348,10 @@ MonoBehaviour:
   shootingRate: 0.25
   rotateSpeed: 0
   tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!212 &212754203127937520
 SpriteRenderer:
   m_ObjectHideFlags: 1

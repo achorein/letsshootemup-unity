@@ -78,7 +78,9 @@ public class GameHelper : CommunScript {
         playerPref.gold += hf.gold;
         save();
         // show achievement in Google Games
-        Social.ReportProgress(hf.id, 100.0f, (bool success) => { });
+        if (Social.localUser.authenticated) {
+            Social.ReportProgress(hf.id, 100.0f, (bool success) => { });
+        }
 
         achievementPanel.GetComponentsInChildren<Text>()[0].text = hf.description;
         achievementPanel.GetComponentsInChildren<Text>()[1].text = "+" + hf.gold;

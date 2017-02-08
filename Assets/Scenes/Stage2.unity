@@ -290,6 +290,10 @@ Prefab:
       propertyPath: currentLevel
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1400203377864922, guid: e596c99f18b0a854ea0443a0af046832, type: 2}
+      propertyPath: m_Name
+      value: AchivementMenu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e596c99f18b0a854ea0443a0af046832, type: 2}
   m_IsPrefabParent: 0
@@ -936,7 +940,7 @@ MonoBehaviour:
     bonus: 0
     volume: 1
   scoreText: {fileID: 2003844286}
-  achievementPanel: {fileID: 1514699292}
+  achievementPanel: {fileID: 1170601375}
 --- !u!4 &434764042 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4913560793207266, guid: 133c1d0e0cdf30041932a104fab6c9b9,
@@ -1278,7 +1282,7 @@ Transform:
   - {fileID: 923276961}
   - {fileID: 722607763}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &612174112
 Prefab:
@@ -2342,12 +2346,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1566731187248868, guid: 4a7353002058ab640b8ca322d3ca6602, type: 2}
+      propertyPath: m_Name
+      value: AchivementGame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a7353002058ab640b8ca322d3ca6602, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1170601374 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224609847648025272, guid: 4a7353002058ab640b8ca322d3ca6602,
+    type: 2}
+  m_PrefabInternal: {fileID: 1170601373}
+--- !u!1 &1170601375 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1566731187248868, guid: 4a7353002058ab640b8ca322d3ca6602,
     type: 2}
   m_PrefabInternal: {fileID: 1170601373}
 --- !u!1001 &1218142336
@@ -2952,11 +2965,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4378359131145010, guid: 9ea09038c6d1a9c4db6058f4e0ffe21f,
     type: 2}
   m_PrefabInternal: {fileID: 1508664372}
---- !u!1 &1514699292 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1400203377864922, guid: e596c99f18b0a854ea0443a0af046832,
-    type: 2}
-  m_PrefabInternal: {fileID: 31327307}
 --- !u!1001 &1520483012
 Prefab:
   m_ObjectHideFlags: 0
@@ -3792,7 +3800,7 @@ RectTransform:
   - {fileID: 1170601374}
   - {fileID: 31327308}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

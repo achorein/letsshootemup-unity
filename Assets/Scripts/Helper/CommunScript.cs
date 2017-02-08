@@ -99,7 +99,9 @@ public class CommunScript : MonoBehaviour {
     /// <param name="score"></param>
     public void saveScore(int score) {
         // Save score on google game
-        Social.ReportScore(score, LEADERBOARD_ID, (bool saveSuccess) => {});
+        if (Social.localUser.authenticated) {
+            Social.ReportScore(score, LEADERBOARD_ID, (bool saveSuccess) => { });
+        }
         // internal storage
         if (score > playerPref.bestScore) {
             playerPref.bestScore = score;

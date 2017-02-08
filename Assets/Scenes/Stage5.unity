@@ -307,6 +307,10 @@ Prefab:
       propertyPath: currentLevel
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1400203377864922, guid: e596c99f18b0a854ea0443a0af046832, type: 2}
+      propertyPath: m_Name
+      value: AchivementMenu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e596c99f18b0a854ea0443a0af046832, type: 2}
   m_IsPrefabParent: 0
@@ -1001,7 +1005,7 @@ MonoBehaviour:
     bonus: 0
     volume: 1
   scoreText: {fileID: 2003844286}
-  achievementPanel: {fileID: 1514699292}
+  achievementPanel: {fileID: 1170601375}
 --- !u!1001 &450397614
 Prefab:
   m_ObjectHideFlags: 0
@@ -2365,12 +2369,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1566731187248868, guid: 4a7353002058ab640b8ca322d3ca6602, type: 2}
+      propertyPath: m_Name
+      value: AchivementGame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a7353002058ab640b8ca322d3ca6602, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1170601374 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224609847648025272, guid: 4a7353002058ab640b8ca322d3ca6602,
+    type: 2}
+  m_PrefabInternal: {fileID: 1170601373}
+--- !u!1 &1170601375 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1566731187248868, guid: 4a7353002058ab640b8ca322d3ca6602,
     type: 2}
   m_PrefabInternal: {fileID: 1170601373}
 --- !u!1001 &1173576411
@@ -3145,11 +3158,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4685068962582362, guid: e7f713f30bbc4d144bf92e30705c5202,
     type: 2}
   m_PrefabInternal: {fileID: 1496800747}
---- !u!1 &1514699292 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1400203377864922, guid: e596c99f18b0a854ea0443a0af046832,
-    type: 2}
-  m_PrefabInternal: {fileID: 31327307}
 --- !u!1 &1553247998 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1098028797255420, guid: 4a7353002058ab640b8ca322d3ca6602,

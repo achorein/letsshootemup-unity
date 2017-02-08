@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114502533746164954}
   - component: {fileID: 114964409073359320}
   - component: {fileID: 114883289563043050}
+  - component: {fileID: 95063905296076054}
   m_Layer: 8
   m_Name: meteor
   m_TagString: Untagged
@@ -100,6 +101,23 @@ PolygonCollider2D:
       - {x: 0.08, y: -0.47}
       - {x: 0.32, y: -0.45}
       - {x: 0.35, y: -0.39999998}
+--- !u!95 &95063905296076054
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1846264801921022}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 30fa170e7610be844b3f2db45c9208f1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114104488062818930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,6 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccb40b8d1697e547b5644d5e08aa108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autofire: 1
+  borderBounce: 1
 --- !u!114 &114502533746164954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 1, y: 1}
   direction: {x: 0, y: -1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!114 &114883289563043050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,9 +156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limitY: -1
   points: 1
+  limitY: -1
   rotateSpeed: 0.1
+  moveThenShoot: 0
+  minAttackCooldown: 0.5
+  maxAttackCooldown: 2
+  attackDuration: 0
 --- !u!114 &114964409073359320
 MonoBehaviour:
   m_ObjectHideFlags: 1

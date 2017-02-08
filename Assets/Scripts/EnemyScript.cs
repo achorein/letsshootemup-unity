@@ -26,9 +26,9 @@ public class EnemyScript : MonoBehaviour {
     private MoveScript moveScript;
     private SpriteRenderer rendererComponent;
     private WeaponScript[] weapons;
+    private Animator animator;
 
-    void Awake()
-    {
+    void Awake() {
         // Retrieve the weapon only once
         weapons = GetComponentsInChildren<WeaponScript>();
 
@@ -36,44 +36,38 @@ public class EnemyScript : MonoBehaviour {
         moveScript = GetComponent<MoveScript>();
 
         rendererComponent = GetComponent<SpriteRenderer>();
+
+        // Get the animator
+        animator = GetComponent<Animator>();
     }
 
-    void Start()
-    {
+    void Start() {
         // Default behavior
         isAttacking = false;
         aiCooldown = maxAttackCooldown;
         spawn = false;
     }
 
-    void Update()
-    {
-        if (rendererComponent.IsVisibleFrom(Camera.main))
-        {
-            if (!spawn)
-            {
-                foreach (WeaponScript weapon in weapons)
-                {
+    void Update() {
+        if (rendererComponent.IsVisibleFrom(Camera.main)) {
+            // enable weapons when ennemy just spawned
+            if (!spawn) {
+                foreach (WeaponScript weapon in weapons) {
                     weapon.enabled = true;
                 }
                 spawn = true;
             }
 
-            if (moveThenShoot)
-            {
+            if (moveThenShoot) {
                 // AI
                 //------------------------------------
                 // Move or attack. permute. Repeat.
                 aiCooldown -= Time.deltaTime;
-                if (aiCooldown <= 0f)
-                {
+                if (aiCooldown <= 0f) {
                     isAttacking = !isAttacking;
-                    if (isAttacking && attackDuration > 0)
-                    {
+                    if (isAttacking && attackDuration > 0) {
                         aiCooldown = attackDuration;
-                    }
-                    else
-                    {
+                    } else {
                         aiCooldown = Random.Range(minAttackCooldown, maxAttackCooldown);
                     }
                     moveScript.fixedPosition = Vector2.zero;
@@ -81,15 +75,12 @@ public class EnemyScript : MonoBehaviour {
 
                 // Attack
                 //----------
-                if (isAttacking)
-                {
+                if (isAttacking) {
                     // Stop any movement
                     moveScript.direction = Vector2.zero;
 
-                    foreach (WeaponScript weapon in weapons)
-                    {
-                        if (weapon.enabled && weapon.CanAttack)
-                        {
+                    foreach (WeaponScript weapon in weapons) {
+                        if (weapon.enabled && weapon.CanAttack) {
                             weapon.Attack(true);
                             SoundEffectsHelper.Instance.MakeEnemyShotSound();
                         }
@@ -97,11 +88,9 @@ public class EnemyScript : MonoBehaviour {
                 }
                 // Move
                 //----------
-                else
-                {
+                else {
                     // Define a target?
-                    if (moveScript.fixedPosition == Vector2.zero)
-                    {
+                    if (moveScript.fixedPosition == Vector2.zero) {
                         // Get a point on the screen
                         moveScript.fixedPosition = new Vector2(Random.Range(0.0f, 1f), Random.Range(0.2f, 1f));
                     }
@@ -117,37 +106,36 @@ public class EnemyScript : MonoBehaviour {
               transform.position.z
             );
 
-            if (limitY > 0)
-            {
+            if (limitY > 0) {
                 var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
                 var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, limitY, dist)).y;
 
                 newPosition.y = Mathf.Clamp(transform.position.y, bottomBorder, topBorder);
 
-                if (transform.position.y <= bottomBorder)
-                {
+                if (transform.position.y <= bottomBorder) {
                     moveScript.direction.y = Mathf.Abs(moveScript.direction.y);
-                }
-                else if(transform.position.y >= topBorder)
-                {
+                } else if (transform.position.y >= topBorder) {
                     moveScript.direction.y = -Mathf.Abs(moveScript.direction.y);
                 }
             }
 
             transform.position = newPosition;
 
-            if (rotateSpeed != 0)
-            {
+            if (rotateSpeed != 0) {
                 //Rotate thet transform of the game object this is attached to by 45 degrees, taking into account the time elapsed since last frame.
                 transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime * rotateSpeed);
             }
         }
     }
 
-    void OnDestroy()
-    {
-        if (rendererComponent.IsVisibleFrom(Camera.main))
-        {
+    public void runHitAnimation() {
+        if (animator != null) {
+            animator.SetTrigger("Hit");
+        }
+    }
+
+    void OnDestroy() {
+        if (rendererComponent.IsVisibleFrom(Camera.main)) {
             GameHelper.Instance.UpdateScore(points);
         }
     }
