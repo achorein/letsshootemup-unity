@@ -1,61 +1,60 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using GoogleMobileAds.Api;
 
-public class MenuScript : CommunScript
-{
+public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
     public Button soundButton, rightButton, leftButton, buyButton, startButton;
     public Image playerShip;
     public Text scoreText, goldText;
 
-    public Transform hfPrefab, hfContentView;
+    public Transform hfPrefab, hfContentView, lbContentView;
 
     private int menuPos = 0;
 
-    public void Awake()
-    {
+    public void Awake() {
         Time.timeScale = 1;
         load();
-        
+
         AudioListener.volume = playerPref.volume;
-        if (playerPref.volume == 0)
-        {
+        if (playerPref.volume == 0) {
             soundButton.GetComponent<Image>().sprite = muteSound;
         }
-        
+
         goldText.text = " " + playerPref.gold;
 
         menuPos = playerPref.currentShip;
         loadMenuPos();
     }
 
-    public void right()
-    {
+    /// <summary>
+    /// Click right button on main screen
+    /// </summary>
+    public void right() {
         menuPos++;
         startButton.GetComponent<Animator>().enabled = false;
         loadMenuPos();
     }
 
-    public void left()
-    {
+    /// <summary>
+    /// Click left button on main screen
+    /// </summary>
+    public void left() {
         menuPos--;
         startButton.GetComponent<Animator>().enabled = false;
         loadMenuPos();
     }
 
-    private void loadMenuPos()
-    {
+    /// <summary>
+    /// Refresh screen to match ship index
+    /// </summary>
+    private void loadMenuPos() {
         playerShip.sprite = Resources.Load<Sprite>(ships[menuPos].sprite);
-        if (menuPos != 0 && !playerPref.ships.Contains(menuPos))
-        {
+        if (menuPos != 0 && !playerPref.ships.Contains(menuPos)) {
             buyButton.gameObject.SetActive(true);
             buyButton.GetComponentInChildren<Text>().text = ships[menuPos].price.ToString();
             buyButton.interactable = playerPref.gold >= ships[menuPos].price;
-        }
-        else
-        {
+        } else {
             buyButton.gameObject.SetActive(false);
         }
         startButton.gameObject.SetActive(!buyButton.gameObject.activeSelf);
@@ -64,10 +63,11 @@ public class MenuScript : CommunScript
         leftButton.gameObject.SetActive(menuPos != 0);
     }
 
-    public void buyShip()
-    {
-        if (playerPref.gold >= ships[menuPos].price)
-        {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void buyShip() {
+        if (playerPref.gold >= ships[menuPos].price) {
             playerPref.ships.Add(menuPos);
             playerPref.gold -= ships[menuPos].price;
             goldText.text = playerPref.gold.ToString();
@@ -77,13 +77,15 @@ public class MenuScript : CommunScript
         }
     }
 
-    public void StartGame(GameObject panel)
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="panel"></param>
+    public void StartGame(GameObject panel) {
         playerPref.currentShip = menuPos;
         save();
         print("playerPref.currentMaxLevel: " + playerPref.currentMaxLevel);
-        if (playerPref.currentMaxLevel > 1)
-        {
+        if (playerPref.currentMaxLevel > 1) {
             panel.SetActive(true);
             Button[] levelButtons = panel.GetComponentsInChildren<Button>();
             for (int i = 0; i < levelButtons.Length - 1; i++) {
@@ -92,29 +94,29 @@ public class MenuScript : CommunScript
                 //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
             }
             //ShowAd();
-        }
-        else
-        {
+        } else {
             StartLevel(1);
         }
     }
 
-    public void StartLevel(int level)
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="level"></param>
+    public void StartLevel(int level) {
         LoadingScript.loadLevel = level;
         SceneManager.LoadScene("Loading", LoadSceneMode.Single);
         //SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);
     }
 
-    public void ToggleAudio()
-    {
-        if (AudioListener.volume == 0)
-        {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ToggleAudio() {
+        if (AudioListener.volume == 0) {
             AudioListener.volume = 1;
             soundButton.GetComponent<Image>().sprite = normalSound;
-        }
-        else
-        {
+        } else {
             AudioListener.volume = 0;
             soundButton.GetComponent<Image>().sprite = muteSound;
         }
@@ -122,15 +124,18 @@ public class MenuScript : CommunScript
         save();
     }
 
-    public void loadLeaderBoardPanel()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void loadLeaderBoardPanel() {
         scoreText.text = playerPref.bestScore.ToString();
     }
 
-    public void loadHFPanel()
-    {
-        foreach (Transform child in hfContentView.transform)
-        {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void loadHFPanel() {
+        foreach (Transform child in hfContentView.transform) {
             Destroy(child.gameObject);
         }
         hfContentView.DetachChildren();
@@ -139,14 +144,13 @@ public class MenuScript : CommunScript
             var newHf = Instantiate(hfPrefab) as Transform;
             var hfTexts = newHf.GetComponentsInChildren<Text>();
             hfTexts[0].text = hf.description;
-            hfTexts[1].text = " " + ((playerPref.kills > hf.nb)? hf.nb : playerPref.kills) + "/" + hf.nb;
+            hfTexts[1].text = " " + ((playerPref.kills > hf.nb) ? hf.nb : playerPref.kills) + "/" + hf.nb;
             hfTexts[2].text = "+" + hf.gold;
             if (playerPref.kills < hf.nb)
                 newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
             newHf.SetParent(hfContentView.transform, false);
         }
-        foreach (HF hf in hfs[HF.TYPE_HF.Bonus])
-        {
+        foreach (HF hf in hfs[HF.TYPE_HF.Bonus]) {
             var newHf = Instantiate(hfPrefab) as Transform;
             var hfTexts = newHf.GetComponentsInChildren<Text>();
             hfTexts[0].text = hf.description;
@@ -157,38 +161,37 @@ public class MenuScript : CommunScript
             newHf.SetParent(hfContentView.transform, false);
         }
     }
-    
-    public void ResetGame()
-    {
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ResetGame() {
         playerPref = new PlayerPref();
         save();
         Awake();
     }
 
-    public void goldHack()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void goldHack() {
         playerPref.gold += 1000;
         save();
         goldText.text = " " + playerPref.gold;
     }
 
-    public void unlockLevels()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void unlockLevels() {
         playerPref.currentMaxLevel = 5;
         save();
-        Camera.main.backgroundColor = new Color(255, 0, 0, 128);
-        Invoke("cleanCamera", 0.5f);
+        //Camera.main.backgroundColor = new Color(255, 0, 0, 128);
+        //Invoke("cleanCamera", 0.5f);
     }
 
-    public void cleanCamera()
-    {
-        Camera.main.backgroundColor = new Color(255, 0, 0, 0);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
+    void Update() {
+        if (Input.GetKeyUp(KeyCode.Escape)) {
             Application.Quit();
         }
     }

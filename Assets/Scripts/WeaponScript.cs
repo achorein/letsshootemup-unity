@@ -148,7 +148,7 @@ public class WeaponScript : MonoBehaviour {
                 shotTransform.position = transform.position;
                 if (tryRotateShoot)
                 {
-                    shotTransform.transform.Rotate(-transform.rotation.eulerAngles);
+                    shotTransform.transform.Rotate(transform.rotation.eulerAngles);
                 }
 
                 // Make the weapon shot always towards it

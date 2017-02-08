@@ -8,18 +8,17 @@ using GoogleMobileAds.Api;
 public class CommunScript : MonoBehaviour {
 
     private const string PLAYER_KEY = "PLAYER";
-    
+    public static string FIREBASE_URL = "https://lets-shootem-up-23835757.firebaseio.com";
+
     //ads 
     protected InterstitialAd interstitial;
     protected BannerView bannerView;
 
-    public class Ship
-    {
+    public class Ship {
         public string sprite;
         public int price;
 
-        public Ship(string sprite, int price)
-        {
+        public Ship(string sprite, int price) {
             this.sprite = sprite;
             this.price = price;
         }
@@ -30,8 +29,7 @@ public class CommunScript : MonoBehaviour {
 
     public PlayerPref playerPref;
 
-    public CommunScript()
-    {
+    public CommunScript() {
         ships = new List<Ship>();
         ships.Add(new Ship("playerShip1", 0));
         ships.Add(new Ship("playerShip2", 100));
@@ -57,61 +55,70 @@ public class CommunScript : MonoBehaviour {
         hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
     }
 
-    public void load()
-    {
+    /// <summary>
+    /// Load game data (Player Pref)
+    /// </summary>
+    public void load() {
         string data = PlayerPrefs.GetString(PLAYER_KEY);
-        if (data == null || data.Length == 0)
-        {
+        if (data == null || data.Length == 0) {
             playerPref = new PlayerPref();
-        }
-        else
-        {
+        } else {
             BinaryFormatter bf = new BinaryFormatter();
             byte[] b = Convert.FromBase64String(data);
             MemoryStream ms = new MemoryStream(b);
 
-            try
-            {
+            try {
                 playerPref = (PlayerPref)bf.Deserialize(ms);
-            }
-            finally
-            {
+            } finally {
                 ms.Close();
             }
         }
     }
 
-    public void save()
-    {
+    /// <summary>
+    /// Persist data (Player Pref)
+    /// </summary>
+    public void save() {
         BinaryFormatter bf = new BinaryFormatter();
         MemoryStream memStr = new MemoryStream();
 
-        try
-        {
+        try {
             bf.Serialize(memStr, playerPref);
             memStr.Position = 0;
 
             PlayerPrefs.SetString(PLAYER_KEY, Convert.ToBase64String(memStr.ToArray()));
-        }
-        finally
-        {
+        } finally {
             memStr.Close();
         }
     }
 
-    public string getCurrentShipSprite()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="score"></param>
+    public void saveScore(int score) {
+        if (score > playerPref.bestScore) {
+            playerPref.bestScore = score;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>sprite name</returns>
+    public string getCurrentShipSprite() {
         return ships[playerPref.currentShip].sprite;
     }
 
-
-    public void LoadBannerAd(bool customListener)
-    {
+    /// <summary>
+    /// Load Ads
+    /// </summary>
+    /// <param name="customListener"></param>
+    public void LoadBannerAd(bool customListener) {
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(getAdUnitBannerId(), AdSize.Banner, AdPosition.Bottom);
 
-        if (!customListener)
-        {
+        if (!customListener) {
             bannerView.OnAdLoaded += HandleOnAdLoaded;
             bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         }
@@ -123,18 +130,24 @@ public class CommunScript : MonoBehaviour {
         bannerView.LoadAd(getAdsRequest());
     }
 
-    public AdRequest getAdsRequest()
-    {
+    /// <summary>
+    /// Get ads request
+    /// </summary>
+    /// <returns></returns>
+    public AdRequest getAdsRequest() {
         // Create an empty ad request.
-         return new AdRequest.Builder()
-            .AddTestDevice(AdRequest.TestDeviceSimulator)       // Simulator.
-            .AddTestDevice("B089878A2C63370113F780BFAB28BD9E")  // My test device.
-            .AddKeyword("game")
-            .Build();
+        return new AdRequest.Builder()
+           .AddTestDevice(AdRequest.TestDeviceSimulator)       // Simulator.
+           .AddTestDevice("B089878A2C63370113F780BFAB28BD9E")  // My test device.
+           .AddKeyword("game")
+           .Build();
     }
 
-    protected string getAdUnitBannerId()
-    {
+    /// <summary>
+    /// Get Ads banner id
+    /// </summary>
+    /// <returns></returns>
+    protected string getAdUnitBannerId() {
 #if UNITY_EDITOR
         string adUnitId = "unused";
 #elif UNITY_ANDROID
@@ -147,8 +160,11 @@ public class CommunScript : MonoBehaviour {
         return adUnitId;
     }
 
-    protected string getAdUnitInterstitielId()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    protected string getAdUnitInterstitielId() {
 #if UNITY_EDITOR
         string adUnitId = "unused";
 #elif UNITY_ANDROID
@@ -161,25 +177,40 @@ public class CommunScript : MonoBehaviour {
         return adUnitId;
     }
 
-    public void HandleOnAdLoaded(object sender, EventArgs args)
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    public void HandleOnAdLoaded(object sender, EventArgs args) {
         if (interstitial != null)
             interstitial.Show();
         if (bannerView != null)
             bannerView.Show();
     }
-    public void HandleOnAdClosed(object sender, EventArgs args)
-    {
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    public void HandleOnAdClosed(object sender, EventArgs args) {
         resetAd();
     }
 
-    public void HandleOnAdFailedToLoad(object sender, EventArgs args)
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    public void HandleOnAdFailedToLoad(object sender, EventArgs args) {
         resetAd();
     }
 
-    public void LoadInterstitialAd()
-    {
+    /// <summary>
+    /// 
+    /// </summary>
+    public void LoadInterstitialAd() {
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(getAdUnitInterstitielId());
         // Load the interstitial with the request.
@@ -190,12 +221,13 @@ public class CommunScript : MonoBehaviour {
         interstitial.LoadAd(getAdsRequest());
     }
 
-    protected void resetAd()
-    {
+    /// <summary>
+    /// Hide and destroy all ads
+    /// </summary>
+    protected void resetAd() {
         if (interstitial != null)
             interstitial.Destroy();
-        if (bannerView != null)
-        {
+        if (bannerView != null) {
             bannerView.Hide();
             bannerView.Destroy();
         }

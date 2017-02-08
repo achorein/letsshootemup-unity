@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LoadingScript : CommunScript {
 
-    public static int loadLevel;
+    public static int loadLevel = 1;
 
     public Text progressText;
 
@@ -19,6 +19,7 @@ public class LoadingScript : CommunScript {
         LoadBannerAd(true);
         bannerView.OnAdLoaded += LoadingOnAdLoaded;
         bannerView.OnAdFailedToLoad += LoadingOnAdFailedToLoad;
+        Invoke("startLoadingScene", 3);
     }
 
 	// Update is called once per frame
