@@ -21,12 +21,10 @@ public class ShotScript : MonoBehaviour {
     public GameObject laserMiddle;
     public GameObject laserEnd;
 
-    void Start()
-    {
+    void Start() {
         // 2 - Limited time to live to avoid any leak
         Destroy(gameObject, 7); // 7sec
-        if (rotateSpeed != 0)
-        {
+        if (rotateSpeed != 0) {
             /* 
              * Rotate thet transform of the game object this is attached to by 45 degrees, 
              * taking into account the time elapsed since last frame.
@@ -36,12 +34,11 @@ public class ShotScript : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update() {
 
-    public bool isExpandable()
-    {
+    }
+
+    public bool isExpandable() {
         return laserStart != null;
     }
 }

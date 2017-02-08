@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GooglePlayGames;
 
 public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
@@ -25,6 +26,7 @@ public class MenuScript : CommunScript {
 
         menuPos = playerPref.currentShip;
         loadMenuPos();
+        PlayGamesPlatform.Activate();
     }
 
     /// <summary>
@@ -84,19 +86,21 @@ public class MenuScript : CommunScript {
     public void StartGame(GameObject panel) {
         playerPref.currentShip = menuPos;
         save();
-        print("playerPref.currentMaxLevel: " + playerPref.currentMaxLevel);
-        if (playerPref.currentMaxLevel > 1) {
-            panel.SetActive(true);
-            Button[] levelButtons = panel.GetComponentsInChildren<Button>();
-            for (int i = 0; i < levelButtons.Length - 1; i++) {
-                levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
-                //var lockImage = levelButtons[i].GetComponentInChildren<Image>();
-                //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
+
+        Social.localUser.Authenticate((bool authSuccess) => {
+            if (playerPref.currentMaxLevel > 1) {
+                panel.SetActive(true);
+                Button[] levelButtons = panel.GetComponentsInChildren<Button>();
+                for (int i = 0; i < levelButtons.Length - 1; i++) {
+                    levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
+                    //var lockImage = levelButtons[i].GetComponentInChildren<Image>();
+                    //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
+                }
+                //ShowAd();
+            } else {
+                StartLevel(1);
             }
-            //ShowAd();
-        } else {
-            StartLevel(1);
-        }
+        });
     }
 
     /// <summary>
@@ -129,6 +133,13 @@ public class MenuScript : CommunScript {
     /// </summary>
     public void loadLeaderBoardPanel() {
         scoreText.text = playerPref.bestScore.ToString();
+        // authenticate user
+        Social.localUser.Authenticate((bool success) => {
+            if (success) {
+                // display google games leader board
+                PlayGamesPlatform.Instance.ShowLeaderboardUI(LEADERBOARD_ID);
+            }
+        });
     }
 
     /// <summary>
@@ -160,6 +171,15 @@ public class MenuScript : CommunScript {
                 newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
             newHf.SetParent(hfContentView.transform, false);
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void loadGoogleGamesAchievementUI() {
+        Social.localUser.Authenticate((bool authSuccess) => {
+            Social.ShowAchievementsUI();
+        });
     }
 
     /// <summary>

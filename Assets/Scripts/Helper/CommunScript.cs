@@ -9,6 +9,7 @@ public class CommunScript : MonoBehaviour {
 
     private const string PLAYER_KEY = "PLAYER";
     public static string FIREBASE_URL = "https://lets-shootem-up-23835757.firebaseio.com";
+    public static string LEADERBOARD_ID = "CgkI2Jem2tQJEAIQBg";
 
     //ads 
     protected InterstitialAd interstitial;
@@ -38,20 +39,20 @@ public class CommunScript : MonoBehaviour {
         ships.Add(new Ship("playerShip5", 5000));
         hfs = new Dictionary<HF.TYPE_HF, List<HF>>();
         List<HF> killHfs = new List<HF>();
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5 kills", 5, 1));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "20 kills", 20, 2));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "100 kills", 100, 5));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "500 kills", 500, 50));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "1000 kills", 1000, 100));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "2500 kills", 2500, 250));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 5000, 500));
-        killHfs.Add(new HF(HF.TYPE_HF.Kill, "10000 kills", 10000, 1000));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5 kills", 5, 1, "CgkI2Jem2tQJEAIQBw"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "20 kills", 20, 2, "CgkI2Jem2tQJEAIQCA"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "100 kills", 100, 5, "CgkI2Jem2tQJEAIQCQ"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "500 kills", 500, 50, "CgkI2Jem2tQJEAIQCg"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "1000 kills", 1000, 100, "CgkI2Jem2tQJEAIQCw"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "2500 kills", 2500, 250, "CgkI2Jem2tQJEAIQDA"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "5000 kills", 5000, 500, "CgkI2Jem2tQJEAIQDQ"));
+        killHfs.Add(new HF(HF.TYPE_HF.Kill, "10000 kills", 10000, 1000, "CgkI2Jem2tQJEAIQDg"));
         hfs.Add(HF.TYPE_HF.Kill, killHfs);
         List<HF> bonusHfs = new List<HF>();
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "5 bonus", 5, 2));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "20 bonus", 20, 10));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 50));
-        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 250));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "5 bonus", 5, 2, "CgkI2Jem2tQJEAIQDw"));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "20 bonus", 20, 10, "CgkI2Jem2tQJEAIQEA"));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 50, "CgkI2Jem2tQJEAIQEQ"));
+        bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 250, "CgkI2Jem2tQJEAIQEg"));
         hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
     }
 
@@ -97,6 +98,9 @@ public class CommunScript : MonoBehaviour {
     /// </summary>
     /// <param name="score"></param>
     public void saveScore(int score) {
+        // Save score on google game
+        Social.ReportScore(score, LEADERBOARD_ID, (bool saveSuccess) => {});
+        // internal storage
         if (score > playerPref.bestScore) {
             playerPref.bestScore = score;
         }

@@ -42,33 +42,26 @@ public class WeaponScript : MonoBehaviour {
 
     private GameObject start, middle, end;
 
-    void Start()
-    {
+    void Start() {
         shootCooldown = 0f;
     }
 
-    void Update()
-    {
-        if (shootCooldown > 0)
-        {
+    void Update() {
+        if (shootCooldown > 0) {
             shootCooldown -= Time.deltaTime;
         }
-        if (expandable)
-        {
+        if (expandable) {
             FadeLaser();
-        }
-        else
-        {
+        } else {
             if (start != null) Destroy(start.gameObject);
             if (middle != null) Destroy(middle.gameObject);
             if (end != null) Destroy(end.gameObject);
         }
 
-        if (rotateToTarget && autoFireTarget != null)
-        {
+        if (rotateToTarget && autoFireTarget != null) {
             var parentTransform = GetComponentInParent<EnemyScript>().gameObject.transform;
             var targetPosition = autoFireTarget.transform.position;
-            
+
             var rotationAngle = Quaternion.LookRotation(targetPosition - parentTransform.position); // we get the angle has to be rotated
             rotationAngle.x = 0;
             rotationAngle.y = 0;
@@ -77,8 +70,7 @@ public class WeaponScript : MonoBehaviour {
             //parentTransform.LookAt(autoFireTarget.transform);
             //parentTransform.eulerAngles = new Vector3(0, 0, parentTransform.eulerAngles.z);
         }
-        if (rotateSpeed != 0)
-        {
+        if (rotateSpeed != 0) {
             //Rotate thet transform of the game object this is attached to by 45 degrees, taking into account the time elapsed since last frame.
             transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime * rotateSpeed);
         }
@@ -91,21 +83,18 @@ public class WeaponScript : MonoBehaviour {
     /// <summary>
     /// Create a new projectile if possible
     /// </summary>
-    public bool Attack(bool isEnemy)
-    {
-        if (CanAttack || expandable)
-        {
+    public bool Attack(bool isEnemy) {
+        if (CanAttack || expandable) {
             Transform shotTransform = Instantiate(shotPrefab) as Transform;
             ShotScript shot = shotTransform.GetComponent<ShotScript>();
             // The is enemy property
             shot.isEnemyShot = isEnemy;
-            
+
             // Create a new shot
-            if (shot.isExpandable())
-            {
+            if (shot.isExpandable()) {
                 expandable = true;
                 timer = timerMax;
-                
+
                 startSpriteWidth = shot.laserStart.GetComponent<Renderer>().bounds.size.x;
                 InstantiateLaserPart(ref start, shot.laserStart);
                 start.transform.localPosition = new Vector3(offsetY, 0f);
@@ -114,23 +103,19 @@ public class WeaponScript : MonoBehaviour {
                 //FadeLaser();
                 float currentLaserDistance = maxLaserDistance;
                 RaycastHit2D hit = RaycastDirection(this.transform.right);
-                if (hit.collider != null)
-                {
+                if (hit.collider != null) {
                     currentLaserDistance = Vector2.Distance(hit.point, this.transform.position);
                     InstantiateLaserPart(ref end, shot.laserEnd);
-                    if (CanAttack)
-                    {
+                    if (CanAttack) {
                         HealthScript health = hit.collider.gameObject.GetComponent<HealthScript>();
-                        if (health != null)
-                        {
+                        if (health != null) {
                             health.hitBy(shotTransform.GetComponent<Collider2D>());
                         }
                         shootCooldown = shootingRate;
                     }
-                }
-                else if (end != null)
+                } else if (end != null)
                     Destroy(end);
-                
+
                 middle.transform.localScale = new Vector3(
                     middle.transform.localScale.x,
                     100 * (currentLaserDistance - startSpriteWidth),
@@ -142,52 +127,43 @@ public class WeaponScript : MonoBehaviour {
                     end.transform.localPosition = new Vector2(currentLaserDistance, 0f);
                 Destroy(shotTransform.gameObject);
                 return false; // no shoot sound
-            }  else {
+            } else {
                 shootCooldown = shootingRate;
                 // Normal shot
                 shotTransform.position = transform.position;
-                if (tryRotateShoot)
-                {
+                if (tryRotateShoot) {
                     shotTransform.transform.Rotate(transform.rotation.eulerAngles);
                 }
 
                 // Make the weapon shot always towards it
                 MoveScript move = shotTransform.gameObject.GetComponent<MoveScript>();
-                if (move != null)
-                {
-                    if (autoAim)
-                    {
+                if (move != null) {
+                    if (autoAim) {
                         var heading = autoFireTarget.transform.position - transform.position;
                         heading.Normalize();
                         move.direction = heading;
-                    }
-                    else
-                    {
+                    } else {
                         move.direction = this.transform.right; // towards in 2D space is the right of the sprite
                     }
                 }
             }
 
             return true;
-        }        
+        }
         return false;
     }
 
     /// <summary>
     /// Is the weapon ready to create a new projectile?
     /// </summary>
-    public bool CanAttack
-    {
-        get
-        {
+    public bool CanAttack {
+        get {
             return shootCooldown <= 0f;
         }
     }
 
-    void InstantiateLaserPart(ref GameObject part, GameObject laserPart)
-    {
-        if (part == null)
-        {
+    void InstantiateLaserPart(ref GameObject part, GameObject laserPart) {
+        if (part == null) {
             part = Instantiate<GameObject>(laserPart);
             part.transform.parent = gameObject.transform;
             part.transform.localPosition = Vector2.zero;
@@ -195,8 +171,7 @@ public class WeaponScript : MonoBehaviour {
         }
     }
 
-    RaycastHit2D RaycastDirection(Vector2 direction)
-    {
+    RaycastHit2D RaycastDirection(Vector2 direction) {
         Vector3 newPos = new Vector3(
             this.transform.position.x,
             this.transform.position.y + offsetY,
@@ -208,18 +183,15 @@ public class WeaponScript : MonoBehaviour {
         );
     }
 
-    void FadeLaser()
-    {
+    void FadeLaser() {
         timer -= Time.deltaTime;
-        if (timer <= 0.25)
-        {
+        if (timer <= 0.25) {
             var reduce = new Vector3(transform.localScale.x * Time.deltaTime, 0f);
             start.transform.localScale -= reduce;
             middle.transform.localScale -= reduce;
-            if (end != null)  middle.transform.localScale -= reduce;
+            if (end != null) middle.transform.localScale -= reduce;
 
-            if (middle.transform.localScale.x <= 0.05)
-            {
+            if (middle.transform.localScale.x <= 0.05) {
                 Destroy(start.gameObject);
                 Destroy(middle.gameObject);
                 if (end != null) { Destroy(middle.gameObject); }
@@ -228,8 +200,7 @@ public class WeaponScript : MonoBehaviour {
         }
     }
 
-    public void setExpandable(bool value)
-    {
+    public void setExpandable(bool value) {
         expandable = value;
     }
 

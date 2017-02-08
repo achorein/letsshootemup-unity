@@ -196,7 +196,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Dark/Documents/Projects/letsshootemup-unity/vikings-entertainment.keystore
+  AndroidKeystoreName: E:/90-Projet/letsshootemup-unity/vikings-entertainment.keystore
   AndroidKeyaliasName: v1kings
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
