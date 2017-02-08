@@ -45,7 +45,6 @@ public class GameOverScript : CommunScript {
         Time.timeScale = 0;
         if (player == null || winText == null)
             return;
-        Invoke("LoadInterstitialAd", 1);
         resetPanel(true);
 
         // main text
@@ -76,6 +75,8 @@ public class GameOverScript : CommunScript {
         GameHelper.Instance.playerPref.gold += bonusGold;
         GameHelper.Instance.saveScore(score);
         GameHelper.Instance.save();
+
+        LoadInterstitialAd();
     }
 
     /// <summary>
