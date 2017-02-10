@@ -6,6 +6,10 @@ TagManager:
   tags:
   - PickUp
   - Menu
+  - weaponRed
+  - weaponYellow
+  - weaponGreen
+  - weaponBlue
   layers:
   - Default
   - TransparentFX

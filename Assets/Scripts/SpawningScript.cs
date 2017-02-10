@@ -13,8 +13,7 @@ public class SpawningScript : MonoBehaviour {
     private Collider2D coliderComponent;
     private SpriteRenderer rendererComponent;
 
-    void Awake()
-    {
+    void Awake() {
         // Retrieve the weapon only once
         weapons = GetComponentsInChildren<WeaponScript>();
 
@@ -27,8 +26,7 @@ public class SpawningScript : MonoBehaviour {
     }
 
     // 1 - Disable everything
-    void Start()
-    {
+    void Start() {
         hasSpawn = false;
 
         // Disable everything
@@ -37,37 +35,28 @@ public class SpawningScript : MonoBehaviour {
         // -- Moving
         moveScript.enabled = false;
         // -- Shooting
-        foreach (WeaponScript weapon in weapons)
-        {
+        foreach (WeaponScript weapon in weapons) {
             weapon.enabled = false;
         }
     }
 
-    void Update()
-    {
+    void Update() {
         // 2 - Check if the enemy has spawned.
-        if (hasSpawn == false)
-        {
-            if (rendererComponent.IsVisibleFrom(Camera.main))
-            {
+        if (hasSpawn == false) {
+            if (rendererComponent.IsVisibleFrom(Camera.main)) {
                 Spawn();
             }
-        }
-        else
-        {
+        } else {
             // Auto-fire ?
-            foreach (WeaponScript weapon in weapons)
-            {
-                if (weapon.enabled  && (autofire || weapon.forceAutoFire) && weapon.CanAttack)
-                {
+            foreach (WeaponScript weapon in weapons) {
+                if (weapon.enabled && (autofire || weapon.forceAutoFire) && weapon.CanAttack) {
                     if (weapon.Attack(true))
                         SoundEffectsHelper.Instance.MakeEnemyShotSound();
                 }
             }
 
             // 4 - Out of the camera ? Destroy the game object.
-            if (rendererComponent.IsVisibleFrom(Camera.main) == false)
-            {
+            if (rendererComponent.IsVisibleFrom(Camera.main) == false) {
                 Destroy(gameObject);
             }
 
@@ -88,13 +77,10 @@ public class SpawningScript : MonoBehaviour {
               transform.position.y,
               transform.position.z
             );
-            if (borderBounce) { 
-                if (transform.position.x == leftBorder)
-                {
+            if (borderBounce) {
+                if (transform.position.x == leftBorder) {
                     moveScript.direction.x = Mathf.Abs(moveScript.direction.x);
-                }
-                else if (transform.position.x == rightBorder)
-                {
+                } else if (transform.position.x == rightBorder) {
                     moveScript.direction.x = -Mathf.Abs(moveScript.direction.x);
                 }
             }
@@ -105,8 +91,7 @@ public class SpawningScript : MonoBehaviour {
     }
 
     // 3 - Activate itself.
-    private void Spawn()
-    {
+    private void Spawn() {
         hasSpawn = true;
 
         // Enable everything
@@ -117,17 +102,14 @@ public class SpawningScript : MonoBehaviour {
 
         CollectableScript collectable = GetComponent<CollectableScript>();
         // -- Shooting
-        if (collectable == null)
-        {
-            foreach (WeaponScript weapon in weapons)
-            {
+        if (collectable == null) {
+            foreach (WeaponScript weapon in weapons) {
                 weapon.enabled = true;
             }
         }
     }
 
-    public bool HasSpawn()
-    {
+    public bool HasSpawn() {
         return hasSpawn;
     }
 

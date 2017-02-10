@@ -15,7 +15,11 @@ public class GameHelper : CommunScript {
     public Text scoreText;
     public GameObject achievementPanel;
 
-    private int score = 0;
+    private static int score = 0;
+    /// <summary>
+    /// number of levels wins consecutively 
+    /// </summary>
+    private static int nbLevel = 0;
 
     void Awake() {
         // Register the singleton
@@ -68,6 +72,29 @@ public class GameHelper : CommunScript {
             }
         }
         save();
+    }
+
+    internal void levelCompleted(int level, int nbTaken) {
+        nbLevel++;
+        if (level + 1 > GameHelper.Instance.playerPref.currentMaxLevel) {
+            GameHelper.Instance.playerPref.currentMaxLevel = level + 1;
+        }
+        foreach (HF hf in hfs[HF.TYPE_HF.Level]) {
+            if (hf.nb == level) {
+                if (hf.special == false || nbLevel == hf.nb) {
+                    // show achievement in Google Games
+                    if (Social.localUser.authenticated) {
+                        Social.ReportProgress(hf.id, 100.0f, (bool success) => { });
+                    }
+                }
+            }
+        }
+        // untouchable achievement
+        if (nbTaken == 0 && Social.localUser.authenticated) {
+            Social.ReportProgress(hfs[HF.TYPE_HF.Other][0].id, 100.0f, (bool success) => { });
+        }
+        // gain +1 life 
+        PlayerScript.lastLife++;
     }
 
     /// <summary>
@@ -123,4 +150,17 @@ public class GameHelper : CommunScript {
         return score;
     }
 
+    /// <summary>
+    /// Reset to initial state (score 0, etc)
+    /// </summary>
+    public static void reset() {
+        score = 0;
+        nbLevel = 0;
+    }
+
+    internal void upgradeWeapon(string lastWeaponName) {
+        if (Social.localUser.authenticated) {
+            Social.ReportProgress(hfs[HF.TYPE_HF.Weapon][0].id, 100.0f, (bool success) => { });
+        }
+    }
 }

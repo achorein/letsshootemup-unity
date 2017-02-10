@@ -16,7 +16,7 @@ public class GameOverScript : CommunScript {
     public Button restartButton, nextButton;
 
     public int currentLevel = 1;
-    private int maxLevel = 5;
+    private const int MAX_LEVEL = 5;
 
     void Awake() {
         // Get the buttons
@@ -58,16 +58,16 @@ public class GameOverScript : CommunScript {
 
         int bonusGold = (score / 100);
         goldText.text = " +" + bonusGold;
-        if (player.GetComponent<PlayerScript>().nbHitTaken == 0) {
-            achivementImage.SetActive(true);
-            bonusGold += 10;
-        }
 
         if (win) {
-            if (currentLevel + 1 > GameHelper.Instance.playerPref.currentMaxLevel) {
-                GameHelper.Instance.playerPref.currentMaxLevel = currentLevel + 1;
+            GameHelper.Instance.levelCompleted(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
+            
+            if (player.GetComponent<PlayerScript>().nbHitTaken == 0) {
+                achivementImage.SetActive(true);
+                bonusGold += 10;
             }
-            nextButton.gameObject.SetActive(currentLevel < maxLevel);
+
+            nextButton.gameObject.SetActive(currentLevel < MAX_LEVEL);
         }
         restartButton.gameObject.SetActive(!win);
 
@@ -75,7 +75,10 @@ public class GameOverScript : CommunScript {
         GameHelper.Instance.playerPref.gold += bonusGold;
         GameHelper.Instance.saveScore(score);
         GameHelper.Instance.save();
-
+        if (!win) {
+            // reset score if game over
+            GameHelper.reset();
+        }
         LoadInterstitialAd();
     }
 
@@ -84,7 +87,7 @@ public class GameOverScript : CommunScript {
     /// </summary>
     public void ExitToMenu() {
         resetAd();
-        resetPlayer();
+        PlayerScript.reset();
         // Reload the level
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
@@ -104,7 +107,7 @@ public class GameOverScript : CommunScript {
     /// </summary>
     public void RestartGame() {
         resetAd();
-        resetPlayer();
+        PlayerScript.reset();
         // Reload the level
         SceneManager.LoadScene("Stage" + currentLevel, LoadSceneMode.Single);
     }
@@ -134,15 +137,6 @@ public class GameOverScript : CommunScript {
         if (Input.GetKeyUp(KeyCode.Escape)) {
             ExitToMenu();
         }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public void resetPlayer() {
-        PlayerScript.lastShieldLevel = 0;
-        PlayerScript.lastLife = 0;
-        PlayerScript.lastWeaponBonus = null;
     }
 
 }

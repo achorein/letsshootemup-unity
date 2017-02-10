@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355f79ad777ba8a4e90e7b4814b212c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: 10
+  points: 50
   limitY: -1
   rotateSpeed: 0
   moveThenShoot: 0
@@ -173,6 +173,9 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 797db791094e80242943a82cc11869bb, type: 2}
   shootingRate: 3
   rotateSpeed: 0
+  upgrade: 0
+  upgradeShootingRate: 0.25
+  upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 1
   autoAim: 1
   forceAutoFire: 1

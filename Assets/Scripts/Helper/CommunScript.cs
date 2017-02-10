@@ -54,6 +54,18 @@ public class CommunScript : MonoBehaviour {
         bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "100 bonus", 100, 50, "CgkI2Jem2tQJEAIQEQ"));
         bonusHfs.Add(new HF(HF.TYPE_HF.Bonus, "500 bonus", 500, 250, "CgkI2Jem2tQJEAIQEg"));
         hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
+        List<HF> levelHfs = new List<HF>();
+        levelHfs.Add(new HF(HF.TYPE_HF.Level, "Level completed", 1, 5, "CgkI2Jem2tQJEAIQEw"));
+        levelHfs.Add(new HF(HF.TYPE_HF.Level, "3 level in one shot", 3, 50, true, "CgkI2Jem2tQJEAIQFg"));
+        levelHfs.Add(new HF(HF.TYPE_HF.Level, "Game finished", 5, 50, "CgkI2Jem2tQJEAIQFQ"));
+        levelHfs.Add(new HF(HF.TYPE_HF.Level, "TO INFINITY AND BEYOND", 5, 50, "CgkI2Jem2tQJEAIQFw"));
+        hfs.Add(HF.TYPE_HF.Level, levelHfs);
+        List<HF> weaponHfs = new List<HF>();
+        weaponHfs.Add(new HF(HF.TYPE_HF.Weapon, "Weapon upgraded", 2, 10, "CgkI2Jem2tQJEAIQGA"));
+        hfs.Add(HF.TYPE_HF.Weapon, weaponHfs);
+        List<HF> otherHfs = new List<HF>();
+        otherHfs.Add(new HF(HF.TYPE_HF.Other, "Untouchable", 0, 10, "CgkI2Jem2tQJEAIQFA"));
+        hfs.Add(HF.TYPE_HF.Other, otherHfs);
     }
 
     /// <summary>

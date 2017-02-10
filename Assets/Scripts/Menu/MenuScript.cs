@@ -27,6 +27,7 @@ public class MenuScript : CommunScript {
         menuPos = playerPref.currentShip;
         loadMenuPos();
         PlayGamesPlatform.Activate();
+        Social.localUser.Authenticate((bool authSuccess) => { });
     }
 
     /// <summary>
@@ -108,6 +109,7 @@ public class MenuScript : CommunScript {
     /// </summary>
     /// <param name="level"></param>
     public void StartLevel(int level) {
+        GameHelper.reset();
         LoadingScript.loadLevel = level;
         SceneManager.LoadScene("Loading", LoadSceneMode.Single);
         //SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);

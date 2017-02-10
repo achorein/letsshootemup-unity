@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
+    private const int MAX_LIFE = 3;
+
     /// <summary>
     /// The speed of the ship
     /// </summary>
@@ -27,61 +29,62 @@ public class PlayerScript : MonoBehaviour {
 
     public static int lastLife = 0;
     public static int lastShieldLevel = 0;
+    public static String lastWeapon = "";
+    public static bool lastWeaponUpgraded = false;
     public static WeaponScript[] lastWeaponBonus = null;
 
-    void Awake()
-    {
+    void Awake() {
         // Get the animator
         animator = GetComponent<Animator>();
 
-        if (lastShieldLevel > 0)
-        {
+        if (lastShieldLevel > 0) {
             shieldLevel = lastShieldLevel;
             updateShieldUi();
         }
-        if (lastLife > 0)
-        {
+        if (lastLife > MAX_LIFE) {
+            nbLife = MAX_LIFE;
+        } else if (lastLife > 0) {
             nbLife = lastLife;
+        } else {
+            lastLife = nbLife;
         }
-        if (lastWeaponBonus != null)
-        {
+        if (lastWeaponBonus != null) {
             changeWeapon(null, lastWeaponBonus);
+        } else {
+            lastWeapon = "";
+            lastWeaponUpgraded = false;
+            changeWeapon(primaryBonus);
         }
 
         // Update lifes UI
         Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
-        for (int i = 1; i <= lifesUI.Length - nbLife; i++)
-        {
+        for (int i = 1; i <= lifesUI.Length - nbLife; i++) {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
 
-        foreach (Image life in lifesUI)
-        {
+        foreach (Image life in lifesUI) {
             life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
         }
         shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Time.timeScale != 0)
-        {
+
+    // Update is called once per frame
+    void Update() {
+        if (Time.timeScale != 0) {
             // Retrieve axis information
             float inputX = Input.GetAxis("Horizontal");
             float inputY = Input.GetAxis("Vertical");
 
             // Handle Mouse
-            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
-            {
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
                 Vector3 cursorPosition = Input.mousePosition;
                 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
                 cursorPosition.y += 0.5f;
                 transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
             }
             // Handle touch screen : Look for all fingers
-            for (int i = 0; i < Input.touchCount; i++)
-            {
+            for (int i = 0; i < Input.touchCount; i++) {
                 Vector3 cursorPosition = Input.GetTouch(i).position;
                 // Touch are screens location. Convert to world
                 Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
@@ -99,14 +102,11 @@ public class PlayerScript : MonoBehaviour {
         shoot |= Input.GetButton("Fire2");
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        if (shoot)
-        {
+        if (shoot) {
             WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
-            foreach (WeaponScript weapon in weapons)
-            {
+            foreach (WeaponScript weapon in weapons) {
                 // false because the player is not an enemy
-                if (weapon.enabled && weapon.Attack(false))
-                {
+                if (weapon.enabled && weapon.Attack(false)) {
                     SoundEffectsHelper.Instance.MakePlayerShotSound();
                 }
             }
@@ -126,15 +126,12 @@ public class PlayerScript : MonoBehaviour {
         );
 
         // Handle escape and return button
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
+        if (Input.GetKeyUp(KeyCode.Escape)) {
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
     }
 
-
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         // Get the component and store the reference
         if (rigidbodyComponent == null) rigidbodyComponent = GetComponent<Rigidbody2D>();
 
@@ -142,29 +139,23 @@ public class PlayerScript : MonoBehaviour {
         rigidbodyComponent.velocity = movement;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
+    void OnCollisionEnter2D(Collision2D collision) {
         int damagePlayer = 0;
         // Ignore collision when player is invincible
         Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), isInvincible);
-        if (!isInvincible)
-        {
+        if (!isInvincible) {
             // Collision with enemy
             EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript>();
-            if (enemy != null && collision.gameObject.GetComponent<BossScript>() == null)
-            {
+            if (enemy != null && collision.gameObject.GetComponent<BossScript>() == null) {
                 // Kill the enemy
                 HealthScript enemyHealth = enemy.GetComponent<HealthScript>();
-                if (enemyHealth != null)
-                {
+                if (enemyHealth != null) {
                     damagePlayer = enemyHealth.hp / 3;
-                    if (shieldLevel + 1 >= damagePlayer)
-                    {
+                    if (shieldLevel + 1 >= damagePlayer) {
                         enemyHealth.Damage(enemyHealth.hp); // kill enemy
                     }
                 }
-                if (damagePlayer < 1)
-                {
+                if (damagePlayer < 1) {
                     damagePlayer = 1;
                 }
             }
@@ -172,20 +163,17 @@ public class PlayerScript : MonoBehaviour {
 
         // Is this a bonus?
         CollectableScript collectable = collision.gameObject.GetComponentInChildren<CollectableScript>();
-        if (collectable != null)
-        {
+        if (collectable != null) {
             // Is this a shield bonus?
             ShieldScript shield = collision.gameObject.GetComponent<ShieldScript>();
-            if (shield != null)
-            {
+            if (shield != null) {
                 shieldLevel = shield.shieldLevel;
                 lastShieldLevel = shieldLevel;
                 updateShieldUi();
                 updateLifeUi(false);
                 SoundEffectsHelper.Instance.MakeShieldSound(true);
                 Destroy(shield.gameObject); // Remember to always target the game object, otherwise you will just remove the script
-            } else
-            {
+            } else {
                 SoundEffectsHelper.Instance.MakePickupSound();
             }
             // Is this a weapon bonus?
@@ -196,64 +184,75 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Damage the player if necessery
-        if (this.takeDamage(damagePlayer))
-        {
+        if (this.takeDamage(damagePlayer)) {
             GetComponent<HealthScript>().Damage(1);
         }
-        
+
     }
 
-    private void changeWeapon(GameObject gameObject)
-    {
+    private void changeWeapon(GameObject gameObject) {
         changeWeapon(gameObject, null);
     }
 
-    private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons)
-    {
+    private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons) {
         WeaponScript[] bonusWeapons = otherWeapons;
-        if (bonusWeapons == null)
-        {
+        if (bonusWeapons == null) {
             bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
         }
         // handle bonus
-        if (bonusWeapons != null && bonusWeapons.Length > 0)
-        {
+        if (bonusWeapons != null && bonusWeapons.Length > 0) {
+            bool upgraded = false;
+            if (lastWeaponUpgraded == true || (gameObject != null && gameObject.tag == lastWeapon)) {
+                // upgrade weapon
+                GameHelper.Instance.upgradeWeapon(lastWeapon);
+                upgraded = true;
+                lastWeaponUpgraded = true;
+            }
             lastWeaponBonus = bonusWeapons;
             WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
-            foreach (WeaponScript weapon in weapons)
-            {
+            foreach (WeaponScript weapon in weapons) {
                 weapon.enabled = false;
             }
-            for (int i = 0; i < bonusWeapons.Length; i++)
-            {
+            for (int i = 0; i < bonusWeapons.Length; i++) {
                 //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
-                weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
-                weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+               if (upgraded) {
+                    // need to upgrade weapon
+                    if (bonusWeapons[i].upgradeShotPrefab != null) {
+                        weapons[i].shotPrefab = bonusWeapons[i].upgradeShotPrefab;
+                    } else {
+                        weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
+                    }
+                    weapons[i].shootingRate = bonusWeapons[i].upgradeShootingRate;
+                    weapons[i].enabled = true;
+                } else {
+                    // normal weapon
+                    weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
+                    weapons[i].enabled = bonusWeapons[i].upgrade == false;
+                    weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+                }
                 weapons[i].setExpandable(false);
-                weapons[i].enabled = true;
             }
+            if (gameObject != null) lastWeapon = gameObject.tag;
         }
     }
 
-    public bool takeDamage(int damage)
-    {
-        if (!isInvincible && damage > 0)
-        {
+    public bool takeDamage(int damage) {
+        if (!isInvincible && damage > 0) {
             nbHitTaken++;
             int realDamage = damage - shieldLevel;
-            if (shieldLevel > 0)
-            {
+            if (shieldLevel > 0) {
                 shieldLevel -= damage;
                 lastShieldLevel = shieldLevel;
                 updateShieldUi();
             }
             if (realDamage > 0) {
                 Handheld.Vibrate();
+                lastWeapon = "";
+                lastWeaponUpgraded = false;
                 changeWeapon(primaryBonus);
                 nbLife--;
                 lastLife = nbLife;
-                if (nbLife > 0)
-                {
+                if (nbLife > 0) {
                     // Update Ui
                     animator.SetBool("loseLife", true);
                     updateLifeUi(true);
@@ -262,9 +261,7 @@ public class PlayerScript : MonoBehaviour {
                     Invoke("disableInvincible", 2f); // 2 sec
                     // Play sound
                     SoundEffectsHelper.Instance.MakeLoseLifeSound();
-                }
-                else
-                {
+                } else {
                     // kill player
                     return true;
                 }
@@ -273,18 +270,14 @@ public class PlayerScript : MonoBehaviour {
         return false;
     }
 
-    private void updateShieldUi()
-    {
+    private void updateShieldUi() {
         if (shieldLevel < 0) shieldLevel = 0;
-        animator.SetInteger("shieldLevel", shieldLevel<=3 ? shieldLevel : 3);
+        animator.SetInteger("shieldLevel", shieldLevel <= 3 ? shieldLevel : 3);
         shieldUi.SetActive(shieldLevel > 0);
-        if (shieldUi.activeSelf)
-        {
+        if (shieldUi.activeSelf) {
             Image[] shields = shieldUi.GetComponentsInChildren<Image>();
-            for (int i = 1; i < shields.Length; i++)
-            {
-                if (shieldLevel == i)
-                {
+            for (int i = 1; i < shields.Length; i++) {
+                if (shieldLevel == i) {
                     shields[i].enabled = true;
                 } else {
                     shields[i].enabled = false;
@@ -293,30 +286,24 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
-    private void updateLifeUi(bool loseLife)
-    {
+    private void updateLifeUi(bool loseLife) {
         // Update life UI
         Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
-        for (int i = 1; i <= lifesUI.Length - nbLife; i++)
-        {
+        for (int i = 1; i <= lifesUI.Length - nbLife; i++) {
             Image lifeUI = lifesUI[lifesUI.Length - i];
             Animator lifeAnimator = lifeUI.GetComponent<Animator>();
-            if (loseLife)
-            {
+            if (loseLife) {
                 lifeAnimator.SetBool("loseLife", true);
-            }
-            else if (lifeAnimator.GetBool("loseLife"))
-            {
+            } else if (lifeAnimator.GetBool("loseLife")) {
                 lifeAnimator.SetBool("loseLife", false);
                 lifeUI.enabled = false;
             }
 
         }
-        
+
     }
 
-    void disableInvincible()
-    {
+    void disableInvincible() {
         animator.SetBool("loseLife", false);
         updateShieldUi();
         updateLifeUi(false);
@@ -324,14 +311,20 @@ public class PlayerScript : MonoBehaviour {
         SoundEffectsHelper.Instance.MakeShieldSound(false);
     }
 
-    void OnDestroy()
-    {
+    void OnDestroy() {
         // Game Over.
         var gameOver = FindObjectOfType<GameOverScript>();
-        if (gameOver != null)
-        {
+        if (gameOver != null) {
             SoundEffectsHelper.Instance.MakeGameOverSound();
             gameOver.ShowButtons(false);
         }
+    }
+    
+    internal static void reset() {
+        PlayerScript.lastShieldLevel = 0;
+        PlayerScript.lastLife = 0;
+        PlayerScript.lastWeaponBonus = null;
+        PlayerScript.lastWeapon = "";
+        PlayerScript.lastWeaponUpgraded = false;
     }
 }

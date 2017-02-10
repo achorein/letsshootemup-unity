@@ -51,12 +51,12 @@ public class EnemyScript : MonoBehaviour {
     void Update() {
         if (rendererComponent.IsVisibleFrom(Camera.main)) {
             // enable weapons when ennemy just spawned
-            if (!spawn) {
+            /*if (!spawn) {
                 foreach (WeaponScript weapon in weapons) {
                     weapon.enabled = true;
                 }
                 spawn = true;
-            }
+            }*/
 
             if (moveThenShoot) {
                 // AI

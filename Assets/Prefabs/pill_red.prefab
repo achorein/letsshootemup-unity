@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 114484925421837450}
   m_Layer: 8
   m_Name: pill_red
-  m_TagString: Untagged
+  m_TagString: weaponRed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,6 +119,9 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 2884c0c07ab22e349b126e05f225ce0a, type: 2}
   shootingRate: 0.4
   rotateSpeed: 0
+  upgrade: 0
+  upgradeShootingRate: 0.25
+  upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
   forceAutoFire: 0

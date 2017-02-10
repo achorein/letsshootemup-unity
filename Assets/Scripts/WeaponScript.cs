@@ -8,17 +8,23 @@ public class WeaponScript : MonoBehaviour {
     // 1 - Designer variables
     //--------------------------------
 
+    [Header("Normal weapon")]
     /// <summary>
     /// Projectile prefab for shooting
     /// </summary>
     public Transform shotPrefab;
-
     /// <summary>
     /// Cooldown in seconds between two shots
     /// </summary>
-    /// 
     public float shootingRate = 0.25f;
     public float rotateSpeed = 0;
+
+    [Header("Upgradable weapon")]
+    public bool upgrade = false;
+    public float upgradeShootingRate = 0.25f;
+    public Transform upgradeShotPrefab;
+
+    [Header("Other")]
     public bool tryRotateShoot = false;
 
     [Header("IA behavior")]
