@@ -5,13 +5,25 @@ using GooglePlayGames;
 
 public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
-    public Button soundButton, rightButton, leftButton, buyButton, startButton;
+    public Button soundButton, rightButton, leftButton, buyButton, startButton, marketButton;
     public Image playerShip;
-    public Text scoreText, goldText;
+    public Text scoreText, goldText, marketGoldText;
 
     public Transform hfPrefab, hfContentView, lbContentView;
+    public GameObject mainPanel;
 
     private int menuPos = 0;
+
+    public TouchGesture.GestureSettings GestureSetting;
+    private TouchGesture touch;
+
+    public void Start() {
+        //touch = new TouchGesture(this.GestureSetting);
+        //StartCoroutine(touch.CheckHorizontalSwipes(
+        //    onLeftSwipe: () => { left(); },
+        //    onRightSwipe: () => { right(); }
+        //    ));
+    }
 
     public void Awake() {
         Time.timeScale = 1;
@@ -34,18 +46,22 @@ public class MenuScript : CommunScript {
     /// Click right button on main screen
     /// </summary>
     public void right() {
-        menuPos++;
-        startButton.GetComponent<Animator>().enabled = false;
-        loadMenuPos();
+        if (mainPanel.activeSelf) {
+            menuPos++;
+            startButton.GetComponent<Animator>().enabled = false;
+            loadMenuPos();
+        }
     }
 
     /// <summary>
     /// Click left button on main screen
     /// </summary>
     public void left() {
-        menuPos--;
-        startButton.GetComponent<Animator>().enabled = false;
-        loadMenuPos();
+        if (mainPanel.activeSelf) {
+            menuPos--;
+            startButton.GetComponent<Animator>().enabled = false;
+            loadMenuPos();
+        }
     }
 
     /// <summary>
@@ -54,6 +70,7 @@ public class MenuScript : CommunScript {
     private void loadMenuPos() {
         playerShip.sprite = Resources.Load<Sprite>(ships[menuPos].sprite);
         if (menuPos != 0 && !playerPref.ships.Contains(menuPos)) {
+            // don't have this ship
             buyButton.gameObject.SetActive(true);
             buyButton.GetComponentInChildren<Text>().text = ships[menuPos].price.ToString();
             buyButton.interactable = playerPref.gold >= ships[menuPos].price;
@@ -61,6 +78,7 @@ public class MenuScript : CommunScript {
             buyButton.gameObject.SetActive(false);
         }
         startButton.gameObject.SetActive(!buyButton.gameObject.activeSelf);
+        marketButton.gameObject.SetActive(buyButton.gameObject.activeSelf);
 
         rightButton.gameObject.SetActive(menuPos < ships.Count - 1);
         leftButton.gameObject.SetActive(menuPos != 0);
@@ -88,20 +106,16 @@ public class MenuScript : CommunScript {
         playerPref.currentShip = menuPos;
         save();
 
-        Social.localUser.Authenticate((bool authSuccess) => {
-            if (playerPref.currentMaxLevel > 1) {
-                panel.SetActive(true);
-                Button[] levelButtons = panel.GetComponentsInChildren<Button>();
-                for (int i = 0; i < levelButtons.Length - 1; i++) {
-                    levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
-                    //var lockImage = levelButtons[i].GetComponentInChildren<Image>();
-                    //lockImage.gameObject.SetActive(playerPref.currentMaxLevel >= i + 1);
-                }
-                //ShowAd();
-            } else {
-                StartLevel(1);
+        if (playerPref.currentMaxLevel > 1) {
+            panel.SetActive(true);
+            Button[] levelButtons = panel.GetComponentsInChildren<Button>();
+            for (int i = 0; i < levelButtons.Length - 1; i++) {
+                levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
             }
-        });
+            //ShowAd();
+        } else {
+            StartLevel(1);
+        }
     }
 
     /// <summary>
@@ -109,10 +123,9 @@ public class MenuScript : CommunScript {
     /// </summary>
     /// <param name="level"></param>
     public void StartLevel(int level) {
-        GameHelper.reset();
+        GameHelper.Instance.reset();
         LoadingScript.loadLevel = level;
         SceneManager.LoadScene("Loading", LoadSceneMode.Single);
-        //SceneManager.LoadScene("Stage" + level, LoadSceneMode.Single);
     }
 
     /// <summary>
@@ -147,30 +160,101 @@ public class MenuScript : CommunScript {
     /// <summary>
     /// 
     /// </summary>
+    public void loadHelpPanel() {
+        
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void loadMarketPanel() {
+        marketGoldText.text = playerPref.gold.ToString();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void marketAddGold(GameObject item) {
+        var texts = item.GetComponentsInChildren<Text>();
+
+        int gold = int.Parse(texts[0].text.Substring(1));
+        float price = float.Parse(texts[1].text.TrimEnd('€'));
+        print("gold:" + gold);
+        print("price:" + price);
+        playerPref.gold += gold;
+        save();
+        goldText.text = " " + playerPref.gold;
+        marketGoldText.text = " " + playerPref.gold;
+        loadMenuPos();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void loadHFPanel() {
         foreach (Transform child in hfContentView.transform) {
             Destroy(child.gameObject);
         }
         hfContentView.DetachChildren();
-
+        // Level wins
+        foreach (HF hf in hfs[HF.TYPE_HF.Level]) {
+            var newHf = Instantiate(hfPrefab) as Transform;
+            var hfTexts = newHf.GetComponentsInChildren<Text>();
+            hfTexts[0].text = hf.description;
+            hfTexts[1].text = " ";
+            hfTexts[2].text = "+" + hf.gold;
+            if ((!hf.special && playerPref.currentMaxLevel < hf.nb)
+                || (hf.special && playerPref.currentLevelCombo < hf.nb)) { // need to be disabled ?
+                newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
+            newHf.SetParent(hfContentView.transform, false);
+        }
+        // Weapon upgrade
+        foreach (HF hf in hfs[HF.TYPE_HF.Weapon]) {
+            var newHf = Instantiate(hfPrefab) as Transform;
+            var hfTexts = newHf.GetComponentsInChildren<Text>();
+            hfTexts[0].text = hf.description;
+            hfTexts[1].text = " ";
+            hfTexts[2].text = "+" + hf.gold;
+            if (playerPref.currentWeaponUpgrade < hf.nb) { // need to be disabled ?
+                newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
+            newHf.SetParent(hfContentView.transform, false);
+        }
+        // Untouchable
+        foreach (HF hf in hfs[HF.TYPE_HF.Other]) {
+            var newHf = Instantiate(hfPrefab) as Transform;
+            var hfTexts = newHf.GetComponentsInChildren<Text>();
+            hfTexts[0].text = hf.description;
+            hfTexts[1].text = " ";
+            hfTexts[2].text = "+" + hf.gold;
+            if (playerPref.currentUntouchable < hf.nb) { // need to be disabled ?
+                newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
+            newHf.SetParent(hfContentView.transform, false);
+        }
+        // kills
         foreach (HF hf in hfs[HF.TYPE_HF.Kill]) {
             var newHf = Instantiate(hfPrefab) as Transform;
             var hfTexts = newHf.GetComponentsInChildren<Text>();
             hfTexts[0].text = hf.description;
             hfTexts[1].text = " " + ((playerPref.kills > hf.nb) ? hf.nb : playerPref.kills) + "/" + hf.nb;
             hfTexts[2].text = "+" + hf.gold;
-            if (playerPref.kills < hf.nb)
+            if (playerPref.kills < hf.nb) { // need to be disabled ?
                 newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
             newHf.SetParent(hfContentView.transform, false);
         }
+        // bonus
         foreach (HF hf in hfs[HF.TYPE_HF.Bonus]) {
             var newHf = Instantiate(hfPrefab) as Transform;
             var hfTexts = newHf.GetComponentsInChildren<Text>();
             hfTexts[0].text = hf.description;
             hfTexts[1].text = " " + ((playerPref.bonus > hf.nb) ? hf.nb : playerPref.bonus) + "/" + hf.nb;
             hfTexts[2].text = "+" + hf.gold;
-            if (playerPref.bonus < hf.nb)
+            if (playerPref.bonus < hf.nb) { // need to be disabled ?
                 newHf.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
             newHf.SetParent(hfContentView.transform, false);
         }
     }
@@ -190,26 +274,16 @@ public class MenuScript : CommunScript {
     public void ResetGame() {
         playerPref = new PlayerPref();
         save();
+        soundButton.GetComponent<Image>().sprite = normalSound;
         Awake();
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public void goldHack() {
-        playerPref.gold += 1000;
-        save();
-        goldText.text = " " + playerPref.gold;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     public void unlockLevels() {
-        playerPref.currentMaxLevel = 5;
+        playerPref.currentMaxLevel = 6;
         save();
-        //Camera.main.backgroundColor = new Color(255, 0, 0, 128);
-        //Invoke("cleanCamera", 0.5f);
     }
 
     void Update() {

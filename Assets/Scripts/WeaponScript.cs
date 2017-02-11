@@ -39,7 +39,7 @@ public class WeaponScript : MonoBehaviour {
     private float shootCooldown;
 
     // Expandable laser
-    private bool expandable = false;
+    internal bool expandable = false;
     private float offsetY = 0.44f;
     private float maxLaserDistance = 10f;
     private float timer = 0f;
@@ -204,10 +204,6 @@ public class WeaponScript : MonoBehaviour {
                 expandable = false;
             }
         }
-    }
-
-    public void setExpandable(bool value) {
-        expandable = value;
     }
 
 }

@@ -194,6 +194,11 @@ public class PlayerScript : MonoBehaviour {
         changeWeapon(gameObject, null);
     }
 
+    /// <summary>
+    /// Load player weapon (with upgrade)
+    /// </summary>
+    /// <param name="gameObject">prefab instance of any bonus</param>
+    /// <param name="otherWeapons">old weapon to reuse</param>
     private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons) {
         WeaponScript[] bonusWeapons = otherWeapons;
         if (bonusWeapons == null) {
@@ -202,11 +207,15 @@ public class PlayerScript : MonoBehaviour {
         // handle bonus
         if (bonusWeapons != null && bonusWeapons.Length > 0) {
             bool upgraded = false;
-            if (lastWeaponUpgraded == true || (gameObject != null && gameObject.tag == lastWeapon)) {
+            if ((gameObject != null && gameObject.tag == lastWeapon) // take same weapon bonus
+                || (otherWeapons != null && lastWeaponUpgraded == true)) // upgrade from older weapon
+            {
                 // upgrade weapon
                 GameHelper.Instance.upgradeWeapon(lastWeapon);
-                upgraded = true;
-                lastWeaponUpgraded = true;
+                upgraded = true; // upgrade now
+                lastWeaponUpgraded = true; // upgrade on next level
+            } else {                
+                lastWeaponUpgraded = false; // don't upgrade on next level
             }
             lastWeaponBonus = bonusWeapons;
             WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
@@ -214,7 +223,6 @@ public class PlayerScript : MonoBehaviour {
                 weapon.enabled = false;
             }
             for (int i = 0; i < bonusWeapons.Length; i++) {
-                //weapons[i].transform.rotation = bonusWeapons[i].transform.rotation;
                if (upgraded) {
                     // need to upgrade weapon
                     if (bonusWeapons[i].upgradeShotPrefab != null) {
@@ -230,7 +238,7 @@ public class PlayerScript : MonoBehaviour {
                     weapons[i].enabled = bonusWeapons[i].upgrade == false;
                     weapons[i].shootingRate = bonusWeapons[i].shootingRate;
                 }
-                weapons[i].setExpandable(false);
+                weapons[i].expandable = bonusWeapons[i].expandable;
             }
             if (gameObject != null) lastWeapon = gameObject.tag;
         }
@@ -314,7 +322,7 @@ public class PlayerScript : MonoBehaviour {
     void OnDestroy() {
         // Game Over.
         var gameOver = FindObjectOfType<GameOverScript>();
-        if (gameOver != null) {
+        if (gameOver != null && gameOver.ready) {
             SoundEffectsHelper.Instance.MakeGameOverSound();
             gameOver.ShowButtons(false);
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameHelper : CommunScript {
@@ -19,7 +14,7 @@ public class GameHelper : CommunScript {
     /// <summary>
     /// number of levels wins consecutively 
     /// </summary>
-    private static int nbLevel = 0;
+    private static int comboLevel = 0;
 
     void Awake() {
         // Register the singleton
@@ -75,13 +70,16 @@ public class GameHelper : CommunScript {
     }
 
     internal void levelCompleted(int level, int nbTaken) {
-        nbLevel++;
+        comboLevel++;
+        if (comboLevel > playerPref.currentLevelCombo) {
+            playerPref.currentLevelCombo = comboLevel;
+        }
         if (level + 1 > GameHelper.Instance.playerPref.currentMaxLevel) {
-            GameHelper.Instance.playerPref.currentMaxLevel = level + 1;
+            playerPref.currentMaxLevel = level + 1;
         }
         foreach (HF hf in hfs[HF.TYPE_HF.Level]) {
             if (hf.nb == level) {
-                if (hf.special == false || nbLevel == hf.nb) {
+                if (hf.special == false || comboLevel == hf.nb) {
                     // show achievement in Google Games
                     if (Social.localUser.authenticated) {
                         Social.ReportProgress(hf.id, 100.0f, (bool success) => { });
@@ -91,6 +89,7 @@ public class GameHelper : CommunScript {
         }
         // untouchable achievement
         if (nbTaken == 0 && Social.localUser.authenticated) {
+            playerPref.currentUntouchable++;
             Social.ReportProgress(hfs[HF.TYPE_HF.Other][0].id, 100.0f, (bool success) => { });
         }
         // gain +1 life 
@@ -153,9 +152,11 @@ public class GameHelper : CommunScript {
     /// <summary>
     /// Reset to initial state (score 0, etc)
     /// </summary>
-    public static void reset() {
+    public void reset() {
         score = 0;
-        nbLevel = 0;
+        comboLevel = 0;
+        PlayerScript.reset();
+        resetAd();
     }
 
     internal void upgradeWeapon(string lastWeaponName) {

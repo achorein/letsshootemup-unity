@@ -707,7 +707,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &395906138
 Transform:
@@ -771,15 +771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dad3649103637b4d97c80b7294e2516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPref:
-    ships: 
-    currentShip: 0
-    currentMaxLevel: 1
-    gold: 0
-    bestScore: 0
-    kills: 0
-    bonus: 0
-    volume: 1
   scoreText: {fileID: 1170601375}
   achievementPanel: {fileID: 704613864}
 --- !u!1001 &462588649
@@ -1606,7 +1597,12 @@ Prefab:
       objectReference: {fileID: 1941012259}
     - target: {fileID: 1091173091221620, guid: b51b7602108c27341aa03b7c9bfc7d3c, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114353812594951176, guid: b51b7602108c27341aa03b7c9bfc7d3c,
+        type: 2}
+      propertyPath: shootingRate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b51b7602108c27341aa03b7c9bfc7d3c, type: 2}

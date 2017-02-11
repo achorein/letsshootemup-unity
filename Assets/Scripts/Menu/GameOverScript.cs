@@ -17,6 +17,7 @@ public class GameOverScript : CommunScript {
 
     public int currentLevel = 1;
     private const int MAX_LEVEL = 5;
+    internal bool ready = false; // mutex...
 
     void Awake() {
         // Get the buttons
@@ -26,6 +27,7 @@ public class GameOverScript : CommunScript {
 
         // Disable them
         HideButtons();
+        ready = true;
     }
 
     /// <summary>
@@ -43,42 +45,48 @@ public class GameOverScript : CommunScript {
     public void ShowButtons(bool win) {
         // game pause
         Time.timeScale = 0;
-        if (player == null || winText == null)
+        if (player == null || winText == null || !ready) {
             return;
+        }
+        ready = false;
         resetPanel(true);
-
         // main text
         loseText.gameObject.SetActive(!win);
         winText.gameObject.SetActive(win);
-
         // update UI
         int score = GameHelper.Instance.getScore();
-        scoreText.text = score.ToString();
         trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
 
+        // Compute bonus / score
         int bonusGold = (score / 100);
         goldText.text = " +" + bonusGold;
 
         if (win) {
+            // handle achievments and playerPref
             GameHelper.Instance.levelCompleted(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
             
+            // show achievment panel
             if (player.GetComponent<PlayerScript>().nbHitTaken == 0) {
                 achivementImage.SetActive(true);
                 bonusGold += 10;
+                score += 100;
             }
-
+            // show "next level" button
             nextButton.gameObject.SetActive(currentLevel < MAX_LEVEL);
         }
+        // show "restart" button when lose
         restartButton.gameObject.SetActive(!win);
 
-        // update playerpref
-        GameHelper.Instance.playerPref.gold += bonusGold;
-        GameHelper.Instance.saveScore(score);
-        GameHelper.Instance.save();
+        // Update Score UI
+        scoreText.text = score.ToString();
+
+        // update playerpref and leaderboard
+        GameHelper.Instance.saveScore(score, bonusGold);
         if (!win) {
-            // reset score if game over
-            GameHelper.reset();
+            // reset score and player if game over
+            GameHelper.Instance.reset();
         }
+        // Loading Ad
         LoadInterstitialAd();
     }
 
@@ -86,8 +94,8 @@ public class GameOverScript : CommunScript {
     /// 
     /// </summary>
     public void ExitToMenu() {
-        resetAd();
-        PlayerScript.reset();
+        print("RESET FROM EXIT MENU");
+        GameHelper.Instance.reset();
         // Reload the level
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
