@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GooglePlayGames;
 using UnityEngine.Purchasing;
+using System;
 
 public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
@@ -12,6 +13,7 @@ public class MenuScript : CommunScript {
 
     public Transform hfPrefab, hfContentView, lbContentView;
     public GameObject mainPanel, messageInfo;
+    public Toggle vibrationToggle;
 
     private static bool firstStart = true;
     private int menuPos = 0;
@@ -80,6 +82,7 @@ public class MenuScript : CommunScript {
             if (i <= ships[menuPos].speed) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
+                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -87,6 +90,7 @@ public class MenuScript : CommunScript {
             if (i-3 <= ships[menuPos].hp) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
+                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -94,6 +98,7 @@ public class MenuScript : CommunScript {
             if (i-6 <= ships[menuPos].damage) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
+                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -192,6 +197,10 @@ public class MenuScript : CommunScript {
     /// </summary>
     public void loadHelpPanel() {
         
+    }
+
+    public void loadSetupPanel() {
+        vibrationToggle.isOn = playerPref.vibrationOn;
     }
 
     /// <summary>
@@ -334,7 +343,7 @@ public class MenuScript : CommunScript {
         save();
     }
 
-    public void toggleVibration(bool isOn) {
+    public void toggleVibration(Boolean isOn) {
         playerPref.vibrationOn = isOn;
         save();
     }

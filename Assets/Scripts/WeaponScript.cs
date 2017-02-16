@@ -36,6 +36,7 @@ public class WeaponScript : MonoBehaviour {
     //--------------------------------
     // 2 - Cooldown
     //--------------------------------
+    internal bool upgraded = false;
     private float shootCooldown;
 
     // Expandable laser
@@ -100,6 +101,10 @@ public class WeaponScript : MonoBehaviour {
             if (shot.isExpandable()) {
                 expandable = true;
                 timer = timerMax;
+                float scale = 1;
+                if (!upgraded) {
+                    scale = 0.5f;
+                }
 
                 startSpriteWidth = shot.laserStart.GetComponent<Renderer>().bounds.size.x;
                 InstantiateLaserPart(ref start, shot.laserStart);
@@ -122,15 +127,26 @@ public class WeaponScript : MonoBehaviour {
                 } else if (end != null)
                     Destroy(end);
 
+                start.transform.localScale = new Vector3(
+                    scale,
+                    start.transform.localScale.y,
+                    start.transform.localScale.z
+                );
                 middle.transform.localScale = new Vector3(
-                    middle.transform.localScale.x,
+                    scale, //middle.transform.localScale.x,
                     100 * (currentLaserDistance - startSpriteWidth),
                     middle.transform.localScale.z
                 );
                 middle.transform.localPosition = new Vector3((currentLaserDistance / 2f) + 0.15f, 0f);
 
-                if (end != null)
+                if (end != null) {
                     end.transform.localPosition = new Vector2(currentLaserDistance, 0f);
+                    end.transform.localScale = new Vector3(
+                        scale,
+                        end.transform.localScale.y,
+                        end.transform.localScale.z
+                    );
+                }
                 Destroy(shotTransform.gameObject);
                 return false; // no shoot sound
             } else {

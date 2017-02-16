@@ -1339,6 +1339,7 @@ MonoBehaviour:
   lbContentView: {fileID: 1745563737}
   mainPanel: {fileID: 2013033205}
   messageInfo: {fileID: 1117548675}
+  vibrationToggle: {fileID: 1070935263}
   GestureSetting:
     minSwipeDist: 100
     maxSwipeTime: 10
@@ -1368,6 +1369,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 0}
   achievementPanel: {fileID: 0}
+  player: {fileID: 0}
+  bombUi: {fileID: 0}
 --- !u!1001 &267005698
 Prefab:
   m_ObjectHideFlags: 0
@@ -8275,14 +8278,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 263116719}
         m_MethodName: toggleVibration
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -13721,7 +13724,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Vribration
+  m_Text: Vibration
 --- !u!222 &1970494779
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14999,6 +15002,17 @@ MonoBehaviour:
       - m_Target: {fileID: 392740862}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 263116719}
+        m_MethodName: loadSetupPanel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

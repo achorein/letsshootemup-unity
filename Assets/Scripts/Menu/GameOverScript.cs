@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GoogleMobileAds.Api;
+using System.Collections;
 
 public class GameOverScript : CommunScript {
 
@@ -54,16 +55,16 @@ public class GameOverScript : CommunScript {
         loseText.gameObject.SetActive(!win);
         winText.gameObject.SetActive(win);
         // update UI
-        int score = GameHelper.Instance.getScore();
+        int score = GameHelper.Instance.getScore(); //global
         trophyText.text = GameHelper.Instance.playerPref.bestScore.ToString();
 
         // Compute bonus / score
-        int bonusGold = (score / 100);
+        int bonusGold = GameHelper.Instance.computeBonusGoldLevelCompleted();
         goldText.text = " +" + bonusGold;
 
         if (win) {
             // handle achievments and playerPref
-            GameHelper.Instance.levelCompleted(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
+            GameHelper.Instance.levelCompletedWithSuccess(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
             
             // show achievment panel
             if (player.GetComponent<PlayerScript>().nbHitTaken == 0) {
@@ -90,14 +91,26 @@ public class GameOverScript : CommunScript {
             GameHelper.Instance.reset();
         }
         // Loading Ad
-        //LoadInterstitialAd();
+        if (GameHelper.Instance.playerPref.nbGameFinished > 2) {
+            float waitTime = 3f;
+            if (GameHelper.Instance.playerPref.nbGameFinished > 5) {
+                waitTime = 1.5f;
+            } else if (GameHelper.Instance.playerPref.nbGameFinished > 10) {
+                waitTime = 1f;
+            }
+            StartCoroutine(waitForAd(waitTime));
+        }
+    }
+
+    private IEnumerator waitForAd(float delay) {
+        yield return StartCoroutine(WaitForRealTime(delay)); // timescale=0, can't use WaitForTime here
+        LoadInterstitialAd();
     }
 
     /// <summary>
     /// 
     /// </summary>
     public void ExitToMenu() {
-        print("RESET FROM EXIT MENU");
         GameHelper.Instance.reset();
         // Reload the level
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);

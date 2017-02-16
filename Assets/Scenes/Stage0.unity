@@ -430,7 +430,8 @@ MonoBehaviour:
     type: 2}
   fireEffect: {fileID: 198058430720029336, guid: b0c81b5bcc15fa14586ba58dee97e46b,
     type: 2}
-  bombEffect: {fileID: 0}
+  bombEffect: {fileID: 198146534386538126, guid: 238cfe6f9aa74c54b84eabf332828a28,
+    type: 2}
 --- !u!114 &395906140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +469,18 @@ MonoBehaviour:
   scoreText: {fileID: 1170601376}
   achievementPanel: {fileID: 1170601375}
   player: {fileID: 1941012259}
+  primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
+    type: 2}
   bombUi: {fileID: 1170601377}
+  lifePanel: {fileID: 1553247998}
+  shieldUi: {fileID: 1624044013}
+  bonus:
+  - {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6, type: 2}
+  - {fileID: 1576966372130768, guid: 0c9e9322b14769c4e821fc26c50d175e, type: 2}
+  - {fileID: 1576966372130768, guid: 36cfbd6344aed6f4aa5e6793b3aa8600, type: 2}
+  - {fileID: 1576966372130768, guid: d945e299bc3f19a42985c9537d01d7c3, type: 2}
+  - {fileID: 1109032023059966, guid: f7180145ae1c4194c8f7ec5e27467d83, type: 2}
+  - {fileID: 1109032023059966, guid: 5a9792247209951469c783cdfd01d6e7, type: 2}
 --- !u!114 &395906142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,7 +494,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ennemySpawnTime: 3.5
   decorsSpawnTime: 5
-  bonusSpawnTime: 7
   ennemies:
   - {fileID: 1248513801515950, guid: 7e110116969db2c49b80c91eb448cf33, type: 2}
   - {fileID: 1248513801515950, guid: 4e7b90c1bda272d4fa1c433dbb88621c, type: 2}
@@ -494,17 +505,12 @@ MonoBehaviour:
   decors:
   - {fileID: 1846264801921022, guid: 9ea09038c6d1a9c4db6058f4e0ffe21f, type: 2}
   - {fileID: 1248513801515950, guid: e7f713f30bbc4d144bf92e30705c5202, type: 2}
-  bonus:
-  - {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6, type: 2}
-  - {fileID: 1576966372130768, guid: 0c9e9322b14769c4e821fc26c50d175e, type: 2}
-  - {fileID: 1576966372130768, guid: 36cfbd6344aed6f4aa5e6793b3aa8600, type: 2}
-  - {fileID: 1576966372130768, guid: d945e299bc3f19a42985c9537d01d7c3, type: 2}
-  - {fileID: 1109032023059966, guid: f7180145ae1c4194c8f7ec5e27467d83, type: 2}
-  - {fileID: 1109032023059966, guid: 5a9792247209951469c783cdfd01d6e7, type: 2}
+  - {fileID: 1846264801921022, guid: 9ea09038c6d1a9c4db6058f4e0ffe21f, type: 2}
+  - {fileID: 1248513801515950, guid: e7f713f30bbc4d144bf92e30705c5202, type: 2}
+  - {fileID: 1846264801921022, guid: 0cd10cc3fc870bf4eb0ec529fe062adf, type: 2}
   player: {fileID: 1941012259}
   ennemyParent: {fileID: 592352546}
   decorsParent: {fileID: 1122396815}
-  bonusParent: {fileID: 1995172938}
 --- !u!1001 &462588649
 Prefab:
   m_ObjectHideFlags: 0

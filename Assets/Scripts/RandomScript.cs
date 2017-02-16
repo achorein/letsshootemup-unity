@@ -6,27 +6,23 @@ public class RandomScript : MonoBehaviour {
 
     public float ennemySpawnTime = 3.0f;
     public float decorsSpawnTime = 1.75f;
-    public float bonusSpawnTime = 8.0f;
 
     public GameObject[] ennemies;
     public GameObject[] decors;
-    public GameObject[] bonus;
     
     public GameObject player;
 
     public Transform ennemyParent;
     public Transform decorsParent;
-    public Transform bonusParent;
 
-    private const float SPAWN_MIN_TIME = 1f;
+    private const float SPAWN_MIN_TIME = 0.85f;
     private const float SPAWN_MAX_TIME = 9f;
-    private const float SPAWN_STEP_TIME = 0.04f;
+    private const float SPAWN_STEP_TIME = 0.03f;
     private const float SPAWN_RANDOM_STEP_TIME = SPAWN_MIN_TIME - (SPAWN_STEP_TIME * 10);
 
     // Use this for initialization
     void Start () {
         InvokeRepeating("SpawnDecors", decorsSpawnTime, decorsSpawnTime);
-        InvokeRepeating("SpawnBonus", bonusSpawnTime, bonusSpawnTime);
         // Ennemy
         StartCoroutine(SpawnEnnemy());
     }
@@ -56,10 +52,6 @@ public class RandomScript : MonoBehaviour {
         Spawn(decors).transform.parent = decorsParent;
     }
 
-    void SpawnBonus() {
-        Spawn(bonus).transform.parent = bonusParent;
-    }
-
     GameObject Spawn(GameObject[] objects) {
         Vector3 spawnPosition = getPosition();
         return Instantiate(
@@ -72,8 +64,8 @@ public class RandomScript : MonoBehaviour {
         var dist = 0;
         var leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
         var rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
-        var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
-        var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1.1f, dist)).y;
+        var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1.15f, dist)).y;
+        var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
 
         return new Vector3(
           Random.Range(leftBorder,rightBorder),

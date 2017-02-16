@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,13 @@ public class GameHelper : CommunScript {
 
     public Text scoreText;
     public GameObject achievementPanel;
-    public GameObject player, bombUi;
+    public GameObject player, primaryBonus, bombUi, lifePanel, shieldUi;
 
+    public GameObject[] bonus;
+    internal float bonusChance = 115f;
+    private Dictionary<int, List<GameObject>> bonusMap = new Dictionary<int, List<GameObject>>();
+
+    private int scoreCurrentLevel = 0;
     private static int score = 0;
     /// <summary>
     /// number of levels wins consecutively 
@@ -24,6 +30,15 @@ public class GameHelper : CommunScript {
             Debug.LogError("Multiple instances of GameHelper!");
         }
         Instance = this;
+        if (bonus != null) {
+            foreach (GameObject prefab in bonus) {
+                int key = prefab.GetComponent<CollectableScript>().points;
+                if (!bonusMap.ContainsKey(key)) {
+                    bonusMap.Add(key, new List<GameObject>());
+                }
+                bonusMap[key].Add(prefab);
+            }
+        }
         load();
         Instance.UpdateScore(0);
         resetAd();
@@ -36,8 +51,13 @@ public class GameHelper : CommunScript {
     public void UpdateScore(int points) {
         if (scoreText != null) {
             score += points;
+            scoreCurrentLevel += points;
             scoreText.text = " " + score.ToString();
         }
+    }
+
+    internal int computeBonusGoldLevelCompleted() {
+        return scoreCurrentLevel / 100;
     }
 
     /// <summary>
@@ -71,7 +91,7 @@ public class GameHelper : CommunScript {
         save();
     }
 
-    internal void levelCompleted(int level, int nbTaken) {
+    internal void levelCompletedWithSuccess(int level, int nbTaken) {
         comboLevel++;
         if (comboLevel > playerPref.currentLevelCombo) {
             playerPref.currentLevelCombo = comboLevel;
@@ -142,6 +162,37 @@ public class GameHelper : CommunScript {
     public void cameraHitAnimation() {
         //Camera.main.guiTexture.
     }
+    
+    internal void spawnBonus(float points, Vector3 position) {
+        float probaEnemyDrop = points / bonusChance;
+        float randomEnemyDrop = UnityEngine.Random.value;
+        // print(randomEnemyDrop + " <= " + probaEnemyDrop);
+        if (randomEnemyDrop <= probaEnemyDrop) {
+            float randomBonusQuality = UnityEngine.Random.value;
+            int currentKey = 0, lowerKey = 1000;
+            // find the better available bonus category for this probability
+            foreach (KeyValuePair<int, List<GameObject>> entry in bonusMap) {
+                float probaDrop = 1f - (entry.Key / 100.0f);
+                // print("bonus " + entry.Key + ": " + randomBonusQuality + " <= " + probaDrop);
+                if (randomBonusQuality <= probaDrop && entry.Key > currentKey) {
+                    currentKey = entry.Key;
+                }
+                if (entry.Key < lowerKey) {
+                    lowerKey = entry.Key;
+                }
+            }
+            print(randomBonusQuality + ", key: " + currentKey);
+            // always spawn a bonus (lower bonus available if nothing better)
+            if (currentKey == 0) {
+                currentKey = lowerKey;
+            }
+            List<GameObject> currentBonusList = bonusMap[currentKey];
+            GameObject bonusSpawned = Instantiate(
+               currentBonusList[UnityEngine.Random.Range(0, currentBonusList.Count)],
+               position,
+               Quaternion.identity);
+        }
+    }
 
     /// <summary>
     /// score getter
@@ -156,6 +207,7 @@ public class GameHelper : CommunScript {
     /// </summary>
     public void reset() {
         score = 0;
+        scoreCurrentLevel = 0;
         comboLevel = 0;
         PlayerScript.reset();
         resetAd();

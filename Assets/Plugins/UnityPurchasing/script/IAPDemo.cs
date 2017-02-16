@@ -106,6 +106,8 @@ public class IAPDemo : MonoBehaviour, IStoreListener
 
 		// Now that I have real products, begin showing product purchase history
 		UpdateHistoryUI();
+
+		LogProductDefinitions();
 	}
 
 	/// <summary>
@@ -598,5 +600,17 @@ public class IAPDemo : MonoBehaviour, IStoreListener
 	{
 		var which = right ? "TextR" : "TextL";
 		return GameObject.Find(which).GetComponent<Text>();
+	}
+
+	private void LogProductDefinitions()
+	{
+		var products = m_Controller.products.all;
+		foreach (var product in products) {
+#if UNITY_5_6_OR_NEWER
+			Debug.Log(string.Format("id: {0}\nstore-specific id: {1}\ntype: {2}\nenabled: {3}\n", product.definition.id, product.definition.storeSpecificId, product.definition.type.ToString(), product.definition.enabled ? "enabled" : "disabled"));
+#else
+			Debug.Log(string.Format("id: {0}\nstore-specific id: {1}\ntype: {2}\n", product.definition.id, product.definition.storeSpecificId, product.definition.type.ToString()));
+#endif
+		}
 	}
 }

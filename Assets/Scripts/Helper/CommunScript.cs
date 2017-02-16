@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System.Collections;
 
 public class CommunScript : MonoBehaviour {
 
@@ -109,6 +110,7 @@ public class CommunScript : MonoBehaviour {
             playerPref.bestScore = score;
         }
         playerPref.gold += bonusGold;
+        playerPref.nbGameFinished++;
         save();
     }
 
@@ -240,6 +242,16 @@ public class CommunScript : MonoBehaviour {
         if (bannerView != null) {
             bannerView.Hide();
             bannerView.Destroy();
+        }
+    }
+
+    public static IEnumerator WaitForRealTime(float delay) {
+        while (true) {
+            float pauseEndTime = Time.realtimeSinceStartup + delay;
+            while (Time.realtimeSinceStartup < pauseEndTime) {
+                yield return 0;
+            }
+            break;
         }
     }
 

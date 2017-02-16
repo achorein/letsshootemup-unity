@@ -126,6 +126,7 @@ public class EnemyScript : MonoBehaviour {
 
     void OnDestroy() {
         if (rendererComponent.IsVisibleFrom(Camera.main)) {
+            GameHelper.Instance.spawnBonus(points, this.transform.position);
             GameHelper.Instance.UpdateScore(points);
         }
     }

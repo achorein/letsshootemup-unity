@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1775680475287844}
+  m_IsPrefabParent: 1
+--- !u!1 &1775680475287844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4054266333443184}
+  - component: {fileID: 114588016019379048}
+  - component: {fileID: 114574678343160378}
+  - component: {fileID: 114579600814954028}
+  m_Layer: 0
+  m_Name: Scripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4054266333443184
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775680475287844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114574678343160378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775680475287844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b53970d7a848834aaa7606895579550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionSound: {fileID: 8300000, guid: 8700968306dc43f4881a4c175596f426, type: 3}
+  playerShotSound: {fileID: 8300000, guid: 85b4bd5438e0de544b01f5e5f8762224, type: 3}
+  enemyShotSound: {fileID: 8300000, guid: f56109f6646ff9749ba58ae0bf8e49e2, type: 3}
+  shieldUpSound: {fileID: 8300000, guid: 5b5419d3eacc1ef46ac3015086ffce13, type: 3}
+  shieldDownSound: {fileID: 8300000, guid: 316170f2a19cbc24c9c22039a445c2e7, type: 3}
+  pickupSound: {fileID: 8300000, guid: e12d5c563b2d525489f618868b097f9b, type: 3}
+  bossComing: {fileID: 8300000, guid: 2c9d1424b379fcf4e9bcbf5a8425f774, type: 3}
+  bossTheme: {fileID: 8300000, guid: 5d265d472190591448ca9694635759ed, type: 3}
+  loseSound: {fileID: 8300000, guid: e0b20f06b169f6644a3cc1dcbaa67d50, type: 3}
+  victorySound: {fileID: 8300000, guid: edcb51c0853dbb54593d32611a73b686, type: 3}
+  gameOverSound: {fileID: 8300000, guid: 713a4cecaa9be774ea48060513d34452, type: 3}
+  mainMusic: {fileID: 0}
+--- !u!114 &114579600814954028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775680475287844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dad3649103637b4d97c80b7294e2516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}
+  achievementPanel: {fileID: 0}
+  player: {fileID: 0}
+  primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
+    type: 2}
+  bombUi: {fileID: 0}
+  lifePanel: {fileID: 0}
+  shieldUi: {fileID: 0}
+  bonusChance: 100
+  bonus:
+  - {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6, type: 2}
+  - {fileID: 1576966372130768, guid: 0c9e9322b14769c4e821fc26c50d175e, type: 2}
+  - {fileID: 1576966372130768, guid: 36cfbd6344aed6f4aa5e6793b3aa8600, type: 2}
+  - {fileID: 1109032023059966, guid: f7180145ae1c4194c8f7ec5e27467d83, type: 2}
+--- !u!114 &114588016019379048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775680475287844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758f82ddad602d54f9ee53af6debc4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smokeEffect: {fileID: 198469403967638764, guid: afa172b81a1082d43a31dbaefa9e0085,
+    type: 2}
+  fireEffect: {fileID: 198058430720029336, guid: b0c81b5bcc15fa14586ba58dee97e46b,
+    type: 2}
+  bombEffect: {fileID: 0}

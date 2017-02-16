@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 1f37a4b376ef6d5448ee91776fb3ae53, type: 2}
-  shootingRate: 0.25
+  shootingRate: 0.33
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 1f37a4b376ef6d5448ee91776fb3ae53, type: 2}
-  shootingRate: 0.25
+  shootingRate: 0.33
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 1f37a4b376ef6d5448ee91776fb3ae53, type: 2}
-  shootingRate: 0.25
+  shootingRate: 0.33
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 1f37a4b376ef6d5448ee91776fb3ae53, type: 2}
-  shootingRate: 0.25
+  shootingRate: 0.33
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25

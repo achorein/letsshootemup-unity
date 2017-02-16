@@ -8,8 +8,6 @@ public class PlayerScript : MonoBehaviour {
     private const int MAX_LIFE = 3;
     private const int MAX_BOMB = 1;
 
-    public GameObject lifePanel, shieldUi, primaryBonus;
-
     private Vector2 speed = new Vector2(7, 7);
     private float mouseSpeed = 0.05f;
     private int nbLife = 2;
@@ -58,11 +56,11 @@ public class PlayerScript : MonoBehaviour {
         } else {
             lastWeapon = "";
             lastWeaponUpgraded = false;
-            changeWeapon(primaryBonus);
+            changeWeapon(GameHelper.Instance.primaryBonus);
         }
 
         // Update lifes UI
-        Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
+        Image[] lifesUI = GameHelper.Instance.lifePanel.gameObject.GetComponentsInChildren<Image>();
         for (int i = 1; i <= lifesUI.Length - nbLife; i++) {
             lifesUI[lifesUI.Length - i].enabled = false;
         }
@@ -70,7 +68,7 @@ public class PlayerScript : MonoBehaviour {
         foreach (Image life in lifesUI) {
             life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
         }
-        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
+        GameHelper.Instance.shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
 
         mouseSpeed *= GameHelper.Instance.getCurrentShip().speed;
@@ -257,6 +255,7 @@ public class PlayerScript : MonoBehaviour {
                     weapons[i].shootingRate = bonusWeapons[i].shootingRate;
                 }
                 weapons[i].expandable = bonusWeapons[i].expandable;
+                weapons[i].upgraded = upgraded;
             }
             if (gameObject != null) lastWeapon = gameObject.tag;
         }
@@ -277,7 +276,7 @@ public class PlayerScript : MonoBehaviour {
                 }
                 lastWeapon = "";
                 lastWeaponUpgraded = false;
-                changeWeapon(primaryBonus);
+                changeWeapon(GameHelper.Instance.primaryBonus);
                 nbLife--;
                 lastLife = nbLife;
                 if (nbLife > 0) {
@@ -301,9 +300,9 @@ public class PlayerScript : MonoBehaviour {
     private void updateShieldUi() {
         if (shieldLevel < 0) shieldLevel = 0;
         animator.SetInteger("shieldLevel", shieldLevel <= 3 ? shieldLevel : 3);
-        shieldUi.SetActive(shieldLevel > 0);
-        if (shieldUi.activeSelf) {
-            Image[] shields = shieldUi.GetComponentsInChildren<Image>();
+        GameHelper.Instance.shieldUi.SetActive(shieldLevel > 0);
+        if (GameHelper.Instance.shieldUi.activeSelf) {
+            Image[] shields = GameHelper.Instance.shieldUi.GetComponentsInChildren<Image>();
             for (int i = 1; i < shields.Length; i++) {
                 if (shieldLevel == i) {
                     shields[i].enabled = true;
@@ -316,7 +315,7 @@ public class PlayerScript : MonoBehaviour {
 
     private void updateLifeUi(bool loseLife) {
         // Update life UI
-        Image[] lifesUI = lifePanel.gameObject.GetComponentsInChildren<Image>();
+        Image[] lifesUI = GameHelper.Instance.lifePanel.gameObject.GetComponentsInChildren<Image>();
         for (int i = 1; i <= lifesUI.Length - nbLife; i++) {
             Image lifeUI = lifesUI[lifesUI.Length - i];
             Animator lifeAnimator = lifeUI.GetComponent<Animator>();
