@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameHelper : CommunScript {
@@ -9,6 +10,7 @@ public class GameHelper : CommunScript {
 
     public Text scoreText;
     public GameObject achievementPanel;
+    public GameObject player, bombUi;
 
     private static int score = 0;
     /// <summary>
@@ -163,5 +165,28 @@ public class GameHelper : CommunScript {
         if (Social.localUser.authenticated) {
             Social.ReportProgress(hfs[HF.TYPE_HF.Weapon][0].id, 100.0f, (bool success) => { });
         }
+        playerPref.currentWeaponUpgrade++;
+        save();
+    }
+
+    public void triggerBomb() {
+        SpecialEffectsHelper.Instance.Bomb(player.transform.position);
+        bombUi.SetActive(false);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            player.transform.position,
+            10f,
+            1 << LayerMask.NameToLayer("Enemies") // colide only with layer Enemies
+        );
+        foreach (Collider2D collider in hits) {
+            HealthScript health = collider.gameObject.GetComponent<HealthScript>();
+            if (health != null) {
+                health.Damage(20);
+            }
+        }
+        player.gameObject.GetComponent<PlayerScript>().nbBombs--;
+    }
+
+    internal void pickupBomb() {
+        bombUi.SetActive(true);
     }
 }

@@ -1267,10 +1267,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758f82ddad602d54f9ee53af6debc4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smokeEffect: {fileID: 198531673923986158, guid: 634cf23fe90708741a277ec252d33061,
+  smokeEffect: {fileID: 198469403967638764, guid: afa172b81a1082d43a31dbaefa9e0085,
     type: 2}
   fireEffect: {fileID: 198058430720029336, guid: b0c81b5bcc15fa14586ba58dee97e46b,
     type: 2}
+  bombEffect: {fileID: 0}
 --- !u!114 &395906140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,17 +1306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dad3649103637b4d97c80b7294e2516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPref:
-    ships: 
-    currentShip: 0
-    currentMaxLevel: 1
-    gold: 0
-    bestScore: 0
-    kills: 0
-    bonus: 0
-    volume: 1
   scoreText: {fileID: 1170601376}
   achievementPanel: {fileID: 1170601375}
+  player: {fileID: 1941012259}
+  bombUi: {fileID: 1170601377}
 --- !u!1001 &450397614
 Prefab:
   m_ObjectHideFlags: 0
@@ -3292,6 +3286,16 @@ Prefab:
       propertyPath: m_Name
       value: AchivementGame
       objectReference: {fileID: 0}
+    - target: {fileID: 114111248673150954, guid: 4a7353002058ab640b8ca322d3ca6602,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 395906141}
+    - target: {fileID: 114111248673150954, guid: 4a7353002058ab640b8ca322d3ca6602,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: triggerBomb
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a7353002058ab640b8ca322d3ca6602, type: 2}
   m_IsPrefabParent: 0
@@ -3311,6 +3315,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1170601373}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &1170601377 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1424375975074934, guid: 4a7353002058ab640b8ca322d3ca6602,
+    type: 2}
+  m_PrefabInternal: {fileID: 1170601373}
 --- !u!1001 &1173576411
 Prefab:
   m_ObjectHideFlags: 0

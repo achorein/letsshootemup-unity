@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,27 +6,28 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour {
 
     private const int MAX_LIFE = 3;
+    private const int MAX_BOMB = 1;
 
-    /// <summary>
-    /// The speed of the ship
-    /// </summary>
-    public Vector2 speed = new Vector2(50, 50);
-    public float mouseSpeed = 0.1f;
-    public int nbLife = 2;
     public GameObject lifePanel, shieldUi, primaryBonus;
 
+    private Vector2 speed = new Vector2(7, 7);
+    private float mouseSpeed = 0.05f;
+    private int nbLife = 2;
+
     // Store the movement and the component
-    private Vector2 movement;
+    private Vector2 movement, cursorDistance;
     private Rigidbody2D rigidbodyComponent;
     private Animator animator;
 
     // internal
-    private int shieldLevel = 0;
-    private bool isInvincible = false;
-    public int nbHitTaken = 0;
+    internal int shieldLevel = 0;
+    internal int nbBombs = 0;
+    internal bool isInvincible = false;
+    internal int nbHitTaken = 0;
 
     public static int lastLife = 0;
     public static int lastShieldLevel = 0;
+    public static int lastBomb = 0;
     public static String lastWeapon = "";
     public static bool lastWeaponUpgraded = false;
     public static WeaponScript[] lastWeaponBonus = null;
@@ -36,6 +35,7 @@ public class PlayerScript : MonoBehaviour {
     void Awake() {
         // Get the animator
         animator = GetComponent<Animator>();
+        cursorDistance = Vector3.zero;
 
         if (lastShieldLevel > 0) {
             shieldLevel = lastShieldLevel;
@@ -47,6 +47,11 @@ public class PlayerScript : MonoBehaviour {
             nbLife = lastLife;
         } else {
             lastLife = nbLife;
+            GetComponent<HealthScript>().hp += (GameHelper.Instance.getCurrentShip().hp - 1);
+        }
+        if (lastBomb > 0) {
+            nbBombs = lastBomb;
+            GameHelper.Instance.pickupBomb(); // activate button
         }
         if (lastWeaponBonus != null) {
             changeWeapon(null, lastWeaponBonus);
@@ -63,10 +68,12 @@ public class PlayerScript : MonoBehaviour {
         }
 
         foreach (Image life in lifesUI) {
-            life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+            life.sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
         }
-        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
-        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShipSprite());
+        shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
+
+        mouseSpeed *= GameHelper.Instance.getCurrentShip().speed;
     }
 
     // Update is called once per frame
@@ -76,20 +83,22 @@ public class PlayerScript : MonoBehaviour {
             float inputX = Input.GetAxis("Horizontal");
             float inputY = Input.GetAxis("Vertical");
 
+            Vector2 cursorPosition = Vector2.zero;
             // Handle Mouse
             if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
-                Vector3 cursorPosition = Input.mousePosition;
-                cursorPosition = Camera.main.ScreenToWorldPoint(cursorPosition);
-                cursorPosition.y += 0.5f;
-                transform.position = Vector2.Lerp(transform.position, cursorPosition, mouseSpeed);
+                cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }
-            // Handle touch screen : Look for all fingers
-            for (int i = 0; i < Input.touchCount; i++) {
-                Vector3 cursorPosition = Input.GetTouch(i).position;
-                // Touch are screens location. Convert to world
-                Vector3 position = Camera.main.ScreenToWorldPoint(cursorPosition);
-                position.y += 0.5f;
-                transform.position = Vector2.Lerp(transform.position, position, mouseSpeed);
+            // Handle touch screen
+            if (Input.touchCount > 0) {
+                cursorPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            }
+            if (cursorPosition != Vector2.zero) {
+                if (cursorDistance == Vector2.zero) {
+                    cursorDistance = cursorPosition - new Vector2(transform.position.x, transform.position.y);
+                }
+                transform.position = Vector2.Lerp(transform.position, cursorPosition - cursorDistance, mouseSpeed);
+            } else {
+                cursorDistance = Vector2.zero;
             }
 
             // Movement per direction
@@ -178,6 +187,15 @@ public class PlayerScript : MonoBehaviour {
             }
             // Is this a weapon bonus?
             changeWeapon(collision.gameObject);
+            // Is this a bomb bonus?
+            BombScript bomb = collision.gameObject.GetComponent<BombScript>();
+            if (bomb != null) {
+                if (nbBombs < MAX_BOMB) {
+                    nbBombs++;
+                    GameHelper.Instance.pickupBomb();
+                }
+                SoundEffectsHelper.Instance.MakePickupSound();
+            }
 
             GameHelper.Instance.collectBonus(collectable.getId());
             Destroy(collision.gameObject); // Remember to always target the game object, otherwise you will just remove the script
@@ -254,7 +272,9 @@ public class PlayerScript : MonoBehaviour {
                 updateShieldUi();
             }
             if (realDamage > 0) {
-                Handheld.Vibrate();
+                if (GameHelper.Instance.playerPref.vibrationOn) {
+                    Handheld.Vibrate();
+                }
                 lastWeapon = "";
                 lastWeaponUpgraded = false;
                 changeWeapon(primaryBonus);

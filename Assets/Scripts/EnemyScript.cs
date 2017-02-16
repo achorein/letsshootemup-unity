@@ -21,8 +21,6 @@ public class EnemyScript : MonoBehaviour {
     private float aiCooldown;
     private bool isAttacking;
 
-    private bool spawn;
-
     private MoveScript moveScript;
     private SpriteRenderer rendererComponent;
     private WeaponScript[] weapons;
@@ -45,18 +43,10 @@ public class EnemyScript : MonoBehaviour {
         // Default behavior
         isAttacking = false;
         aiCooldown = maxAttackCooldown;
-        spawn = false;
     }
 
     void Update() {
         if (rendererComponent.IsVisibleFrom(Camera.main)) {
-            // enable weapons when ennemy just spawned
-            /*if (!spawn) {
-                foreach (WeaponScript weapon in weapons) {
-                    weapon.enabled = true;
-                }
-                spawn = true;
-            }*/
 
             if (moveThenShoot) {
                 // AI

@@ -71,7 +71,7 @@ Transform:
   m_GameObject: {fileID: 1248513801515950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -5.0800915, y: -2.01408, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children:
   - {fileID: 4547169153146956}
   m_Father: {fileID: 0}
@@ -160,6 +160,9 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 7bb36c02a0f400346ab302538da904b8, type: 2}
   shootingRate: 2
   rotateSpeed: 0
+  upgrade: 0
+  upgradeShootingRate: 0.25
+  upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
   forceAutoFire: 0
@@ -176,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70934a7a1c4f0984bb960697140a3a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 2
   isEnemy: 1
 --- !u!114 &114628931293906200
 MonoBehaviour:

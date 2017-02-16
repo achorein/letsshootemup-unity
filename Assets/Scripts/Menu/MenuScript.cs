@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GooglePlayGames;
+using UnityEngine.Purchasing;
 
 public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
@@ -10,8 +11,9 @@ public class MenuScript : CommunScript {
     public Text scoreText, goldText, marketGoldText;
 
     public Transform hfPrefab, hfContentView, lbContentView;
-    public GameObject mainPanel;
+    public GameObject mainPanel, messageInfo;
 
+    private static bool firstStart = true;
     private int menuPos = 0;
 
     public TouchGesture.GestureSettings GestureSetting;
@@ -23,6 +25,11 @@ public class MenuScript : CommunScript {
         //    onLeftSwipe: () => { left(); },
         //    onRightSwipe: () => { right(); }
         //    ));
+        if (firstStart) {
+            PlayGamesPlatform.Activate();
+            Social.localUser.Authenticate((bool authSuccess) => { });
+            firstStart = false;
+        }
     }
 
     public void Awake() {
@@ -38,8 +45,6 @@ public class MenuScript : CommunScript {
 
         menuPos = playerPref.currentShip;
         loadMenuPos();
-        PlayGamesPlatform.Activate();
-        Social.localUser.Authenticate((bool authSuccess) => { });
     }
 
     /// <summary>
@@ -69,6 +74,30 @@ public class MenuScript : CommunScript {
     /// </summary>
     private void loadMenuPos() {
         playerShip.sprite = Resources.Load<Sprite>(ships[menuPos].sprite);
+        Image[] speedImgs = playerShip.GetComponentsInChildren<Image>();
+
+        for (int i = 1; i <= 3; i++) {
+            if (i <= ships[menuPos].speed) {
+                speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
+            } else {
+                speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
+            }
+        }
+        for (int i = 4; i <= 6; i++) {
+            if (i-3 <= ships[menuPos].hp) {
+                speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
+            } else {
+                speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
+            }
+        }
+        for (int i = 7; i <= 9; i++) {
+            if (i-6 <= ships[menuPos].damage) {
+                speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
+            } else {
+                speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
+            }
+        }
+
         if (menuPos != 0 && !playerPref.ships.Contains(menuPos)) {
             // don't have this ship
             buyButton.gameObject.SetActive(true);
@@ -146,13 +175,14 @@ public class MenuScript : CommunScript {
     /// <summary>
     /// 
     /// </summary>
-    public void loadLeaderBoardPanel() {
-        scoreText.text = playerPref.bestScore.ToString();
+    public void loadLeaderBoardPanel(Button button) {
         // authenticate user
         Social.localUser.Authenticate((bool success) => {
             if (success) {
                 // display google games leader board
                 PlayGamesPlatform.Instance.ShowLeaderboardUI(LEADERBOARD_ID);
+            } else {
+                showMessage("Error when loading Google Games...");
             }
         });
     }
@@ -174,15 +204,29 @@ public class MenuScript : CommunScript {
     /// <summary>
     /// 
     /// </summary>
-    public void marketAddGold(GameObject item) {
-        var texts = item.GetComponentsInChildren<Text>();
+    public void marketIAPSuccess(Product product) {
+        
+        int gold= int.Parse(product.definition.id.Replace("gold.", ""));
 
-        int gold = int.Parse(texts[0].text.Substring(1));
-        float price = float.Parse(texts[1].text.TrimEnd('€'));
-        print("gold:" + gold);
-        print("price:" + price);
         playerPref.gold += gold;
         save();
+
+        goldText.text = " " + playerPref.gold;
+        marketGoldText.text = " " + playerPref.gold;
+        loadMenuPos();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void marketAddGold(GameObject item) {
+        var texts = item.GetComponentsInChildren<Text>();
+        int gold = int.Parse(texts[0].text.Substring(1));
+        float price = float.Parse(texts[1].text.TrimEnd('€'));
+
+        playerPref.gold += gold;
+        save();
+
         goldText.text = " " + playerPref.gold;
         marketGoldText.text = " " + playerPref.gold;
         loadMenuPos();
@@ -264,7 +308,11 @@ public class MenuScript : CommunScript {
     /// </summary>
     public void loadGoogleGamesAchievementUI() {
         Social.localUser.Authenticate((bool authSuccess) => {
-            Social.ShowAchievementsUI();
+            if (authSuccess) {
+                Social.ShowAchievementsUI();
+            } else {
+                showMessage("Error when loading Google Games...");
+            }
         });
     }
 
@@ -284,6 +332,25 @@ public class MenuScript : CommunScript {
     public void unlockLevels() {
         playerPref.currentMaxLevel = 6;
         save();
+    }
+
+    public void toggleVibration(bool isOn) {
+        playerPref.vibrationOn = isOn;
+        save();
+    }
+
+    public void showMessage(string text) {
+        messageInfo.GetComponentInChildren<Text>().text = text;
+        messageInfo.SetActive(true);
+        messageInfo.GetComponent<Image>().CrossFadeAlpha(1, 0.5f, false);
+        messageInfo.GetComponentInChildren<Text>().CrossFadeAlpha(1, 0.5f, false);
+        // dismiss in 2 secondes
+        Invoke("dismissMessage", 2);
+    }
+
+    internal void dismissMessage() {
+        messageInfo.GetComponent<Image>().CrossFadeAlpha(0, 1f, false);
+        messageInfo.GetComponentInChildren<Text>().CrossFadeAlpha(0, 1f, false);
     }
 
     void Update() {

@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bbd53d904663a4c87189585368fa18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rageModeHp: 50
+  rageModeHp: 35
   rageSpeed: {x: 3, y: 3}
   rageShootingRate: 0
 --- !u!114 &114565924322008822
@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70934a7a1c4f0984bb960697140a3a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 65
   isEnemy: 1
 --- !u!114 &114607215703456742
 MonoBehaviour:

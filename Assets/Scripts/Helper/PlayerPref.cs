@@ -20,4 +20,5 @@ public class PlayerPref {
     internal int currentLevelCombo = 0;
     internal int currentWeaponUpgrade = 0;
     internal int currentUntouchable = 0;
+    internal bool vibrationOn = true;
 }

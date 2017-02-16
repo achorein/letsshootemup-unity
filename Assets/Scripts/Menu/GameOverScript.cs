@@ -72,7 +72,10 @@ public class GameOverScript : CommunScript {
                 score += 100;
             }
             // show "next level" button
-            nextButton.gameObject.SetActive(currentLevel < MAX_LEVEL);
+            nextButton.gameObject.SetActive(currentLevel <= MAX_LEVEL);
+            if (currentLevel == MAX_LEVEL) {
+                nextButton.gameObject.GetComponentInChildren<Text>().text = "Run infinity !";
+            }
         }
         // show "restart" button when lose
         restartButton.gameObject.SetActive(!win);
@@ -87,7 +90,7 @@ public class GameOverScript : CommunScript {
             GameHelper.Instance.reset();
         }
         // Loading Ad
-        LoadInterstitialAd();
+        //LoadInterstitialAd();
     }
 
     /// <summary>
@@ -106,6 +109,9 @@ public class GameOverScript : CommunScript {
     public void NextGame() {
         resetAd();
         LoadingScript.loadLevel = currentLevel + 1;
+        if (LoadingScript.loadLevel > MAX_LEVEL) {
+            LoadingScript.loadLevel = 0; // infinity
+        }
         // Reload the level
         SceneManager.LoadScene("Loading", LoadSceneMode.Single);
     }

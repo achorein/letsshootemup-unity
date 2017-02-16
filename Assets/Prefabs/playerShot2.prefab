@@ -89,8 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6bf6d50792a2243926a55665800e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 6
   isEnemyShot: 0
+  rotateSpeed: 2
+  laserStart: {fileID: 0}
+  laserMiddle: {fileID: 0}
+  laserEnd: {fileID: 0}
 --- !u!114 &114937095987643592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 10, y: 10}
   direction: {x: 0, y: 1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212775029138639938
 SpriteRenderer:
   m_ObjectHideFlags: 1

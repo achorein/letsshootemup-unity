@@ -15,16 +15,6 @@ public class CommunScript : MonoBehaviour {
     protected InterstitialAd interstitial;
     protected BannerView bannerView;
 
-    public class Ship {
-        public string sprite;
-        public int price;
-
-        public Ship(string sprite, int price) {
-            this.sprite = sprite;
-            this.price = price;
-        }
-    }
-
     public List<Ship> ships;
     public Dictionary<HF.TYPE_HF, List<HF>> hfs;
 
@@ -32,11 +22,11 @@ public class CommunScript : MonoBehaviour {
 
     public CommunScript() {
         ships = new List<Ship>();
-        ships.Add(new Ship("playerShip1", 0));
-        ships.Add(new Ship("playerShip2", 100));
-        ships.Add(new Ship("playerShip3", 500));
-        ships.Add(new Ship("playerShip4", 1500));
-        ships.Add(new Ship("playerShip5", 5000));
+        ships.Add(new Ship("playerShip1", 0, 1, 1, 1));
+        ships.Add(new Ship("playerShip2", 100, 2, 1, 1));
+        ships.Add(new Ship("playerShip3", 500, 3, 2, 1));
+        ships.Add(new Ship("playerShip4", 1500, 3, 2, 2));
+        ships.Add(new Ship("playerShip5", 5000, 1, 3, 3));
         hfs = new Dictionary<HF.TYPE_HF, List<HF>>();
         List<HF> killHfs = new List<HF>();
         killHfs.Add(new HF(HF.TYPE_HF.Kill, "5 kills", 5, 1, "CgkI2Jem2tQJEAIQBw"));
@@ -126,8 +116,8 @@ public class CommunScript : MonoBehaviour {
     /// 
     /// </summary>
     /// <returns>sprite name</returns>
-    public string getCurrentShipSprite() {
-        return ships[playerPref.currentShip].sprite;
+    public Ship getCurrentShip() {
+        return ships[playerPref.currentShip];
     }
 
     /// <summary>

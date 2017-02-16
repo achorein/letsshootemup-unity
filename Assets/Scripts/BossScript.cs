@@ -5,8 +5,7 @@ public class BossScript : MonoBehaviour {
     public int rageModeHp = 20;
     public Vector2 rageSpeed = new Vector2(2, 1);
     public float rageShootingRate = 0;
-
-    private MoveScript moveScript;
+    
     private WeaponScript[] weapons;
     private SpriteRenderer rendererComponent;
     private Animator animator;
@@ -19,9 +18,6 @@ public class BossScript : MonoBehaviour {
 
         // Get the animator
         animator = GetComponent<Animator>();
-
-        // Retrieve scripts
-        moveScript = GetComponent<MoveScript>();
 
         rendererComponent = GetComponent<SpriteRenderer>();
     }

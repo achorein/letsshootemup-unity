@@ -173,7 +173,6 @@ public class WeaponScript : MonoBehaviour {
             part = Instantiate<GameObject>(laserPart);
             part.transform.parent = gameObject.transform;
             part.transform.localPosition = Vector2.zero;
-            //part.transform.localEulerAngles = Vector2.zero;
         }
     }
 
@@ -185,23 +184,26 @@ public class WeaponScript : MonoBehaviour {
         return Physics2D.Raycast(
             newPos,
             direction,
-            maxLaserDistance
+            maxLaserDistance,
+            1 << LayerMask.NameToLayer("Enemies") // colide only with layer Enemies
         );
     }
 
     void FadeLaser() {
-        timer -= Time.deltaTime;
-        if (timer <= 0.25) {
-            var reduce = new Vector3(transform.localScale.x * Time.deltaTime, 0f);
-            start.transform.localScale -= reduce;
-            middle.transform.localScale -= reduce;
-            if (end != null) middle.transform.localScale -= reduce;
+        if (start != null) {
+            timer -= Time.deltaTime;
+            if (timer <= 0.25) {
+                var reduce = new Vector3(transform.localScale.x * Time.deltaTime, 0f);
+                start.transform.localScale -= reduce;
+                middle.transform.localScale -= reduce;
+                if (end != null) middle.transform.localScale -= reduce;
 
-            if (middle.transform.localScale.x <= 0.05) {
-                Destroy(start.gameObject);
-                Destroy(middle.gameObject);
-                if (end != null) { Destroy(middle.gameObject); }
-                expandable = false;
+                if (middle.transform.localScale.x <= 0.05) {
+                    Destroy(start.gameObject);
+                    Destroy(middle.gameObject);
+                    if (end != null) { Destroy(middle.gameObject); }
+                    expandable = false;
+                }
             }
         }
     }

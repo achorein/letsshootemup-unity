@@ -39,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 1329910675806572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.927111, y: -1.6257448, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -91,6 +91,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   isEnemyShot: 0
+  rotateSpeed: 0
+  laserStart: {fileID: 0}
+  laserMiddle: {fileID: 0}
+  laserEnd: {fileID: 0}
 --- !u!114 &114923947125176316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -104,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 15, y: 15}
   direction: {x: 0, y: 1}
+  fixedPosition: {x: 0, y: 0}
 --- !u!212 &212129143625257056
 SpriteRenderer:
   m_ObjectHideFlags: 1

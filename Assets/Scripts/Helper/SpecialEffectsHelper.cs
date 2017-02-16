@@ -11,6 +11,7 @@ public class SpecialEffectsHelper : MonoBehaviour {
 
     public ParticleSystem smokeEffect;
     public ParticleSystem fireEffect;
+    public ParticleSystem bombEffect;
 
     void Awake()
     {
@@ -36,6 +37,14 @@ public class SpecialEffectsHelper : MonoBehaviour {
 
         // Fire in the sky
         instantiate(fireEffect, position);
+    }
+
+    /// <summary>
+    /// Create an explosion at the given location
+    /// </summary>
+    /// <param name="position"></param>
+    public void Bomb(Vector3 position) {
+        instantiate(bombEffect, position);
     }
 
     /// <summary>
