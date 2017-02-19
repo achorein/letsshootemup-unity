@@ -96,8 +96,8 @@ public class GameHelper : CommunScript {
         if (comboLevel > playerPref.currentLevelCombo) {
             playerPref.currentLevelCombo = comboLevel;
         }
-        if (level + 1 > GameHelper.Instance.playerPref.currentMaxLevel) {
-            playerPref.currentMaxLevel = level + 1;
+        if (level > GameHelper.Instance.playerPref.currentMaxLevel) {
+            playerPref.currentMaxLevel = level;
         }
         foreach (HF hf in hfs[HF.TYPE_HF.Level]) {
             if (hf.nb == level) {
@@ -181,7 +181,7 @@ public class GameHelper : CommunScript {
                     lowerKey = entry.Key;
                 }
             }
-            print(randomBonusQuality + ", key: " + currentKey);
+            //print(randomBonusQuality + ", key: " + currentKey);
             // always spawn a bonus (lower bonus available if nothing better)
             if (currentKey == 0) {
                 currentKey = lowerKey;

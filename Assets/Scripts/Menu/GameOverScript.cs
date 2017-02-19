@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GoogleMobileAds.Api;
 using System.Collections;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 public class GameOverScript : CommunScript {
 
@@ -17,7 +19,6 @@ public class GameOverScript : CommunScript {
     public Button restartButton, nextButton;
 
     public int currentLevel = 1;
-    private const int MAX_LEVEL = 5;
     internal bool ready = false; // mutex...
 
     void Awake() {
@@ -28,6 +29,7 @@ public class GameOverScript : CommunScript {
 
         // Disable them
         HideButtons();
+        load();
         ready = true;
     }
 
@@ -84,20 +86,21 @@ public class GameOverScript : CommunScript {
         // Update Score UI
         scoreText.text = score.ToString();
 
+        Analytics.CustomEvent("gameOver", new Dictionary<string, object> {
+            { "win", win },
+            { "currentLevel", currentLevel },
+            { "points", score }
+        });
+
         // update playerpref and leaderboard
-        GameHelper.Instance.saveScore(score, bonusGold);
+        GameHelper.Instance.saveScore(score, bonusGold, currentLevel);
         if (!win) {
             // reset score and player if game over
             GameHelper.Instance.reset();
         }
         // Loading Ad
-        if (GameHelper.Instance.playerPref.nbGameFinished > 2) {
-            float waitTime = 3f;
-            if (GameHelper.Instance.playerPref.nbGameFinished > 5) {
-                waitTime = 1.5f;
-            } else if (GameHelper.Instance.playerPref.nbGameFinished > 10) {
-                waitTime = 1f;
-            }
+        float waitTime = showAdTimeout();
+        if (waitTime >= 0) {
             StartCoroutine(waitForAd(waitTime));
         }
     }
@@ -162,7 +165,11 @@ public class GameOverScript : CommunScript {
     // Update is called once per frame
     void Update() {
         if (Input.GetKeyUp(KeyCode.Escape)) {
-            ExitToMenu();
+            if (Time.timeScale == 0) { // menu
+                ExitToMenu();
+            } else { // in game
+                FindObjectOfType<PauseScript>().PauseGame();
+            }
         }
     }
 

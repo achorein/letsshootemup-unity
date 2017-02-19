@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using GooglePlayGames;
 using UnityEngine.Purchasing;
 using System;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 public class MenuScript : CommunScript {
     public Sprite muteSound, normalSound;
@@ -12,11 +14,14 @@ public class MenuScript : CommunScript {
     public Text scoreText, goldText, marketGoldText;
 
     public Transform hfPrefab, hfContentView, lbContentView;
-    public GameObject mainPanel, messageInfo;
-    public Toggle vibrationToggle;
+    public GameObject mainPanel, messageInfo, levelInfo;
+    public Toggle vibrationToggle, infinityModeToggle, normalModeToggle;
+    public Text levelText;
+    public Toggle[] levelToggle;
 
     private static bool firstStart = true;
     private int menuPos = 0;
+    private int levelPos = 1;
 
     public TouchGesture.GestureSettings GestureSetting;
     private TouchGesture touch;
@@ -36,15 +41,38 @@ public class MenuScript : CommunScript {
 
     public void Awake() {
         Time.timeScale = 1;
-        load();
+        // load player data
+        load(); 
 
+        // switch normal/infinity mode from user preference
+        ToggleGameMode(playerPref.gameModeNormal);
+        infinityModeToggle.isOn = !playerPref.gameModeNormal;
+        normalModeToggle.isOn = playerPref.gameModeNormal;
+        // load available mode
+        infinityModeToggle.interactable = playerPref.currentMaxLevel >= MAX_LEVEL;
+
+        // set current level toggle position
+        for (int i = 0; i < levelToggle.Length; i++) {
+            levelToggle[i].interactable = i <= playerPref.currentMaxLevel;
+            levelToggle[i].isOn = false;
+        }
+        ToggleLevel(playerPref.currentMaxLevel);
+        if (playerPref.currentMaxLevel < MAX_LEVEL) {
+            levelToggle[playerPref.currentMaxLevel].isOn = true;
+        } else {
+            levelToggle[MAX_LEVEL - 1].isOn = true;
+        }
+
+        // load audio preference
         AudioListener.volume = playerPref.volume;
         if (playerPref.volume == 0) {
             soundButton.GetComponent<Image>().sprite = muteSound;
         }
 
+        // update gold info
         goldText.text = " " + playerPref.gold;
 
+        // update player ship
         menuPos = playerPref.currentShip;
         loadMenuPos();
     }
@@ -82,7 +110,6 @@ public class MenuScript : CommunScript {
             if (i <= ships[menuPos].speed) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
-                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -90,7 +117,6 @@ public class MenuScript : CommunScript {
             if (i-3 <= ships[menuPos].hp) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
-                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -98,7 +124,6 @@ public class MenuScript : CommunScript {
             if (i-6 <= ships[menuPos].damage) {
                 speedImgs[i].color = new Color32(255, 255, 255, 255); // enabled
             } else {
-                print("disabled " + i);
                 speedImgs[i].color = new Color32(100, 100, 100, 255); // disabled
             }
         }
@@ -132,6 +157,17 @@ public class MenuScript : CommunScript {
         }
     }
 
+    public void ToggleGameMode(bool normal) {
+        playerPref.gameModeNormal = normal;
+        save();
+        levelInfo.SetActive(normal);
+    }
+
+    public void ToggleLevel(int level) {
+        levelText.text = " Act I - Level " + level;
+        levelPos = level;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -139,17 +175,21 @@ public class MenuScript : CommunScript {
     public void StartGame(GameObject panel) {
         playerPref.currentShip = menuPos;
         save();
-
-        if (playerPref.currentMaxLevel > 1) {
+        if (!playerPref.gameModeNormal) {
+            StartLevel(0); // infinity
+        } else {
+            StartLevel(levelPos);
+        }
+        /*else if (playerPref.currentMaxLevel > 1) {
             panel.SetActive(true);
             Button[] levelButtons = panel.GetComponentsInChildren<Button>();
             for (int i = 0; i < levelButtons.Length - 1; i++) {
-                levelButtons[i].interactable = (i < playerPref.currentMaxLevel);
+                levelButtons[i].interactable = (i <= playerPref.currentMaxLevel);
             }
             //ShowAd();
         } else {
             StartLevel(1);
-        }
+        }*/
     }
 
     /// <summary>
@@ -157,6 +197,10 @@ public class MenuScript : CommunScript {
     /// </summary>
     /// <param name="level"></param>
     public void StartLevel(int level) {
+        Analytics.CustomEvent("startLevel", new Dictionary<string, object> {
+            { "currentShip", playerPref.currentShip },
+            { "currentMaxLevel", playerPref.currentMaxLevel },
+        });
         GameHelper.Instance.reset();
         LoadingScript.loadLevel = level;
         SceneManager.LoadScene("Loading", LoadSceneMode.Single);
@@ -175,12 +219,16 @@ public class MenuScript : CommunScript {
         }
         playerPref.volume = AudioListener.volume;
         save();
+        Analytics.CustomEvent("toggleAudio", new Dictionary<string, object> {
+            { "audio", playerPref.volume }
+        });
     }
 
     /// <summary>
     /// 
     /// </summary>
     public void loadLeaderBoardPanel(Button button) {
+        Analytics.CustomEvent("loadLeaderBoardPanel", new Dictionary<string, object> { });
         // authenticate user
         Social.localUser.Authenticate((bool success) => {
             if (success) {
@@ -196,17 +244,25 @@ public class MenuScript : CommunScript {
     /// 
     /// </summary>
     public void loadHelpPanel() {
-        
+        Analytics.CustomEvent("loadHelpPanel", new Dictionary<string, object> {});
     }
 
-    public void loadSetupPanel() {
+    public void loadSetupPanel(GameObject setupPanel) {
+        Analytics.CustomEvent("loadSetupPanel", new Dictionary<string, object> { });
         vibrationToggle.isOn = playerPref.vibrationOn;
+        if (playerPref.premiumMode == 1) {
+            Image[] imgs = setupPanel.GetComponentsInChildren<Image>();
+            imgs[imgs.Length - 1].gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
     /// 
     /// </summary>
     public void loadMarketPanel() {
+        Analytics.CustomEvent("loadMarketPanel", new Dictionary<string, object> {
+            { "ship", menuPos }
+        });
         marketGoldText.text = playerPref.gold.ToString();
     }
 
@@ -214,14 +270,15 @@ public class MenuScript : CommunScript {
     /// 
     /// </summary>
     public void marketIAPSuccess(Product product) {
-        
-        int gold= int.Parse(product.definition.id.Replace("gold.", ""));
-
-        playerPref.gold += gold;
+        if (product.definition.id == "premium.account") {
+            playerPref.premiumMode = 1;
+        } else {
+            int gold = int.Parse(product.definition.id.Replace("gold.", ""));
+            playerPref.gold += gold;
+            goldText.text = " " + playerPref.gold;
+            marketGoldText.text = " " + playerPref.gold;
+        }
         save();
-
-        goldText.text = " " + playerPref.gold;
-        marketGoldText.text = " " + playerPref.gold;
         loadMenuPos();
     }
 
@@ -245,6 +302,7 @@ public class MenuScript : CommunScript {
     /// 
     /// </summary>
     public void loadHFPanel() {
+        Analytics.CustomEvent("loadHFPanel", new Dictionary<string, object> { });
         foreach (Transform child in hfContentView.transform) {
             Destroy(child.gameObject);
         }
@@ -316,6 +374,7 @@ public class MenuScript : CommunScript {
     /// 
     /// </summary>
     public void loadGoogleGamesAchievementUI() {
+        Analytics.CustomEvent("loadGoogleGamesAchievementUI", new Dictionary<string, object> { });
         Social.localUser.Authenticate((bool authSuccess) => {
             if (authSuccess) {
                 Social.ShowAchievementsUI();
@@ -339,13 +398,18 @@ public class MenuScript : CommunScript {
     /// 
     /// </summary>
     public void unlockLevels() {
-        playerPref.currentMaxLevel = 6;
+        playerPref.currentMaxLevel = MAX_LEVEL;
+        playerPref.gold = 10000;
         save();
+        Awake();
     }
 
     public void toggleVibration(Boolean isOn) {
         playerPref.vibrationOn = isOn;
         save();
+        Analytics.CustomEvent("toggleVibration", new Dictionary<string, object> {
+            { "vibration", playerPref.vibrationOn }
+        });
     }
 
     public void showMessage(string text) {

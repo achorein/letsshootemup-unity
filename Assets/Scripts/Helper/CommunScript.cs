@@ -11,6 +11,15 @@ public class CommunScript : MonoBehaviour {
     private const string PLAYER_KEY = "PLAYER";
     public static string FIREBASE_URL = "https://lets-shootem-up-23835757.firebaseio.com";
     public static string LEADERBOARD_ID = "CgkI2Jem2tQJEAIQBg";
+    public static string[] LEADERBOARD_IDS = {
+        "CgkI2Jem2tQJEAIQGQ", // level 1
+        "CgkI2Jem2tQJEAIQGg", // level 2
+        "CgkI2Jem2tQJEAIQGw", // level 3
+        "CgkI2Jem2tQJEAIQHA", // level 4
+        "CgkI2Jem2tQJEAIQHQ", // level 5
+        "CgkI2Jem2tQJEAIQHg" // infinty
+    };
+    internal const int MAX_LEVEL = 5;
 
     //ads 
     protected InterstitialAd interstitial;
@@ -47,7 +56,7 @@ public class CommunScript : MonoBehaviour {
         hfs.Add(HF.TYPE_HF.Bonus, bonusHfs);
         List<HF> levelHfs = new List<HF>();
         levelHfs.Add(new HF(HF.TYPE_HF.Level, "Level completed", 1, 5, "CgkI2Jem2tQJEAIQEw"));
-        levelHfs.Add(new HF(HF.TYPE_HF.Level, "3 levels in one shot", 3, 50, true, "CgkI2Jem2tQJEAIQFg"));
+        levelHfs.Add(new HF(HF.TYPE_HF.Level, "3 levels combo", 3, 50, true, "CgkI2Jem2tQJEAIQFg"));
         levelHfs.Add(new HF(HF.TYPE_HF.Level, "Game finished", 5, 50, "CgkI2Jem2tQJEAIQFQ"));
         levelHfs.Add(new HF(HF.TYPE_HF.Level, "To infinity and beyond", 5, 25, "CgkI2Jem2tQJEAIQFw"));
         hfs.Add(HF.TYPE_HF.Level, levelHfs);
@@ -100,18 +109,27 @@ public class CommunScript : MonoBehaviour {
     /// 
     /// </summary>
     /// <param name="score"></param>
-    public void saveScore(int score, int bonusGold) {
+    public bool saveScore(int score, int bonusGold, int currentLevel) {
+        bool isNewHighScore = false;
         // Save score on google game
         if (Social.localUser.authenticated) {
             Social.ReportScore(score, LEADERBOARD_ID, (bool saveSuccess) => { });
+            if (currentLevel != 0) {
+                Social.ReportScore(score, LEADERBOARD_IDS[currentLevel - 1], (bool saveSuccess) => { });
+            } else {
+                // infinty
+                Social.ReportScore(score, LEADERBOARD_IDS[LEADERBOARD_IDS.Length-1], (bool saveSuccess) => { });
+            }
         }
         // internal storage
         if (score > playerPref.bestScore) {
             playerPref.bestScore = score;
+            isNewHighScore = true;
         }
         playerPref.gold += bonusGold;
         playerPref.nbGameFinished++;
         save();
+        return isNewHighScore;
     }
 
     /// <summary>
@@ -127,6 +145,9 @@ public class CommunScript : MonoBehaviour {
     /// </summary>
     /// <param name="customListener"></param>
     public void LoadBannerAd(bool customListener) {
+        if (playerPref.premiumMode == 1) {
+            return;
+        }
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(getAdUnitBannerId(), AdSize.Banner, AdPosition.Bottom);
 
@@ -223,6 +244,9 @@ public class CommunScript : MonoBehaviour {
     /// 
     /// </summary>
     public void LoadInterstitialAd() {
+        if (playerPref.premiumMode == 1) {
+            return;
+        }
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(getAdUnitInterstitielId());
         // Load the interstitial with the request.
@@ -243,6 +267,20 @@ public class CommunScript : MonoBehaviour {
             bannerView.Hide();
             bannerView.Destroy();
         }
+    }
+
+    public float showAdTimeout() {
+        // Loading Ad
+        float waitTime = -1;
+        if (playerPref.nbGameFinished > 2) {
+            waitTime = 3f;
+            if (playerPref.nbGameFinished > 5) {
+                waitTime = 1.5f;
+            } else if (playerPref.nbGameFinished > 10) {
+                waitTime = 1f;
+            }
+        }
+        return waitTime;
     }
 
     public static IEnumerator WaitForRealTime(float delay) {

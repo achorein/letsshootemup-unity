@@ -6,7 +6,7 @@ public class PlayerPref {
     // game
     internal List<int> ships = new List<int>();
     internal int currentShip = 0;
-    internal int currentMaxLevel = 1;
+    internal int currentMaxLevel = 0;
 
     // Fun
     internal int gold = 0;
@@ -22,4 +22,7 @@ public class PlayerPref {
     internal int currentUntouchable = 0;
     internal bool vibrationOn = true;
     internal int nbGameFinished = 0;
+    internal bool gameModeNormal = true;
+    internal int premiumMode = 0;
+    internal bool isPremium = false;
 }

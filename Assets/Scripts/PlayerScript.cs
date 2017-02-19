@@ -22,6 +22,8 @@ public class PlayerScript : MonoBehaviour {
     internal int nbBombs = 0;
     internal bool isInvincible = false;
     internal int nbHitTaken = 0;
+    internal bool beginning = true;
+    internal float pauseTimer = 0;
 
     public static int lastLife = 0;
     public static int lastShieldLevel = 0;
@@ -33,7 +35,9 @@ public class PlayerScript : MonoBehaviour {
     void Awake() {
         // Get the animator
         animator = GetComponent<Animator>();
+
         cursorDistance = Vector3.zero;
+        beginning = true;
 
         if (lastShieldLevel > 0) {
             shieldLevel = lastShieldLevel;
@@ -91,12 +95,20 @@ public class PlayerScript : MonoBehaviour {
                 cursorPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             }
             if (cursorPosition != Vector2.zero) {
+                beginning = false;
+                pauseTimer = 1f;
                 if (cursorDistance == Vector2.zero) {
                     cursorDistance = cursorPosition - new Vector2(transform.position.x, transform.position.y);
                 }
                 transform.position = Vector2.Lerp(transform.position, cursorPosition - cursorDistance, mouseSpeed);
             } else {
                 cursorDistance = Vector2.zero;
+                if (!beginning) {
+                    pauseTimer -= Time.deltaTime;
+                    if (pauseTimer <= 0) {
+                        FindObjectOfType<PauseScript>().PauseGame();
+                    }
+                }
             }
 
             // Movement per direction

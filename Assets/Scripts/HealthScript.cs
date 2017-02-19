@@ -45,12 +45,13 @@ public class HealthScript : MonoBehaviour {
                 PlayerScript playerScript = GetComponent<PlayerScript>();
                 if (playerScript == null) {
                     // enemy take a shot
-                    if (shot.damage >= hp) {
+                    int damageMultiplicator = (GameHelper.Instance.getCurrentShip().damage > 1) ? 2 : 1;
+                    if (shot.damage * damageMultiplicator >= hp) {
                         GameHelper.Instance.enemeyKill(GetComponent<EnemyScript>().points);
                     } else {
                         GetComponent<EnemyScript>().runHitAnimation();
                     }
-                    Damage(shot.damage);
+                    Damage(shot.damage * damageMultiplicator);
                 } else if (playerScript.takeDamage(shot.damage)) {
                     // player take a shot (with no shield)
                     Damage(shot.damage);
