@@ -1,37 +1,39 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
 title: Let's Shoot’Em Up
-email: contact@v1kings.io
+email:
 description: > # this means to ignore newlines until "baseurl:"
   "Let's Shoot’Em Up" is a roguelike-shmup video game for Android and WebBrowser made by Vikings Entertainement.
   "Let's Shoot’Em Up" is a frenetic space shooter. 
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: v1kings
-github_username: achorein
-repository: achorein/letsshootemup-unity
-show_downloads: false
-google_play_url: https://play.google.com/store/apps/developer?id=Vikings%20Entertainment&hl=fr
-web_platform_url: http://game.letsshootemup.v1kings.io/
+
+baseurl: "" # the subpath of your site, e.g. /blog/ (If you use organization leave empty)
+url: "" # the base hostname & protocol for your site
+
+#Google Ad Words Data from scripts code (using Google responsive options) and ad client
+data-ad-slot: xxxxxxx
+data-ad-client: ca-pub-xxxxxxxxxxxxxxxxxx
+google_ad_client: ca-pub-xxxxxxxxxxxxxxxxxx
+
+google_analytics: "UA-xxxxx-x"
+addthis_id: ra-xxxxxxxxxxxx
+disqus_account: v1kings
+
+# Social networks usernames (many more available: flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.) see all icon at fontawesome.io
+social:
+  #- title: twitter
+  #  url: https://twitter.com/v1kings
+  #- title: facebook
+  #  url: https://facebook.com/v1kings
+  #- title: google-plus
+  #  url: https://plus.google.com/+v1kings
+  - title: github
+    url: https://github.com/achorein/letsshootemup-unity
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-midnight
-gems:
-  - jekyll-feed
-exclude:
-  - Gemfile
-  - Gemfile.lock
+highlighter: rouge
+permalink: pretty
+paginate: 5
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+gems: [jekyll-paginate, jekyll-feed]
+# Build settings
