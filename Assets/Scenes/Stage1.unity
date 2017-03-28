@@ -1057,7 +1057,8 @@ MonoBehaviour:
     type: 2}
   fireEffect: {fileID: 198058430720029336, guid: b0c81b5bcc15fa14586ba58dee97e46b,
     type: 2}
-  bombEffect: {fileID: 0}
+  bombEffect: {fileID: 198146534386538126, guid: 238cfe6f9aa74c54b84eabf332828a28,
+    type: 2}
 --- !u!114 &395906140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,6 +1081,7 @@ MonoBehaviour:
   loseSound: {fileID: 8300000, guid: e0b20f06b169f6644a3cc1dcbaa67d50, type: 3}
   victorySound: {fileID: 8300000, guid: edcb51c0853dbb54593d32611a73b686, type: 3}
   gameOverSound: {fileID: 8300000, guid: 713a4cecaa9be774ea48060513d34452, type: 3}
+  powerUpSound: {fileID: 8300000, guid: 476363df41006144cb6e074812fb3362, type: 3}
   mainMusic: {fileID: 71835357}
 --- !u!114 &395906141
 MonoBehaviour:
@@ -1094,7 +1096,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 216956854}
   achievementPanel: {fileID: 114748208}
-  pausePanel: {fileID: 2059739836}
   player: {fileID: 494190365}
   primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
     type: 2}
@@ -5269,11 +5270,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4378359131145010, guid: 9ea09038c6d1a9c4db6058f4e0ffe21f,
     type: 2}
   m_PrefabInternal: {fileID: 2044149276}
---- !u!1 &2059739836 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1177067825088014, guid: b4d499b12cbe43344b20916bbd6c79e4,
-    type: 2}
-  m_PrefabInternal: {fileID: 488554239}
 --- !u!224 &2059739837 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224898367368016322, guid: b4d499b12cbe43344b20916bbd6c79e4,

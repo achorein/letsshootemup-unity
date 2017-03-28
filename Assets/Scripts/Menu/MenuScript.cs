@@ -33,8 +33,10 @@ public class MenuScript : CommunScript {
         //    onRightSwipe: () => { right(); }
         //    ));
         if (firstStart) {
+#if UNITY_ANDROID
             PlayGamesPlatform.Activate();
             Social.localUser.Authenticate((bool authSuccess) => { });
+#endif
             firstStart = false;
         }
     }
@@ -45,12 +47,10 @@ public class MenuScript : CommunScript {
         load(); 
 
         // switch normal/infinity mode from user preference
-        ToggleGameMode(playerPref.gameModeNormal);
         infinityModeToggle.isOn = !playerPref.gameModeNormal;
         normalModeToggle.isOn = playerPref.gameModeNormal;
         // load available mode
         infinityModeToggle.interactable = playerPref.currentMaxLevel >= MAX_LEVEL;
-
         // set current level toggle position
         for (int i = 0; i < levelToggle.Length; i++) {
             levelToggle[i].interactable = i <= playerPref.currentMaxLevel;
@@ -62,6 +62,7 @@ public class MenuScript : CommunScript {
         } else {
             levelToggle[MAX_LEVEL - 1].isOn = true;
         }
+        ToggleGameMode(normalModeToggle.isOn);
 
         // load audio preference
         AudioListener.volume = playerPref.volume;
@@ -229,6 +230,7 @@ public class MenuScript : CommunScript {
     /// </summary>
     public void loadLeaderBoardPanel(Button button) {
         Analytics.CustomEvent("loadLeaderBoardPanel", new Dictionary<string, object> { });
+#if UNITY_ANDROID
         // authenticate user
         Social.localUser.Authenticate((bool success) => {
             if (success) {
@@ -238,6 +240,7 @@ public class MenuScript : CommunScript {
                 showMessage("Error when loading Google Games...");
             }
         });
+#endif
     }
 
     /// <summary>

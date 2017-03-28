@@ -134,6 +134,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.5
+  positionOffset: 0
+  rotation: 90
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0

@@ -217,6 +217,7 @@ public class GameHelper : CommunScript {
         if (Social.localUser.authenticated) {
             Social.ReportProgress(hfs[HF.TYPE_HF.Weapon][0].id, 100.0f, (bool success) => { });
         }
+        SoundEffectsHelper.Instance.MakePowerUpSound();
         playerPref.currentWeaponUpgrade++;
         save();
     }
@@ -236,6 +237,7 @@ public class GameHelper : CommunScript {
             }
         }
         player.gameObject.GetComponent<PlayerScript>().nbBombs--;
+        SoundEffectsHelper.Instance.MakePowerUpSound();
     }
 
     internal void pickupBomb() {

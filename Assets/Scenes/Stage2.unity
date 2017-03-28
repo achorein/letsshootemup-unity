@@ -2786,6 +2786,17 @@ Prefab:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 915649098}
+    - target: {fileID: 114588016019379048, guid: 0a88a0a222d3dd944a6c9693dc7a00ed,
+        type: 2}
+      propertyPath: bombEffect
+      value: 
+      objectReference: {fileID: 198146534386538126, guid: 238cfe6f9aa74c54b84eabf332828a28,
+        type: 2}
+    - target: {fileID: 114574678343160378, guid: 0a88a0a222d3dd944a6c9693dc7a00ed,
+        type: 2}
+      propertyPath: powerUpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 476363df41006144cb6e074812fb3362, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a88a0a222d3dd944a6c9693dc7a00ed, type: 2}
   m_IsPrefabParent: 0

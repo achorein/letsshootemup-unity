@@ -22,6 +22,8 @@ public class WeaponScript : MonoBehaviour {
     [Header("Upgradable weapon")]
     public bool upgrade = false;
     public float upgradeShootingRate = 0.25f;
+    public float positionOffset = 0f;
+    public int rotation = 90;
     public Transform upgradeShotPrefab;
 
     [Header("Other")]
@@ -42,7 +44,7 @@ public class WeaponScript : MonoBehaviour {
     // Expandable laser
     internal bool expandable = false;
     private float offsetY = 0.44f;
-    private float maxLaserDistance = 10f;
+    private float maxLaserDistance = 15f;
     private float timer = 0f;
     private float timerMax = 0.5f;
     private float startSpriteWidth;
@@ -101,9 +103,9 @@ public class WeaponScript : MonoBehaviour {
             if (shot.isExpandable()) {
                 expandable = true;
                 timer = timerMax;
-                float scale = 1;
+                float scale = 1.5f;
                 if (!upgraded) {
-                    scale = 0.5f;
+                    scale = 0.75f;
                 }
 
                 startSpriteWidth = shot.laserStart.GetComponent<Renderer>().bounds.size.x;

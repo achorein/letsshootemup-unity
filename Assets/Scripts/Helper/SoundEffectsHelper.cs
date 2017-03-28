@@ -23,6 +23,7 @@ public class SoundEffectsHelper : MonoBehaviour {
     public AudioClip loseSound;
     public AudioClip victorySound;
     public AudioClip gameOverSound;
+    public AudioClip powerUpSound;
 
     public AudioSource mainMusic;
 
@@ -72,6 +73,12 @@ public class SoundEffectsHelper : MonoBehaviour {
     {
         MakeSound(loseSound);
     }
+
+    public void MakePowerUpSound() {
+        MakeSound(powerUpSound);
+    }
+
+    // MAIN SOUND
 
     public void MakeBossComingSound()
     {

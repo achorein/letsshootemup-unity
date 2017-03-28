@@ -70,8 +70,7 @@ public class BossScript : MonoBehaviour {
         // Game Over.
         var gameOver = FindObjectOfType<GameOverScript>();
         if (gameOver != null && gameOver.ready) {
-            SoundEffectsHelper.Instance.MakeVictorySound();
-            gameOver.ShowButtons(true);
+            gameOver.EndGame(true);
         }
     }
 }

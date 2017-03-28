@@ -1219,7 +1219,8 @@ MonoBehaviour:
     type: 2}
   fireEffect: {fileID: 198058430720029336, guid: b0c81b5bcc15fa14586ba58dee97e46b,
     type: 2}
-  bombEffect: {fileID: 0}
+  bombEffect: {fileID: 198146534386538126, guid: 238cfe6f9aa74c54b84eabf332828a28,
+    type: 2}
 --- !u!114 &395906140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1242,6 +1243,7 @@ MonoBehaviour:
   loseSound: {fileID: 8300000, guid: e0b20f06b169f6644a3cc1dcbaa67d50, type: 3}
   victorySound: {fileID: 8300000, guid: edcb51c0853dbb54593d32611a73b686, type: 3}
   gameOverSound: {fileID: 8300000, guid: 713a4cecaa9be774ea48060513d34452, type: 3}
+  powerUpSound: {fileID: 8300000, guid: 476363df41006144cb6e074812fb3362, type: 3}
   mainMusic: {fileID: 1281362398}
 --- !u!114 &395906141
 MonoBehaviour:

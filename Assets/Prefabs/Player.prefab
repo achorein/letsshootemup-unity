@@ -362,7 +362,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1094210501438244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.953793, y: 2.5638182, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children:
   - {fileID: 4044862522101646}
@@ -475,6 +475,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
+  positionOffset: 0
+  rotation: 70
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -497,6 +499,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
+  positionOffset: 0
+  rotation: 50
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -527,14 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8ffc0c3af851443952c5120116321c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 7, y: 7}
-  mouseSpeed: 0.05
-  nbLife: 2
-  lifePanel: {fileID: 0}
-  shieldUi: {fileID: 0}
-  primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
-    type: 2}
-  nbHitTaken: 0
 --- !u!114 &114571219536537344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -551,6 +547,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
+  positionOffset: 0
+  rotation: 130
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -573,6 +571,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
+  positionOffset: 0
+  rotation: 90
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -595,6 +595,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.25
+  positionOffset: 0
+  rotation: 110
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -609,7 +611,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1982901565722336}
   serializedVersion: 5
   lengthInSec: 5
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -3246,7 +3248,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1597728389572220}
   serializedVersion: 5
   lengthInSec: 5
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1

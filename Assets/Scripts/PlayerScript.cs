@@ -259,12 +259,16 @@ public class PlayerScript : MonoBehaviour {
                         weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
                     }
                     weapons[i].shootingRate = bonusWeapons[i].upgradeShootingRate;
+                    weapons[i].gameObject.transform.eulerAngles = new Vector3(weapons[i].transform.eulerAngles.x, weapons[i].transform.eulerAngles.y, bonusWeapons[i].rotation);
+                    weapons[i].transform.position = new Vector3(transform.position.x + bonusWeapons[i].positionOffset, transform.position.y, transform.position.z);
                     weapons[i].enabled = true;
                 } else {
                     // normal weapon
                     weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
                     weapons[i].enabled = bonusWeapons[i].upgrade == false;
                     weapons[i].shootingRate = bonusWeapons[i].shootingRate;
+                    weapons[i].gameObject.transform.eulerAngles = new Vector3(weapons[i].transform.eulerAngles.x, weapons[i].transform.eulerAngles.y, bonusWeapons[i].rotation);
+                    weapons[i].transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                 }
                 weapons[i].expandable = bonusWeapons[i].expandable;
                 weapons[i].upgraded = upgraded;
@@ -283,9 +287,11 @@ public class PlayerScript : MonoBehaviour {
                 updateShieldUi();
             }
             if (realDamage > 0) {
+#if UNITY_ANDROID
                 if (GameHelper.Instance.playerPref.vibrationOn) {
                     Handheld.Vibrate();
                 }
+#endif
                 lastWeapon = "";
                 lastWeaponUpgraded = false;
                 changeWeapon(GameHelper.Instance.primaryBonus);
@@ -300,6 +306,8 @@ public class PlayerScript : MonoBehaviour {
                     Invoke("disableInvincible", 2f); // 2 sec
                     // Play sound
                     SoundEffectsHelper.Instance.MakeLoseLifeSound();
+                    Time.timeScale = 0.5f;
+                    Invoke("resetTimeScale", 1f); // 1 sec but scaled
                 } else {
                     // kill player
                     return true;
@@ -350,12 +358,15 @@ public class PlayerScript : MonoBehaviour {
         SoundEffectsHelper.Instance.MakeShieldSound(false);
     }
 
+    void resetTimeScale() {
+        Time.timeScale = 1;
+    }
+
     void OnDestroy() {
         // Game Over.
         var gameOver = FindObjectOfType<GameOverScript>();
         if (gameOver != null && gameOver.ready) {
-            SoundEffectsHelper.Instance.MakeGameOverSound();
-            gameOver.ShowButtons(false);
+            gameOver.EndGame(false);
         }
     }
     

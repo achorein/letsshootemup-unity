@@ -600,6 +600,7 @@ MonoBehaviour:
   loseSound: {fileID: 8300000, guid: e0b20f06b169f6644a3cc1dcbaa67d50, type: 3}
   victorySound: {fileID: 8300000, guid: edcb51c0853dbb54593d32611a73b686, type: 3}
   gameOverSound: {fileID: 8300000, guid: 713a4cecaa9be774ea48060513d34452, type: 3}
+  powerUpSound: {fileID: 8300000, guid: 476363df41006144cb6e074812fb3362, type: 3}
   mainMusic: {fileID: 565059347}
 --- !u!114 &395906141
 MonoBehaviour:
@@ -614,7 +615,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1170601376}
   achievementPanel: {fileID: 1170601375}
-  pausePanel: {fileID: 546782708}
   player: {fileID: 1941012259}
   primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
     type: 2}
@@ -981,11 +981,6 @@ Prefab:
 --- !u!224 &546782707 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224898367368016322, guid: b4d499b12cbe43344b20916bbd6c79e4,
-    type: 2}
-  m_PrefabInternal: {fileID: 546782706}
---- !u!1 &546782708 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1177067825088014, guid: b4d499b12cbe43344b20916bbd6c79e4,
     type: 2}
   m_PrefabInternal: {fileID: 546782706}
 --- !u!1 &565059346

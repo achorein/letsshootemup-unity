@@ -454,6 +454,7 @@ MonoBehaviour:
   loseSound: {fileID: 8300000, guid: e0b20f06b169f6644a3cc1dcbaa67d50, type: 3}
   victorySound: {fileID: 8300000, guid: edcb51c0853dbb54593d32611a73b686, type: 3}
   gameOverSound: {fileID: 8300000, guid: 713a4cecaa9be774ea48060513d34452, type: 3}
+  powerUpSound: {fileID: 8300000, guid: 476363df41006144cb6e074812fb3362, type: 3}
   mainMusic: {fileID: 1281362398}
 --- !u!114 &395906141
 MonoBehaviour:
@@ -468,7 +469,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1170601376}
   achievementPanel: {fileID: 1170601375}
-  pausePanel: {fileID: 1793348008}
   player: {fileID: 1941012259}
   primaryBonus: {fileID: 1576966372130768, guid: 0a60d51ed6f2f6640894d7a92697faa6,
     type: 2}
@@ -896,16 +896,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114554598605449236, guid: 0c612ceaf45ed91479dc1244faed9803,
-        type: 2}
-      propertyPath: lifePanel
-      value: 
-      objectReference: {fileID: 1553247998}
-    - target: {fileID: 114554598605449236, guid: 0c612ceaf45ed91479dc1244faed9803,
-        type: 2}
-      propertyPath: shieldUi
-      value: 
-      objectReference: {fileID: 1624044013}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0c612ceaf45ed91479dc1244faed9803, type: 2}
   m_IsPrefabParent: 0
@@ -1254,11 +1244,6 @@ Prefab:
 --- !u!224 &1793348007 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224898367368016322, guid: b4d499b12cbe43344b20916bbd6c79e4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1793348006}
---- !u!1 &1793348008 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1177067825088014, guid: b4d499b12cbe43344b20916bbd6c79e4,
     type: 2}
   m_PrefabInternal: {fileID: 1793348006}
 --- !u!1 &1941012259 stripped

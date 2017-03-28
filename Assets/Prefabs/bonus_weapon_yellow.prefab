@@ -125,6 +125,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 1
   upgradeShootingRate: 0.4
+  positionOffset: 0
+  rotation: 130
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -147,6 +149,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.4
+  positionOffset: 0
+  rotation: 110
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -169,6 +173,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.4
+  positionOffset: 0
+  rotation: 90
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -231,6 +237,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 0
   upgradeShootingRate: 0.4
+  positionOffset: 0
+  rotation: 70
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0
@@ -253,6 +261,8 @@ MonoBehaviour:
   rotateSpeed: 0
   upgrade: 1
   upgradeShootingRate: 0.4
+  positionOffset: 0
+  rotation: 50
   upgradeShotPrefab: {fileID: 0}
   tryRotateShoot: 0
   autoAim: 0

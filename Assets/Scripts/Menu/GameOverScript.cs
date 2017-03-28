@@ -20,6 +20,7 @@ public class GameOverScript : CommunScript {
 
     public int currentLevel = 1;
     internal bool ready = false; // mutex...
+    internal bool win = false;
 
     void Awake() {
         // Get the buttons
@@ -45,7 +46,22 @@ public class GameOverScript : CommunScript {
     /// 
     /// </summary>
     /// <param name="win"></param>
-    public void ShowButtons(bool win) {
+    public void EndGame(bool hasWin) {
+        if (player == null || winText == null || !ready) {
+            return;
+        }
+        if (win) {
+            SoundEffectsHelper.Instance.MakeVictorySound();
+        } else {
+            SoundEffectsHelper.Instance.MakeGameOverSound();
+        }
+        win = hasWin;
+        //Time.timeScale = 0.5f;
+        //Invoke("ShowButtons", 1f);
+        ShowButtons();
+    }
+
+    void ShowButtons() {
         // game pause
         Time.timeScale = 0;
         if (player == null || winText == null || !ready) {
@@ -98,6 +114,7 @@ public class GameOverScript : CommunScript {
             // reset score and player if game over
             GameHelper.Instance.reset();
         }
+
         // Loading Ad
         float waitTime = showAdTimeout();
         if (waitTime >= 0) {
