@@ -6,7 +6,7 @@ Petit jeu 2D pour tester le framework [Unity](https://unity3d.com/fr)
 
 # Let's play
 
-<img src="https://github.com/achorein/letsshootemup-unity/raw/master/docs/assets/images/logo-1024x500.png" height="150"/>
+<img src="https://github.com/achorein/letsshootemup-unity/raw/master/Assets/Sprites/UI/logo-512x512.png" height="150"/>
 
 - Le site vitrine est accessible à l'adresse suivante : http://letsshootemup.v1kings.io/
 - La **demo** est accessible à l'adresse suivante : http://game.letsshootemup.v1kings.io/
