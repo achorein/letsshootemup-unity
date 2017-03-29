@@ -71,10 +71,11 @@ public class WeaponScript : MonoBehaviour {
             var parentTransform = GetComponentInParent<EnemyScript>().gameObject.transform;
             var targetPosition = autoFireTarget.transform.position;
 
-            var rotationAngle = Quaternion.LookRotation(targetPosition - parentTransform.position); // we get the angle has to be rotated
+			var rotationAngle = Quaternion.LookRotation(targetPosition - parentTransform.position, Vector3.forward); // we get the angle has to be rotated
             rotationAngle.x = 0;
             rotationAngle.y = 0;
-            parentTransform.rotation = rotationAngle; // Quaternion.Slerp(parentTransform.rotation, rotationAngle, Time.deltaTime * 5); // we rotate the rotationAngle 
+			parentTransform.rotation = rotationAngle; 
+			// Quaternion.Slerp(parentTransform.rotation, rotationAngle, Time.deltaTime * 5); // we rotate the rotationAngle 
 
             //parentTransform.LookAt(autoFireTarget.transform);
             //parentTransform.eulerAngles = new Vector3(0, 0, parentTransform.eulerAngles.z);
@@ -113,7 +114,6 @@ public class WeaponScript : MonoBehaviour {
                 start.transform.localPosition = new Vector3(offsetY, 0f);
                 InstantiateLaserPart(ref middle, shot.laserMiddle);
 
-                //FadeLaser();
                 float currentLaserDistance = maxLaserDistance;
                 RaycastHit2D hit = RaycastDirection(this.transform.right);
                 if (hit.collider != null) {
@@ -153,11 +153,6 @@ public class WeaponScript : MonoBehaviour {
                 return false; // no shoot sound
             } else {
                 shootCooldown = shootingRate;
-                // Normal shot
-                shotTransform.position = transform.position;
-                if (tryRotateShoot) {
-                    shotTransform.transform.Rotate(transform.rotation.eulerAngles);
-                }
 
                 // Make the weapon shot always towards it
                 MoveScript move = shotTransform.gameObject.GetComponent<MoveScript>();
@@ -170,6 +165,11 @@ public class WeaponScript : MonoBehaviour {
                         move.direction = this.transform.right; // towards in 2D space is the right of the sprite
                     }
                 }
+				// Normal shot
+				shotTransform.position = transform.position;
+				if (tryRotateShoot) {
+					shotTransform.transform.Rotate(transform.rotation.eulerAngles);
+				}
             }
 
             return true;

@@ -260,7 +260,7 @@ public class CommunScript : MonoBehaviour {
     /// <summary>
     /// Hide and destroy all ads
     /// </summary>
-    protected void resetAd() {
+    public void resetAd() {
         if (interstitial != null)
             interstitial.Destroy();
         if (bannerView != null) {

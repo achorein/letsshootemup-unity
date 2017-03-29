@@ -146,6 +146,7 @@ public class PlayerScript : MonoBehaviour {
 
         // Handle escape and return button
         if (Input.GetKeyUp(KeyCode.Escape)) {
+			FindObjectOfType<PauseScript>().resetAd();
             SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
     }

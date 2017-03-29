@@ -291,7 +291,6 @@ public class MenuScript : CommunScript {
     public void marketAddGold(GameObject item) {
         var texts = item.GetComponentsInChildren<Text>();
         int gold = int.Parse(texts[0].text.Substring(1));
-        float price = float.Parse(texts[1].text.TrimEnd('€'));
 
         playerPref.gold += gold;
         save();

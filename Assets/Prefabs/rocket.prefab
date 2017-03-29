@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70934a7a1c4f0984bb960697140a3a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 20
   isEnemy: 1
 --- !u!198 &198725014542212350
 ParticleSystem:
@@ -279,7 +279,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1582175782157096}
   serializedVersion: 5
   lengthInSec: 5
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -2916,7 +2916,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1400487063452612}
   serializedVersion: 5
   lengthInSec: 5
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 0
   playOnAwake: 1

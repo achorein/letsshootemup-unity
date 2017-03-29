@@ -131,6 +131,7 @@ public class GameOverScript : CommunScript {
     /// 
     /// </summary>
     public void ExitToMenu() {
+		resetAd();
         GameHelper.Instance.reset();
         // Reload the level
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
