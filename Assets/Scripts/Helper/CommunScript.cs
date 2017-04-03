@@ -244,7 +244,7 @@ public class CommunScript : MonoBehaviour {
     /// 
     /// </summary>
     public void LoadInterstitialAd() {
-        if (playerPref.premiumMode == 1) {
+		if (playerPref.premiumMode == 1 || Time.timeScale != 0) {
             return;
         }
         // Initialize an InterstitialAd.

@@ -10,7 +10,7 @@ public class GameHelper : CommunScript {
     public static GameHelper Instance;
 
     public Text scoreText;
-    public GameObject achievementPanel;
+    public GameObject achievementPanel, fullScreenBox;
     public GameObject player, primaryBonus, bombUi, lifePanel, shieldUi;
 
     public GameObject[] bonus;
@@ -243,4 +243,8 @@ public class GameHelper : CommunScript {
     internal void pickupBomb() {
         bombUi.SetActive(true);
     }
+
+	internal void showRedScreen(bool active) {
+		fullScreenBox.SetActive(active);
+	}
 }

@@ -75,7 +75,7 @@ public class PlayerScript : MonoBehaviour {
         GameHelper.Instance.shieldUi.GetComponent<Image>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameHelper.Instance.getCurrentShip().sprite);
 
-        mouseSpeed *= GameHelper.Instance.getCurrentShip().speed;
+        mouseSpeed *= GameHelper.Instance.getCurrentShip().speed * 1.25f;
     }
 
     // Update is called once per frame
@@ -307,8 +307,10 @@ public class PlayerScript : MonoBehaviour {
                     Invoke("disableInvincible", 2f); // 2 sec
                     // Play sound
                     SoundEffectsHelper.Instance.MakeLoseLifeSound();
-                    Time.timeScale = 0.5f;
-                    Invoke("resetTimeScale", 1f); // 1 sec but scaled
+					GameHelper.Instance.showRedScreen(true);
+					Invoke("resetScreenColor", 0.25f);
+                    //Time.timeScale = 0.5f;
+                    //Invoke("resetTimeScale", 1f); // 1 sec but scaled
                 } else {
                     // kill player
                     return true;
@@ -362,6 +364,10 @@ public class PlayerScript : MonoBehaviour {
     void resetTimeScale() {
         Time.timeScale = 1;
     }
+
+	void resetScreenColor() {
+		GameHelper.Instance.showRedScreen(false);
+	}
 
     void OnDestroy() {
         // Game Over.

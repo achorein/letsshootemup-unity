@@ -1521,6 +1521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 0}
   achievementPanel: {fileID: 0}
+  fullScreenBox: {fileID: 0}
   player: {fileID: 0}
   primaryBonus: {fileID: 0}
   bombUi: {fileID: 0}
@@ -4050,7 +4051,7 @@ ParticleSystem:
   m_GameObject: {fileID: 605772551}
   serializedVersion: 5
   lengthInSec: 5
-  simulationSpeed: 1
+  speed: 1
   looping: 1
   prewarm: 1
   playOnAwake: 1
@@ -15738,7 +15739,7 @@ Prefab:
     - target: {fileID: 114275193108033942, guid: c4a58edf4dae81946ac681ce589b85e5,
         type: 2}
       propertyPath: m_Text
-      value: 20 pts
+      value: 35 pts
       objectReference: {fileID: 0}
     - target: {fileID: 114650443879764340, guid: c4a58edf4dae81946ac681ce589b85e5,
         type: 2}

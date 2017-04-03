@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RandomScript : MonoBehaviour {
 
-    public float ennemySpawnTime = 3.0f;
+    //public float ennemySpawnTime = 3.0f;
+	public float ennemySpawnTime = 0.85f;
     public float decorsSpawnTime = 1.75f;
 
     public GameObject[] ennemies;
@@ -53,24 +54,29 @@ public class RandomScript : MonoBehaviour {
     }
 
     GameObject Spawn(GameObject[] objects) {
-        Vector3 spawnPosition = getPosition();
+		float offset = 0;
+		int enemyIndex = Random.Range (0, objects.Length);
+		if (enemyIndex == 5) {
+			offset = 0.15f;
+		}
+		Vector3 spawnPosition = getPosition(offset);
         return Instantiate(
-            objects[Random.Range(0, objects.Length)],
+			objects[enemyIndex],
             spawnPosition,
             Quaternion.identity);
     }
 
-    private Vector3 getPosition() {
+	private Vector3 getPosition(float offset) {
         var dist = 0;
-        var leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x;
-        var rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
+		var leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0+offset, 0, dist)).x;
+		var rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1-offset, 0, dist)).x;
         var topBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1.15f, dist)).y;
         var bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, dist)).y;
 
         return new Vector3(
-          Random.Range(leftBorder,rightBorder),
-          Random.Range(bottomBorder, topBorder),
-          dist
+			Random.Range(leftBorder, rightBorder),
+            Random.Range(bottomBorder, topBorder),
+            dist
         );
     }
 
