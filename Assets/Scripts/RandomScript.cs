@@ -16,7 +16,7 @@ public class RandomScript : MonoBehaviour {
     public Transform ennemyParent;
     public Transform decorsParent;
 
-    private const float SPAWN_MIN_TIME = 0.85f;
+    private const float SPAWN_MIN_TIME = 0.70f;
     private const float SPAWN_MAX_TIME = 9f;
     private const float SPAWN_STEP_TIME = 0.03f;
     private const float SPAWN_RANDOM_STEP_TIME = SPAWN_MIN_TIME - (SPAWN_STEP_TIME * 10);

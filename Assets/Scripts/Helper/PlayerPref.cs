@@ -25,4 +25,7 @@ public class PlayerPref {
     internal bool gameModeNormal = true;
     internal int premiumMode = 0;
     internal bool isPremium = false;
+
+    // internal
+    internal int lastReset = 0;
 }

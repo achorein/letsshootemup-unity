@@ -472,9 +472,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -512,9 +514,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -534,9 +538,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -556,9 +562,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -578,9 +586,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -600,9 +610,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -622,9 +634,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -644,9 +658,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -679,9 +695,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -715,9 +733,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -737,9 +757,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0
@@ -757,7 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autofire: 1
-  borderBounce: 1
+  borderBounce: 0
 --- !u!114 &114935598254374488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -772,9 +794,11 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: a8efdaaebe39ab9448c4d24519e79c15, type: 2}
   shootingRate: 3.5
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.25
-  upgradeShotPrefab: {fileID: 0}
+  positionOffset: 0
+  rotation: 90
   tryRotateShoot: 1
   autoAim: 0
   forceAutoFire: 0

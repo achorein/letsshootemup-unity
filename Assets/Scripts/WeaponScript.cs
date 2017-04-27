@@ -20,11 +20,12 @@ public class WeaponScript : MonoBehaviour {
     public float rotateSpeed = 0;
 
     [Header("Upgradable weapon")]
-    public bool upgrade = false;
+	public int upgradeLevel = 0;
+    public bool secondaryWeapon = false;
     public float upgradeShootingRate = 0.25f;
     public float positionOffset = 0f;
     public int rotation = 90;
-    public Transform upgradeShotPrefab;
+    //public Transform upgradeShotPrefab;
 
     [Header("Other")]
     public bool tryRotateShoot = false;
@@ -35,9 +36,8 @@ public class WeaponScript : MonoBehaviour {
     public bool rotateToTarget = false;
     public GameObject autoFireTarget;
 
-    //--------------------------------
-    // 2 - Cooldown
-    //--------------------------------
+    internal bool lastEnabled = false;
+    internal Vector3 lastAngles;
     internal bool upgraded = false;
     private float shootCooldown;
 
@@ -94,21 +94,21 @@ public class WeaponScript : MonoBehaviour {
     /// Create a new projectile if possible
     /// </summary>
     public bool Attack(bool isEnemy) {
-        if (CanAttack || expandable) {
+        if (shotPrefab && (CanAttack || expandable)) {
             Transform shotTransform = Instantiate(shotPrefab) as Transform;
             ShotScript shot = shotTransform.GetComponent<ShotScript>();
-            // The is enemy property
+            // The enemy property
             shot.isEnemyShot = isEnemy;
 
             // Create a new shot
             if (shot.isExpandable()) {
                 expandable = true;
                 timer = timerMax;
+				// laser size
                 float scale = 1.5f;
-                if (!upgraded) {
-                    scale = 0.75f;
-                }
-
+                if (!upgraded) scale = 0.75f;
+                if (secondaryWeapon) scale = 0.5f;
+				// laser direction : x vector (will rotate with player transform rotation)
                 startSpriteWidth = shot.laserStart.GetComponent<Renderer>().bounds.size.x;
                 InstantiateLaserPart(ref start, shot.laserStart);
                 start.transform.localPosition = new Vector3(offsetY, 0f);
@@ -117,9 +117,10 @@ public class WeaponScript : MonoBehaviour {
                 float currentLaserDistance = maxLaserDistance;
                 RaycastHit2D hit = RaycastDirection(this.transform.right);
                 if (hit.collider != null) {
-                    currentLaserDistance = Vector2.Distance(hit.point, this.transform.position);
+                    currentLaserDistance = Vector2.Distance(hit.point, this.transform.position) + 1.1f;
                     InstantiateLaserPart(ref end, shot.laserEnd);
-                    if (CanAttack) {
+                    // handle damage to enemy
+					if (CanAttack) {
                         HealthScript health = hit.collider.gameObject.GetComponent<HealthScript>();
                         if (health != null) {
                             health.hitBy(shotTransform.GetComponent<Collider2D>());
@@ -136,7 +137,7 @@ public class WeaponScript : MonoBehaviour {
                 );
                 middle.transform.localScale = new Vector3(
                     scale, //middle.transform.localScale.x,
-                    100 * (currentLaserDistance - startSpriteWidth),
+					100 * (currentLaserDistance - startSpriteWidth),
                     middle.transform.localScale.z
                 );
                 middle.transform.localPosition = new Vector3((currentLaserDistance / 2f) + 0.15f, 0f);
@@ -170,8 +171,25 @@ public class WeaponScript : MonoBehaviour {
 				if (tryRotateShoot) {
 					shotTransform.transform.Rotate(transform.rotation.eulerAngles);
 				}
+                if (shot.autoAim) {
+                    // Retreive all ennemie on screen
+                    Collider2D[] hits = Physics2D.OverlapCircleAll(
+                        transform.position, 10f,
+                        1 << LayerMask.NameToLayer("Enemies") // colide only with layer Enemies
+                    );
+                    // find closest enemy
+                    var curdist = 10f;
+                    foreach (Collider2D collider in hits) {
+                        var distance = Vector3.Distance(collider.transform.position, transform.position);
+                        HealthScript health = collider.gameObject.GetComponent<HealthScript>();
+                        if (health != null && distance < curdist) {
+                            curdist = distance;
+                            // define enemy to aim
+                            shot.autoAimTarget = collider.gameObject;
+                        }
+                    }
+                }
             }
-
             return true;
         }
         return false;

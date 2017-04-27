@@ -16,6 +16,8 @@ public class PlayerScript : MonoBehaviour {
     private Vector2 movement, cursorDistance;
     private Rigidbody2D rigidbodyComponent;
     private Animator animator;
+    private GameOverScript gameOverScript;
+    private int maxUpgrade = 10;
 
     // internal
     internal int shieldLevel = 0;
@@ -28,13 +30,13 @@ public class PlayerScript : MonoBehaviour {
     public static int lastLife = 0;
     public static int lastShieldLevel = 0;
     public static int lastBomb = 0;
-    public static String lastWeapon = "";
-    public static bool lastWeaponUpgraded = false;
     public static WeaponScript[] lastWeaponBonus = null;
 
     void Awake() {
         // Get the animator
         animator = GetComponent<Animator>();
+        gameOverScript = FindObjectOfType<GameOverScript>();
+        maxUpgrade = (gameOverScript.currentLevel>0)?gameOverScript.currentLevel:10;
 
         cursorDistance = Vector3.zero;
         beginning = true;
@@ -58,9 +60,8 @@ public class PlayerScript : MonoBehaviour {
         if (lastWeaponBonus != null) {
             changeWeapon(null, lastWeaponBonus);
         } else {
-            lastWeapon = "";
-            lastWeaponUpgraded = false;
-            changeWeapon(GameHelper.Instance.primaryBonus);
+            lastWeaponBonus = new WeaponScript[10];
+            changeWeapon(GameHelper.Instance.primaryBonus, null, true);
         }
 
         // Update lifes UI
@@ -159,6 +160,10 @@ public class PlayerScript : MonoBehaviour {
         rigidbodyComponent.velocity = movement;
     }
 
+    /// <summary>
+    /// triggered when player collides with an object
+    /// </summary>
+    /// <param name="collision"></param>
     void OnCollisionEnter2D(Collision2D collision) {
         int damagePlayer = 0;
         // Ignore collision when player is invincible
@@ -219,65 +224,166 @@ public class PlayerScript : MonoBehaviour {
 
     }
 
-    private void changeWeapon(GameObject gameObject) {
-        changeWeapon(gameObject, null);
-    }
-
     /// <summary>
     /// Load player weapon (with upgrade)
     /// </summary>
     /// <param name="gameObject">prefab instance of any bonus</param>
     /// <param name="otherWeapons">old weapon to reuse</param>
-    private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons) {
-        WeaponScript[] bonusWeapons = otherWeapons;
-        if (bonusWeapons == null) {
-            bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
+    private void changeWeapon(GameObject gameObject, WeaponScript[] otherWeapons=null, bool reinit=false) {
+        // retrive current player weapons
+        WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
+        if (otherWeapons != null) { // restore weapon from previous game level
+            copyWeapons(otherWeapons, weapons, true);
+            return;
         }
+        // check if gameobject contains weapon (bonus)
+        WeaponScript[] bonusWeapons = gameObject.GetComponentsInChildren<WeaponScript>();
+
         // handle bonus
         if (bonusWeapons != null && bonusWeapons.Length > 0) {
-            bool upgraded = false;
-            if ((gameObject != null && gameObject.tag == lastWeapon) // take same weapon bonus
-                || (otherWeapons != null && lastWeaponUpgraded == true)) // upgrade from older weapon
-            {
-                // upgrade weapon
-                GameHelper.Instance.upgradeWeapon(lastWeapon);
-                upgraded = true; // upgrade now
-                lastWeaponUpgraded = true; // upgrade on next level
-            } else {                
-                lastWeaponUpgraded = false; // don't upgrade on next level
-            }
-            lastWeaponBonus = bonusWeapons;
-            WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
-            foreach (WeaponScript weapon in weapons) {
-                weapon.enabled = false;
-            }
-            for (int i = 0; i < bonusWeapons.Length; i++) {
-               if (upgraded) {
-                    // need to upgrade weapon
-                    if (bonusWeapons[i].upgradeShotPrefab != null) {
-                        weapons[i].shotPrefab = bonusWeapons[i].upgradeShotPrefab;
-                    } else {
-                        weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
+            // inspect current weapons
+            string primaryWeapon = weapons[0].shotPrefab.tag;
+            string secondaryWeapon = "";
+            int upgradeLevel = 0;
+			foreach (WeaponScript weapon in weapons) {
+				if (weapon.enabled && !weapon.secondaryWeapon) {
+                    if (weapon.upgradeLevel > upgradeLevel) {
+                        upgradeLevel = weapon.upgradeLevel;
+                    } else if (weapon.upgraded && weapon.upgradeLevel == upgradeLevel) {
+                        upgradeLevel = weapon.upgradeLevel + 1;
                     }
-                    weapons[i].shootingRate = bonusWeapons[i].upgradeShootingRate;
-                    weapons[i].gameObject.transform.eulerAngles = new Vector3(weapons[i].transform.eulerAngles.x, weapons[i].transform.eulerAngles.y, bonusWeapons[i].rotation);
-                    weapons[i].transform.position = new Vector3(transform.position.x + bonusWeapons[i].positionOffset, transform.position.y, transform.position.z);
-                    weapons[i].enabled = true;
-                } else {
-                    // normal weapon
-                    weapons[i].shotPrefab = bonusWeapons[i].shotPrefab;
-                    weapons[i].enabled = bonusWeapons[i].upgrade == false;
-                    weapons[i].shootingRate = bonusWeapons[i].shootingRate;
-                    weapons[i].gameObject.transform.eulerAngles = new Vector3(weapons[i].transform.eulerAngles.x, weapons[i].transform.eulerAngles.y, bonusWeapons[i].rotation);
-                    weapons[i].transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                } else if (weapon.enabled && weapon.secondaryWeapon && weapon.shotPrefab) {
+                    //print("old secondary : " + weapon.shotPrefab.tag);
+                    secondaryWeapon = weapon.shotPrefab.tag;
                 }
-                weapons[i].expandable = bonusWeapons[i].expandable;
-                weapons[i].upgraded = upgraded;
             }
-            if (gameObject != null) lastWeapon = gameObject.tag;
+            // replace current weapon
+            if (reinit || (upgradeLevel == 0 && bonusWeapons[0].shotPrefab.tag != primaryWeapon) /* no upgraded yet */) {
+                //print("replace primary weapon with new one " + gameObject.tag + " (" + reinit + ")");
+                replacePrimaryWeapon(bonusWeapons, weapons, upgradeLevel);
+            } else {
+                if (bonusWeapons[0].shotPrefab.tag == primaryWeapon) {
+                    //print("upgrade primary weapon " + gameObject.tag + " => " + (upgradeLevel + 1));
+                    // upgrade primary weapon
+                    if (upgradeLevel < maxUpgrade) {
+                        GameHelper.Instance.upgradeWeapon(primaryWeapon);
+                        for (int i = 0; i < bonusWeapons.Length; i++) {
+                            updateWeapon(weapons[i], bonusWeapons[i], upgradeLevel + 1);
+                        }
+                    }
+                } else if (bonusWeapons[0].shotPrefab.tag == secondaryWeapon) {
+                    //print("switch secondary and primary weapon " + gameObject.tag + " (" + upgradeLevel + ")");
+                    // switch secondary and primary weapon
+                    replacePrimaryWeapon(bonusWeapons, weapons, upgradeLevel);
+                    //replaceSecondaryWeapon(bonusWeapons, weapons, upgradeLevel); // how to retreive old principal ?
+                } else { // replace secondary weapon with new one
+                    //print("replace secondary weapon with new one " + gameObject.tag + " (old: " + secondaryWeapon + ")");
+                    replaceSecondaryWeapon(bonusWeapons, weapons, upgradeLevel);
+                }
+            }
+            copyWeapons(weapons, lastWeaponBonus);
         }
     }
 
+    private void copyWeapons(WeaponScript[] weaponsToCopy, WeaponScript[] weapons, bool restore=false) {
+        for (int i = 0; i < weaponsToCopy.Length; i++) {
+            if (weapons[i] == null) weapons[i] = new WeaponScript();
+            var currentWeapon = weapons[i];
+            var currentWeaponToCopy = weaponsToCopy[i];
+            if ((!restore && currentWeaponToCopy.enabled) || (restore && currentWeaponToCopy.lastEnabled)) {
+                if (restore) currentWeapon.enabled = true;
+                else currentWeapon.lastEnabled = true;
+                // upgrade level
+                currentWeapon.upgradeLevel = currentWeaponToCopy.upgradeLevel;
+                currentWeapon.upgraded = currentWeaponToCopy.upgraded;
+                currentWeapon.secondaryWeapon = currentWeaponToCopy.secondaryWeapon;
+                // standard weapon properties
+                currentWeapon.shotPrefab = currentWeaponToCopy.shotPrefab;
+                currentWeapon.expandable = currentWeaponToCopy.expandable;
+                // shooting rate
+                currentWeapon.shootingRate = currentWeaponToCopy.shootingRate;
+                // position
+                if (restore) {
+                    // position
+                    if (currentWeapon.upgraded || currentWeapon.secondaryWeapon) {
+                        currentWeapon.transform.position = new Vector3(transform.position.x + currentWeaponToCopy.positionOffset, transform.position.y, transform.position.z);
+                    } else {
+                        currentWeapon.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                    }
+                } else {
+                    currentWeapon.positionOffset = currentWeaponToCopy.positionOffset;
+                }
+                // rotation
+                if (restore) currentWeapon.gameObject.transform.eulerAngles = currentWeaponToCopy.lastAngles;
+                else currentWeapon.lastAngles = currentWeaponToCopy.gameObject.transform.eulerAngles;
+            } else if (restore) {
+                currentWeapon.enabled = false;
+            }
+        }
+    }
+
+    private void replacePrimaryWeapon(WeaponScript[] bonusWeapons, WeaponScript[] weapons, int upgradeLevel) {
+        // disable all weapons
+        foreach (WeaponScript weapon in weapons) {
+            weapon.enabled = false;
+        }
+        // add standard weapon 
+        for (int i = 0; i < bonusWeapons.Length; i++) {
+            updateWeapon(weapons[i], bonusWeapons[i], upgradeLevel);
+        }
+    }
+
+    private void replaceSecondaryWeapon(WeaponScript[] bonusWeapons, WeaponScript[] weapons, int upgradeLevel) {
+        foreach (WeaponScript weapon in weapons) { 
+            // disable old secondary weapon
+            if (weapon.enabled && weapon.secondaryWeapon) {
+                weapon.enabled = false;
+            }
+        }
+        // add secondary weapon 
+        int secondaryCount = 1;
+        foreach (WeaponScript currentBonusWeapons in bonusWeapons) {
+            if (currentBonusWeapons.secondaryWeapon) {
+                updateWeapon(weapons[weapons.Length - secondaryCount], currentBonusWeapons, upgradeLevel, true);
+                secondaryCount++;
+            }
+        }
+    }
+
+    private void updateWeapon(WeaponScript currentWeapon, WeaponScript currentBonusWeapons, int upgradeLevel, bool secondary=false) {
+        if (!secondary && currentBonusWeapons.upgradeLevel > upgradeLevel) return; // do not replace current weapon when not necessary
+        if (secondary && !currentBonusWeapons.secondaryWeapon) return; // do not replace current weapon when not necessary
+        if (!secondary && currentBonusWeapons.secondaryWeapon) return; // do not replace current weapon when not necessary
+
+        // upgrade level
+        currentWeapon.upgradeLevel = currentBonusWeapons.upgradeLevel;
+        currentWeapon.upgraded = upgradeLevel > 0 && !secondary; // || currentBonusWeapons.upgradeLevel < upgradeLevel;
+        currentWeapon.secondaryWeapon = secondary && currentBonusWeapons.secondaryWeapon;
+        // standard weapon properties
+        currentWeapon.shotPrefab = currentBonusWeapons.shotPrefab;
+        currentWeapon.expandable = currentBonusWeapons.expandable;
+        currentWeapon.enabled = true;
+        // shooting rate
+        if (currentWeapon.upgraded) {
+            currentWeapon.shootingRate = currentBonusWeapons.upgradeShootingRate;
+        } else {
+            currentWeapon.shootingRate = currentBonusWeapons.shootingRate;
+        }
+        // position
+        if (currentWeapon.upgraded || secondary) {
+            currentWeapon.transform.position = new Vector3(transform.position.x + currentBonusWeapons.positionOffset, transform.position.y, transform.position.z);
+        } else {
+            currentWeapon.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        }
+        // rotation
+        currentWeapon.gameObject.transform.eulerAngles = new Vector3(currentWeapon.transform.eulerAngles.x, currentWeapon.transform.eulerAngles.y, currentBonusWeapons.rotation);
+    }
+
+    /// <summary>
+    /// Handle dommage on player (reduce shield ? kill player ?)
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <returns></returns>
     public bool takeDamage(int damage) {
         if (!isInvincible && damage > 0) {
             nbHitTaken++;
@@ -293,9 +399,8 @@ public class PlayerScript : MonoBehaviour {
                     Handheld.Vibrate();
                 }
 #endif
-                lastWeapon = "";
-                lastWeaponUpgraded = false;
-                changeWeapon(GameHelper.Instance.primaryBonus);
+                // reinit weapon with primary
+                changeWeapon(GameHelper.Instance.primaryBonus, null, true);
                 nbLife--;
                 lastLife = nbLife;
                 if (nbLife > 0) {
@@ -320,6 +425,9 @@ public class PlayerScript : MonoBehaviour {
         return false;
     }
 
+    /// <summary>
+    /// Refresh UI status bar
+    /// </summary>
     private void updateShieldUi() {
         if (shieldLevel < 0) shieldLevel = 0;
         animator.SetInteger("shieldLevel", shieldLevel <= 3 ? shieldLevel : 3);
@@ -336,6 +444,10 @@ public class PlayerScript : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Refresh UI status bar
+    /// </summary>
+    /// <param name="loseLife"></param>
     private void updateLifeUi(bool loseLife) {
         // Update life UI
         Image[] lifesUI = GameHelper.Instance.lifePanel.gameObject.GetComponentsInChildren<Image>();
@@ -371,9 +483,8 @@ public class PlayerScript : MonoBehaviour {
 
     void OnDestroy() {
         // Game Over.
-        var gameOver = FindObjectOfType<GameOverScript>();
-        if (gameOver != null && gameOver.ready) {
-            gameOver.EndGame(false);
+        if (gameOverScript != null && gameOverScript.ready) {
+            gameOverScript.EndGame(false);
         }
     }
     
@@ -381,7 +492,5 @@ public class PlayerScript : MonoBehaviour {
         PlayerScript.lastShieldLevel = 0;
         PlayerScript.lastLife = 0;
         PlayerScript.lastWeaponBonus = null;
-        PlayerScript.lastWeapon = "";
-        PlayerScript.lastWeaponUpgraded = false;
     }
 }

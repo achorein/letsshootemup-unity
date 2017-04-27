@@ -39,6 +39,11 @@ public class MenuScript : CommunScript {
 #endif
             firstStart = false;
         }
+        if (playerPref.lastReset < 1) {
+            ResetGame();
+            playerPref.lastReset = 1;
+            save();
+        }
     }
 
     public void Awake() {

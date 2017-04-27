@@ -21,12 +21,16 @@ GameObject:
   - component: {fileID: 4935310851461224}
   - component: {fileID: 212681867420084718}
   - component: {fileID: 50425432417330438}
-  - component: {fileID: 60871697932923844}
   - component: {fileID: 95060922148799896}
   - component: {fileID: 114100494013814136}
   - component: {fileID: 114628243502996786}
   - component: {fileID: 114164830982787270}
   - component: {fileID: 114484925421837450}
+  - component: {fileID: 114326138803367384}
+  - component: {fileID: 114520640342177598}
+  - component: {fileID: 58509620988604618}
+  - component: {fileID: 114779756564812370}
+  - component: {fileID: 114373725744015558}
   m_Layer: 10
   m_Name: bonus_weapon_blue
   m_TagString: weaponBlue
@@ -41,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1576966372130768}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.87, y: 4.13, z: 0}
+  m_LocalPosition: {x: 0.026585318, y: 13.319003, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,8 +71,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60871697932923844
-PolygonCollider2D:
+--- !u!58 &58509620988604618
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -79,15 +83,8 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: -0.01, y: 0.105}
-      - {x: -0.11, y: 0.005}
-      - {x: -0.11, y: -0.105}
-      - {x: 0.03, y: -0.105}
-      - {x: 0.11, y: -0.015}
-      - {x: 0.11, y: 0.074999996}
-      - {x: 0.08, y: 0.105}
+  serializedVersion: 2
+  m_Radius: 0.3
 --- !u!95 &95060922148799896
 Animator:
   serializedVersion: 3
@@ -131,6 +128,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   points: 25
   rotateSpeed: 1.8
+--- !u!114 &114326138803367384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1576966372130768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
+  shootingRate: 0.25
+  rotateSpeed: 0
+  upgradeLevel: 2
+  secondaryWeapon: 0
+  upgradeShootingRate: 0.25
+  positionOffset: -0.38
+  rotation: 90
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
+--- !u!114 &114373725744015558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1576966372130768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
+  shootingRate: 0.25
+  rotateSpeed: 0
+  upgradeLevel: 0
+  secondaryWeapon: 1
+  upgradeShootingRate: 0.25
+  positionOffset: 0.38
+  rotation: 90
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!114 &114484925421837450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -145,11 +190,35 @@ MonoBehaviour:
   shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
   shootingRate: 0.2
   rotateSpeed: 0
-  upgrade: 0
+  upgradeLevel: 0
+  secondaryWeapon: 0
   upgradeShootingRate: 0.1
   positionOffset: 0
   rotation: 90
-  upgradeShotPrefab: {fileID: 0}
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
+--- !u!114 &114520640342177598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1576966372130768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
+  shootingRate: 0.25
+  rotateSpeed: 0
+  upgradeLevel: 2
+  secondaryWeapon: 0
+  upgradeShootingRate: 0.25
+  positionOffset: 0.38
+  rotation: 90
   tryRotateShoot: 0
   autoAim: 0
   forceAutoFire: 0
@@ -169,6 +238,30 @@ MonoBehaviour:
   speed: {x: 2, y: 2}
   direction: {x: 0, y: -1}
   fixedPosition: {x: 0, y: 0}
+--- !u!114 &114779756564812370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1576966372130768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6a593daeb7a6a4ea14d8dafea3d594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 4628570437604502, guid: 6d96e59ae1788e548b219ae92f61dd68, type: 2}
+  shootingRate: 0.25
+  rotateSpeed: 0
+  upgradeLevel: 0
+  secondaryWeapon: 1
+  upgradeShootingRate: 0.25
+  positionOffset: -0.38
+  rotation: 90
+  tryRotateShoot: 0
+  autoAim: 0
+  forceAutoFire: 0
+  rotateToTarget: 0
+  autoFireTarget: {fileID: 0}
 --- !u!212 &212681867420084718
 SpriteRenderer:
   m_ObjectHideFlags: 1

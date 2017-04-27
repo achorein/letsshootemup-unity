@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114579461822716570}
   m_Layer: 0
   m_Name: playerShot2
-  m_TagString: Untagged
+  m_TagString: weaponGreen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,10 +91,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 6
   isEnemyShot: 0
-  rotateSpeed: 2
+  rotateSpeed: 4
   laserStart: {fileID: 0}
   laserMiddle: {fileID: 0}
   laserEnd: {fileID: 0}
+  autoAim: 0
+  autoAimTarget: {fileID: 0}
 --- !u!114 &114937095987643592
 MonoBehaviour:
   m_ObjectHideFlags: 1
