@@ -272,11 +272,11 @@ public class CommunScript : MonoBehaviour {
     public float showAdTimeout() {
         // Loading Ad
         float waitTime = -1;
-        if (playerPref.nbGameFinished > 2) {
+        if (playerPref.nbGameFinished > 1) {
             waitTime = 3f;
-            if (playerPref.nbGameFinished > 5) {
+            if (playerPref.nbGameFinished > 3) {
                 waitTime = 1.5f;
-            } else if (playerPref.nbGameFinished > 10) {
+            } else if (playerPref.nbGameFinished > 5) {
                 waitTime = 1f;
             }
         }

@@ -139,11 +139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 2884c0c07ab22e349b126e05f225ce0a, type: 2}
-  shootingRate: 0.4
+  shootingRate: 0.39
   rotateSpeed: 0
   upgradeLevel: 2
   secondaryWeapon: 0
-  upgradeShootingRate: 0.4
+  upgradeShootingRate: 0.39
   positionOffset: -0.4
   rotation: 90
   tryRotateShoot: 0
@@ -238,11 +238,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 4628570437604502, guid: 2884c0c07ab22e349b126e05f225ce0a, type: 2}
-  shootingRate: 0.4
+  shootingRate: 0.39
   rotateSpeed: 0
   upgradeLevel: 2
   secondaryWeapon: 0
-  upgradeShootingRate: 0.4
+  upgradeShootingRate: 0.39
   positionOffset: 0.4
   rotation: 90
   tryRotateShoot: 0

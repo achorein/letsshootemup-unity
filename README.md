@@ -15,6 +15,8 @@ Petit jeu 2D pour tester le framework [Unity](https://unity3d.com/fr)
 
 - http://kenney.nl/assets/space-shooter-extension
 - http://kenney.nl/assets/space-shooter-redux
+- http://opengameart.org
+- http://soundimage.org/
 
 ## Liens utiles
 

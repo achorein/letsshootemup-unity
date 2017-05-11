@@ -90,13 +90,13 @@ public class SoundEffectsHelper : MonoBehaviour {
     public void MakeVictorySound()
     {
         stopAllAudio();
-        changeMainAudio(victorySound, 1);
+        changeMainAudio(victorySound, 1, true);
     }
 
     public void MakeGameOverSound()
     {
         stopAllAudio();
-        changeMainAudio(gameOverSound, 1);
+        changeMainAudio(gameOverSound, 1, true);
     }
 
     private void stopAllAudio()
@@ -107,12 +107,13 @@ public class SoundEffectsHelper : MonoBehaviour {
         }
     }
 
-    private void changeMainAudio(AudioClip newMusic, float volume)
+    private void changeMainAudio(AudioClip newMusic, float volume, bool dontloop = false)
     {
         if (mainMusic)
         {
             mainMusic.volume = volume;
             mainMusic.clip = newMusic;
+            if (dontloop) mainMusic.loop = false;
             mainMusic.Play();
         }
     }

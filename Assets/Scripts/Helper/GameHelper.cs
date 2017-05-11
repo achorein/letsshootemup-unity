@@ -57,7 +57,12 @@ public class GameHelper : CommunScript {
     }
 
     internal int computeBonusGoldLevelCompleted() {
-        return scoreCurrentLevel / 100;
+        if (scoreCurrentLevel < 20000) {
+            return Mathf.CeilToInt(scoreCurrentLevel / 100f);
+        } else {
+            return 200;
+        }
+        
     }
 
     /// <summary>
@@ -91,7 +96,8 @@ public class GameHelper : CommunScript {
         save();
     }
 
-    internal void levelCompletedWithSuccess(int level, int nbTaken) {
+    internal HF levelCompletedWithSuccess(int level, int nbTaken) {
+        HF currentLevelHf = null;
         comboLevel++;
         if (comboLevel > playerPref.currentLevelCombo) {
             playerPref.currentLevelCombo = comboLevel;
@@ -106,6 +112,8 @@ public class GameHelper : CommunScript {
                     if (Social.localUser.authenticated) {
                         Social.ReportProgress(hf.id, 100.0f, (bool success) => { });
                     }
+                    currentLevelHf = hf;
+                    playerPref.gold += hf.gold; 
                 }
             }
         }
@@ -116,6 +124,7 @@ public class GameHelper : CommunScript {
         }
         // gain +1 life 
         PlayerScript.lastLife++;
+        return currentLevelHf;
     }
 
     /// <summary>
@@ -214,10 +223,10 @@ public class GameHelper : CommunScript {
     }
 
     internal void upgradeWeapon(string lastWeaponName) {
-        if (Social.localUser.authenticated) {
-            Social.ReportProgress(hfs[HF.TYPE_HF.Weapon][0].id, 100.0f, (bool success) => { });
-        }
         SoundEffectsHelper.Instance.MakePowerUpSound();
+        if (playerPref.currentWeaponUpgrade == 0) {
+            showHF(hfs[HF.TYPE_HF.Weapon][0]);
+        }
         playerPref.currentWeaponUpgrade++;
         save();
     }

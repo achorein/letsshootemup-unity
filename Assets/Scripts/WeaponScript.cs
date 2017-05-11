@@ -62,9 +62,7 @@ public class WeaponScript : MonoBehaviour {
         if (expandable) {
             FadeLaser();
         } else {
-            if (start != null) Destroy(start.gameObject);
-            if (middle != null) Destroy(middle.gameObject);
-            if (end != null) Destroy(end.gameObject);
+            DestroyLaser();
         }
 
         if (rotateToTarget && autoFireTarget != null) {
@@ -106,8 +104,9 @@ public class WeaponScript : MonoBehaviour {
                 timer = timerMax;
 				// laser size
                 float scale = 1.5f;
-                if (!upgraded) scale = 0.75f;
-                if (secondaryWeapon) scale = 0.5f;
+                if (secondaryWeapon || upgradeLevel > 1) scale = 0.5f;
+                else if (!upgraded) scale = 0.75f;
+                
 				// laser direction : x vector (will rotate with player transform rotation)
                 startSpriteWidth = shot.laserStart.GetComponent<Renderer>().bounds.size.x;
                 InstantiateLaserPart(ref start, shot.laserStart);
@@ -158,7 +157,7 @@ public class WeaponScript : MonoBehaviour {
                 // Make the weapon shot always towards it
                 MoveScript move = shotTransform.gameObject.GetComponent<MoveScript>();
                 if (move != null) {
-                    if (autoAim) {
+                    if (autoAim && autoFireTarget.activeSelf) {
                         var heading = autoFireTarget.transform.position - transform.position;
                         heading.Normalize();
                         move.direction = heading;
@@ -242,6 +241,12 @@ public class WeaponScript : MonoBehaviour {
                 }
             }
         }
+    }
+
+    internal void DestroyLaser() {
+        if (start != null) Destroy(start.gameObject);
+        if (middle != null) Destroy(middle.gameObject);
+        if (end != null) Destroy(end.gameObject);
     }
 
 }

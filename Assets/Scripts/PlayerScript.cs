@@ -33,7 +33,7 @@ public class PlayerScript : MonoBehaviour {
     public static WeaponScript[] lastWeaponBonus = null;
 
     void Awake() {
-        // Get the animator
+        // Get external components
         animator = GetComponent<Animator>();
         gameOverScript = FindObjectOfType<GameOverScript>();
         maxUpgrade = (gameOverScript.currentLevel>0)?gameOverScript.currentLevel:10;
@@ -41,6 +41,7 @@ public class PlayerScript : MonoBehaviour {
         cursorDistance = Vector3.zero;
         beginning = true;
 
+        // restore previous level state
         if (lastShieldLevel > 0) {
             shieldLevel = lastShieldLevel;
             updateShieldUi();
@@ -82,9 +83,12 @@ public class PlayerScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (Time.timeScale != 0) {
-            // Retrieve axis information
+            // Retrieve axis information (keyboard)
             float inputX = Input.GetAxis("Horizontal");
             float inputY = Input.GetAxis("Vertical");
+            if (inputX > 0 || inputY > 0 ) {
+                pauseTimer = 1f;
+            }
 
             Vector2 cursorPosition = Vector2.zero;
             // Handle Mouse
@@ -249,7 +253,7 @@ public class PlayerScript : MonoBehaviour {
 				if (weapon.enabled && !weapon.secondaryWeapon) {
                     if (weapon.upgradeLevel > upgradeLevel) {
                         upgradeLevel = weapon.upgradeLevel;
-                    } else if (weapon.upgraded && weapon.upgradeLevel == upgradeLevel) {
+                    } else if (upgradeLevel == 0 && weapon.upgraded && weapon.upgradeLevel == upgradeLevel) {
                         upgradeLevel = weapon.upgradeLevel + 1;
                     }
                 } else if (weapon.enabled && weapon.secondaryWeapon && weapon.shotPrefab) {
@@ -259,11 +263,12 @@ public class PlayerScript : MonoBehaviour {
             }
             // replace current weapon
             if (reinit || (upgradeLevel == 0 && bonusWeapons[0].shotPrefab.tag != primaryWeapon) /* no upgraded yet */) {
-                //print("replace primary weapon with new one " + gameObject.tag + " (" + reinit + ")");
+                print("replace primary weapon with new one " + gameObject.tag + " (" + reinit + ") " + upgradeLevel);
+                if (upgradeLevel > 0) upgradeLevel--;
                 replacePrimaryWeapon(bonusWeapons, weapons, upgradeLevel);
             } else {
                 if (bonusWeapons[0].shotPrefab.tag == primaryWeapon) {
-                    //print("upgrade primary weapon " + gameObject.tag + " => " + (upgradeLevel + 1));
+                    print("upgrade primary weapon " + gameObject.tag + " => " + (upgradeLevel + 1));
                     // upgrade primary weapon
                     if (upgradeLevel < maxUpgrade) {
                         GameHelper.Instance.upgradeWeapon(primaryWeapon);
@@ -272,12 +277,12 @@ public class PlayerScript : MonoBehaviour {
                         }
                     }
                 } else if (bonusWeapons[0].shotPrefab.tag == secondaryWeapon) {
-                    //print("switch secondary and primary weapon " + gameObject.tag + " (" + upgradeLevel + ")");
+                    print("switch secondary and primary weapon " + gameObject.tag + " (" + upgradeLevel + ")");
                     // switch secondary and primary weapon
                     replacePrimaryWeapon(bonusWeapons, weapons, upgradeLevel);
                     //replaceSecondaryWeapon(bonusWeapons, weapons, upgradeLevel); // how to retreive old principal ?
                 } else { // replace secondary weapon with new one
-                    //print("replace secondary weapon with new one " + gameObject.tag + " (old: " + secondaryWeapon + ")");
+                    print("replace secondary weapon with new one " + gameObject.tag + " (old: " + secondaryWeapon + ")");
                     replaceSecondaryWeapon(bonusWeapons, weapons, upgradeLevel);
                 }
             }
@@ -293,6 +298,7 @@ public class PlayerScript : MonoBehaviour {
             if ((!restore && currentWeaponToCopy.enabled) || (restore && currentWeaponToCopy.lastEnabled)) {
                 if (restore) currentWeapon.enabled = true;
                 else currentWeapon.lastEnabled = true;
+                if (restore) print("restore weapon " + currentWeaponToCopy.shotPrefab.tag + ", level: " + currentWeaponToCopy.upgradeLevel + ", upgraded: " + currentWeaponToCopy.upgraded + ", sec: " + currentWeaponToCopy.secondaryWeapon + ", posOffset: " + currentWeaponToCopy.positionOffset);
                 // upgrade level
                 currentWeapon.upgradeLevel = currentWeaponToCopy.upgradeLevel;
                 currentWeapon.upgraded = currentWeaponToCopy.upgraded;
@@ -303,21 +309,22 @@ public class PlayerScript : MonoBehaviour {
                 // shooting rate
                 currentWeapon.shootingRate = currentWeaponToCopy.shootingRate;
                 // position
+                currentWeapon.positionOffset = currentWeaponToCopy.positionOffset;
                 if (restore) {
                     // position
                     if (currentWeapon.upgraded || currentWeapon.secondaryWeapon) {
-                        currentWeapon.transform.position = new Vector3(transform.position.x + currentWeaponToCopy.positionOffset, transform.position.y, transform.position.z);
+                        currentWeapon.transform.position = new Vector3(transform.position.x + currentWeapon.positionOffset, transform.position.y, transform.position.z);
                     } else {
                         currentWeapon.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
                     }
-                } else {
-                    currentWeapon.positionOffset = currentWeaponToCopy.positionOffset;
                 }
+                
                 // rotation
                 if (restore) currentWeapon.gameObject.transform.eulerAngles = currentWeaponToCopy.lastAngles;
                 else currentWeapon.lastAngles = currentWeaponToCopy.gameObject.transform.eulerAngles;
             } else if (restore) {
                 currentWeapon.enabled = false;
+                currentWeapon.lastEnabled = false;
             }
         }
     }
@@ -325,6 +332,7 @@ public class PlayerScript : MonoBehaviour {
     private void replacePrimaryWeapon(WeaponScript[] bonusWeapons, WeaponScript[] weapons, int upgradeLevel) {
         // disable all weapons
         foreach (WeaponScript weapon in weapons) {
+            weapon.DestroyLaser();
             weapon.enabled = false;
         }
         // add standard weapon 
@@ -337,6 +345,7 @@ public class PlayerScript : MonoBehaviour {
         foreach (WeaponScript weapon in weapons) { 
             // disable old secondary weapon
             if (weapon.enabled && weapon.secondaryWeapon) {
+                weapon.DestroyLaser();
                 weapon.enabled = false;
             }
         }
@@ -370,6 +379,7 @@ public class PlayerScript : MonoBehaviour {
             currentWeapon.shootingRate = currentBonusWeapons.shootingRate;
         }
         // position
+        currentWeapon.positionOffset = currentBonusWeapons.positionOffset;
         if (currentWeapon.upgraded || secondary) {
             currentWeapon.transform.position = new Vector3(transform.position.x + currentBonusWeapons.positionOffset, transform.position.y, transform.position.z);
         } else {

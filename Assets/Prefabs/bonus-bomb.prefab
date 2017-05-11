@@ -21,12 +21,12 @@ GameObject:
   - component: {fileID: 4988291225784656}
   - component: {fileID: 212078791891213108}
   - component: {fileID: 50909002248734982}
-  - component: {fileID: 60132793906458632}
   - component: {fileID: 95638058404073994}
   - component: {fileID: 114176811251950732}
   - component: {fileID: 114623737702740354}
   - component: {fileID: 114781931081124802}
   - component: {fileID: 114381173205250704}
+  - component: {fileID: 61579984524891104}
   m_Layer: 10
   m_Name: bonus-bomb
   m_TagString: Untagged
@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1109032023059966}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.008361816, y: 10.152878, z: 0}
+  m_LocalPosition: {x: -19.442225, y: -3.2665496, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,8 +67,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!60 &60132793906458632
-PolygonCollider2D:
+--- !u!61 &61579984524891104
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -79,14 +79,8 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: -0.16, y: 0.16499999}
-      - {x: -0.17, y: 0.155}
-      - {x: -0.17, y: -0.16499999}
-      - {x: 0.17, y: -0.16499999}
-      - {x: 0.17, y: 0.145}
-      - {x: 0.14999999, y: 0.16499999}
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
 --- !u!95 &95638058404073994
 Animator:
   serializedVersion: 3

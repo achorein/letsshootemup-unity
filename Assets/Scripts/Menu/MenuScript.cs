@@ -39,9 +39,10 @@ public class MenuScript : CommunScript {
 #endif
             firstStart = false;
         }
+        // load player data
+        load();
         if (playerPref.lastReset < 1) {
             ResetGame();
-            playerPref.lastReset = 1;
             save();
         }
     }
@@ -396,6 +397,7 @@ public class MenuScript : CommunScript {
     /// </summary>
     public void ResetGame() {
         playerPref = new PlayerPref();
+        playerPref.lastReset = 1;
         save();
         soundButton.GetComponent<Image>().sprite = normalSound;
         Awake();

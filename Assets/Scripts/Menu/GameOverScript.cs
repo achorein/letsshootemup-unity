@@ -12,11 +12,12 @@ public class GameOverScript : CommunScript {
     private Text[] texts;
     private Image[] images;
 
-    public GameObject gamePanel, player, achivementImage;
+    public GameObject gamePanel, player;
 
-    public Text winText, loseText;
-    public Text scoreText, trophyText, goldText;
+    public Text winText, loseText, newhighscoreText;
+    public Text scoreText, trophyText, goldText, goldBankText;
     public Button restartButton, nextButton;
+    public Transform hfPrefab, hfContentView;
 
     public int currentLevel = 1;
     internal bool ready = false; // mutex...
@@ -82,11 +83,12 @@ public class GameOverScript : CommunScript {
 
         if (win) {
             // handle achievments and playerPref
-            GameHelper.Instance.levelCompletedWithSuccess(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
+            HF hf = GameHelper.Instance.levelCompletedWithSuccess(currentLevel, player.GetComponent<PlayerScript>().nbHitTaken);
+            if (hf != null) addHf(hf);
             
             // show achievment panel
             if (player.GetComponent<PlayerScript>().nbHitTaken == 0) {
-                achivementImage.SetActive(true);
+                addHf(hfs[HF.TYPE_HF.Other][0]); // untouchable
                 bonusGold += 10;
                 score += 100;
             }
@@ -102,6 +104,7 @@ public class GameOverScript : CommunScript {
         // Update Score UI
         scoreText.text = score.ToString();
 
+
         Analytics.CustomEvent("gameOver", new Dictionary<string, object> {
             { "win", win },
             { "currentLevel", currentLevel },
@@ -109,7 +112,12 @@ public class GameOverScript : CommunScript {
         });
 
         // update playerpref and leaderboard
-        GameHelper.Instance.saveScore(score, bonusGold, currentLevel);
+        if (GameHelper.Instance.saveScore(score, bonusGold, currentLevel)) { 
+            newhighscoreText.gameObject.SetActive(true);
+        }
+        // Update Bank Gold UI
+        load();
+        goldBankText.text = " " + playerPref.gold;
         if (!win) {
             // reset score and player if game over
             GameHelper.Instance.reset();
@@ -178,6 +186,14 @@ public class GameOverScript : CommunScript {
         }
         gamePanel.SetActive(!active);
         GetComponent<Image>().enabled = active;
+    }
+
+    private void addHf(HF hf) {
+        var newHf = Instantiate(hfPrefab) as Transform;
+        var hfTexts = newHf.GetComponentsInChildren<Text>();
+        hfTexts[0].text = hf.description;
+        hfTexts[1].text = "+" + hf.gold;
+        newHf.SetParent(hfContentView.transform, false);
     }
 
     // Update is called once per frame
