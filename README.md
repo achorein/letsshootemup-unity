@@ -2,7 +2,7 @@
 
 Petit jeu 2D pour tester le framework [Unity](https://unity3d.com/fr)
 
-<img src="https://unity3d.com/profiles/unity3d/themes/unity/images/company/brand/logos/primary/unity-logo.png" height="100"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Unity_Technologies_logo.svg/2000px-Unity_Technologies_logo.svg.png" height="100"/>
 
 # Let's play
 
