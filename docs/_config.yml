@@ -5,7 +5,7 @@ description: > # this means to ignore newlines until "baseurl:"
   "Let's Shoot’Em Up" is a roguelike-shmup video game for Android and WebBrowser made by Vikings Entertainement.
   "Let's Shoot’Em Up" is a frenetic space shooter. 
 
-baseurl: "" # the subpath of your site, e.g. /blog/ (If you use organization leave empty)
+baseurl: "/letsshootemup-unity/" # the subpath of your site, e.g. /blog/ (If you use organization leave empty)
 url: "" # the base hostname & protocol for your site
 
 #Google Ad Words Data from scripts code (using Google responsive options) and ad client
